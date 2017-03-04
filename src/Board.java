@@ -123,7 +123,17 @@ class Board{
 	boolean movePiece(Piece x,int row, char column){
 		if (positionSettled(row,column))
 			return false;
+		switch(x.type){
+		case Regular:
+			if (Red.contains(x)){
+				
+			}
+			break;
+		case Queen:
 		
+		}
+			
+				
 	}
 	
 	public static void main(String[] args){
