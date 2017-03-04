@@ -17,17 +17,23 @@ class Piece{
 		this.row=row;
 		this.column=column;
 	}
+	
+	public boolean equals(Piece p){
+		if (type==p.type && row==p.row && column==p.column)
+			return true;
+		return false;
+	}
 
 }
 
 class Board{
 	
-	LinkedList<Piece> Red=new LinkedList<Piece>();
-	LinkedList<Piece> Green=new LinkedList<Piece>();
+	private LinkedList<Piece> Red=new LinkedList<Piece>();
+	private LinkedList<Piece> Green=new LinkedList<Piece>();
 	
 	boolean containsRedPiece(Piece p){
 		for(Piece x : Red){
-			if (x.type==p.type && x.row==p.row && x.column==p.column)
+			if (x.equals(p))
 				return true;
 		}
 		return false;
