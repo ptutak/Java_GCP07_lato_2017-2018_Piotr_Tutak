@@ -2,8 +2,15 @@ import java.util.*;
 
 
 enum PType{
+	Blank,
 	Regular,
 	Queen
+}
+
+enum FType{
+	Free,
+	Red,
+	Green
 }
 
 class Piece{
@@ -12,13 +19,13 @@ class Piece{
 	int row;
 	char column;
 	
-	public Piece(PType type, int row, char column){
+	Piece(PType type, int row, char column){
 		this.type=type;
 		this.row=row;
 		this.column=column;
 	}
 	
-	public boolean equals(Piece p){
+	boolean equals(Piece p){
 		if (type==p.type && row==p.row && column==p.column)
 			return true;
 		return false;
@@ -31,32 +38,54 @@ class Board{
 	private LinkedList<Piece> Red=new LinkedList<Piece>();
 	private LinkedList<Piece> Green=new LinkedList<Piece>();
 	
-	boolean containsRedPiece(Piece p){
-		for(Piece x : Red){
+	boolean containsPiece(LinkedList<Piece> list,Piece p){
+		for(Piece x : list){
 			if (x.equals(p))
 				return true;
 		}
 		return false;
 	}
 	
-	boolean containsGreenPiece(Piece p){
-		for(Piece x:Green){
-			if (x.equals(p))
-				return true;
+	LinkedList<Piece> validMove(Piece x){
+		LinkedList<Piece> ret=new LinkedList<Piece>();
+		if (containsPiece(Red,x)){
+			if (x.type==PType.Regular){
+				if(x.row+1<9 && x.column-1>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Free)
+					ret.add(new Piece(PType.Blank ,x.row+1,(char)(x.column-1)));
+				if(x.row+1<9 && x.column+1<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Free)
+					ret.add(new Piece(PType.Blank,x.row+1,(char)(x.column+1)));
+				if(x.row+2<9 && x.column-2>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Green)
+					ret.add(new Piece(PType.Blank,x.row+2,(char)(x.column-2)));
+				if(x.row+2<9 && x.column+2<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Green)
+					ret.add(new Piece(PType.Blank,x.row+2,(char)(x.column+2)));
+				if(x.row-2>0 && x.column-2>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Green)
+					ret.add(new Piece(PType.Blank,x.row-2,(char)(x.column-2)));
+				if(x.row-2>0 && x.column+2<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Green)
+					ret.add(new Piece(PType.Blank,x.row-2,(char)(x.column+2)));
+			} 
+			else {
+				boolean valid=true;
+				int dist=1;
+				while(valid){
+					if (x.row+dist<9 && x.column-dist>='A' && fieldState(x.row+dist,(char)(x.column-dist))==FType.Free)
+						ret.add(new Piece(PType.Blank,x.row+1,(char)(x.column-1)));
+					
+				}
+			}
 		}
-		return false;
+		
+		return ret;
 	}
-	
-	boolean positionSettled(int row, char column){
+	FType fieldState(int row, char column){
 		for (Piece x:Red){
 			if (x.row==row && x.column==column)
-				return true;
+				return FType.Red;
 		}
 		for (Piece x:Green){
 			if (x.row==row && x.column==column)
-				return true;
+				return FType.Green;
 		}
-		return false;
+		return FType.Free;
 	}
 	
 	void set3RowGame(){
@@ -108,13 +137,13 @@ class Board{
 		for(int i=8;i>0;--i){
 			System.out.print("|");
 			for(char j='A';j<'I';++j){
-				if(containsRedPiece(new Piece(PType.Regular,i,j)))
+				if(containsPiece(Red, new Piece(PType.Regular,i,j)))
 					System.out.print(" r ");
-				else if (containsRedPiece(new Piece(PType.Queen,i,j)))
+				else if (containsPiece(Red, new Piece(PType.Queen,i,j)))
 					System.out.print(" R ");
-				else if (containsGreenPiece(new Piece(PType.Regular,i,j)))
+				else if (containsPiece(Green, new Piece(PType.Regular,i,j)))
 					System.out.print(" g ");
-				else if (containsGreenPiece(new Piece(PType.Queen,i,j)))
+				else if (containsPiece(Green, new Piece(PType.Queen,i,j)))
 					System.out.print(" G ");
 				else
 					System.out.print(" _ ");
@@ -127,7 +156,7 @@ class Board{
 	}
 	
 	boolean movePiece(Piece x,int row, char column){
-		if (positionSettled(row,column))
+		if (fieldState(row,column)!=FType.Free)
 			return false;
 		switch(x.type){
 		case Regular:
