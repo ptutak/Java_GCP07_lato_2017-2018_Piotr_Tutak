@@ -41,7 +41,7 @@ class Board{
 	
 	boolean containsGreenPiece(Piece p){
 		for(Piece x:Green){
-			if (x.type==p.type && x.row==p.row && x.column==p.column)
+			if (x.equals(p))
 				return true;
 		}
 		return false;
