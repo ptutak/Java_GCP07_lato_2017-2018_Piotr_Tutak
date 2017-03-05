@@ -44,12 +44,12 @@ class Board{
 	private LinkedList<Piece> Red=new LinkedList<Piece>();
 	private LinkedList<Piece> Green=new LinkedList<Piece>();
 	
-	boolean containsPiece(LinkedList<Piece> list,Piece p){
+	Piece containsPiece(LinkedList<Piece> list,Piece p){
 		for(Piece x : list){
 			if (x.equals(p))
-				return true;
+				return x;
 		}
-		return false;
+		return null;
 	}
 	
 	FType fieldState(int row, char column){
@@ -67,11 +67,23 @@ class Board{
 	LinkedList<Piece> validMove(Piece x){
 		LinkedList<Piece> ret=new LinkedList<Piece>();
 		if (x.type==PType.Regular){
-			if(containsPiece(Red, x)){
+			if(containsPiece(Red, x)!=null){
 				if(x.row+1<9 && x.column-1>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Free)
 					ret.add(new Piece(PType.Blank ,x.row+1,(char)(x.column-1)));
 				if(x.row+1<9 && x.column+1<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Free)
 					ret.add(new Piece(PType.Blank,x.row+1,(char)(x.column+1)));
+				
+				if(x.row+2<9 && x.column-2>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Green && fieldState(x.row+1,(char)(x.column-1))==FType.Red) {
+					ret.add(new Piece(PType.Regular,x.row+1,(char)(x.column-1)));
+					ret.add(new Piece(PType.Regular,x.row+2,(char)(x.column-2)));
+				}
+					
+				if(x.row+2<9 && x.column+2<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Green)
+					ret.add(new Piece(x.type,x.row+2,(char)(x.column+2)));
+				if(x.row-2>0 && x.column-2>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Green)
+					ret.add(new Piece(x.type,x.row-2,(char)(x.column-2)));
+				if(x.row-2>0 && x.column+2<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Green)
+					ret.add(new Piece(x.type,x.row-2,(char)(x.column+2)));
 			}
 			else{
 				if(x.row-1>0 && x.column-1>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Free)
@@ -79,14 +91,7 @@ class Board{
 				if(x.row-1>0 && x.column+1<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Free)
 					ret.add(new Piece(PType.Blank,x.row-1,(char)(x.column+1)));
 			}
-			if(x.row+2<9 && x.column-2>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Green)
-				ret.add(new Piece(x.type,x.row+2,(char)(x.column-2)));
-			if(x.row+2<9 && x.column+2<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Green)
-				ret.add(new Piece(x.type,x.row+2,(char)(x.column+2)));
-			if(x.row-2>0 && x.column-2>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Green)
-				ret.add(new Piece(x.type,x.row-2,(char)(x.column-2)));
-			if(x.row-2>0 && x.column+2<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Green)
-				ret.add(new Piece(x.type,x.row-2,(char)(x.column+2)));
+			
 		} 
 		else {
 			boolean valid=true;
@@ -209,13 +214,13 @@ class Board{
 		for(int i=8;i>0;--i){
 			System.out.print("|");
 			for(char j='A';j<'I';++j){
-				if(containsPiece(Red, new Piece(PType.Regular,i,j)))
+				if(containsPiece(Red, new Piece(PType.Regular,i,j))!=null)
 					System.out.print(" r ");
-				else if (containsPiece(Red, new Piece(PType.Queen,i,j)))
+				else if (containsPiece(Red, new Piece(PType.Queen,i,j))!=null)
 					System.out.print(" R ");
-				else if (containsPiece(Green, new Piece(PType.Regular,i,j)))
+				else if (containsPiece(Green, new Piece(PType.Regular,i,j))!=null)
 					System.out.print(" g ");
-				else if (containsPiece(Green, new Piece(PType.Queen,i,j)))
+				else if (containsPiece(Green, new Piece(PType.Queen,i,j))!=null)
 					System.out.print(" G ");
 				else
 					System.out.print(" _ ");
@@ -231,15 +236,15 @@ class Board{
 		if (fieldState(row,column)!=FType.Free)
 			return MType.Bad;
 		LinkedList<Piece> vMove=validMove(x);
-		if (containsPiece(vMove,new Piece(PType.Blank,row,column))){
+		if (containsPiece(vMove,new Piece(PType.Blank,row,column))!=null){
 			x.row=row;
 			x.column=column;
 			return MType.Move;					
 		}
-		else if (containsPiece(vMove,new Piece(x.type,row,column))){
+		else if (containsPiece(vMove,new Piece(x.type,row,column))!=null){
 			
 		}
-		return false;
+		return MType.Bad;
 	}
 	
 	public static void main(String[] args){
