@@ -13,6 +13,12 @@ enum FType{
 	Green
 }
 
+enum MType{
+	Bad,
+	Move,
+	Kill
+}
+
 class Piece{
 
 	PType type;
@@ -46,36 +52,6 @@ class Board{
 		return false;
 	}
 	
-	LinkedList<Piece> validMove(Piece x){
-		LinkedList<Piece> ret=new LinkedList<Piece>();
-		if (containsPiece(Red,x)){
-			if (x.type==PType.Regular){
-				if(x.row+1<9 && x.column-1>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Free)
-					ret.add(new Piece(PType.Blank ,x.row+1,(char)(x.column-1)));
-				if(x.row+1<9 && x.column+1<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Free)
-					ret.add(new Piece(PType.Blank,x.row+1,(char)(x.column+1)));
-				if(x.row+2<9 && x.column-2>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Green)
-					ret.add(new Piece(PType.Blank,x.row+2,(char)(x.column-2)));
-				if(x.row+2<9 && x.column+2<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Green)
-					ret.add(new Piece(PType.Blank,x.row+2,(char)(x.column+2)));
-				if(x.row-2>0 && x.column-2>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Green)
-					ret.add(new Piece(PType.Blank,x.row-2,(char)(x.column-2)));
-				if(x.row-2>0 && x.column+2<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Green)
-					ret.add(new Piece(PType.Blank,x.row-2,(char)(x.column+2)));
-			} 
-			else {
-				boolean valid=true;
-				int dist=1;
-				while(valid){
-					if (x.row+dist<9 && x.column-dist>='A' && fieldState(x.row+dist,(char)(x.column-dist))==FType.Free)
-						ret.add(new Piece(PType.Blank,x.row+1,(char)(x.column-1)));
-					
-				}
-			}
-		}
-		
-		return ret;
-	}
 	FType fieldState(int row, char column){
 		for (Piece x:Red){
 			if (x.row==row && x.column==column)
@@ -87,6 +63,102 @@ class Board{
 		}
 		return FType.Free;
 	}
+	
+	LinkedList<Piece> validMove(Piece x){
+		LinkedList<Piece> ret=new LinkedList<Piece>();
+		if (x.type==PType.Regular){
+			if(containsPiece(Red, x)){
+				if(x.row+1<9 && x.column-1>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Free)
+					ret.add(new Piece(PType.Blank ,x.row+1,(char)(x.column-1)));
+				if(x.row+1<9 && x.column+1<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Free)
+					ret.add(new Piece(PType.Blank,x.row+1,(char)(x.column+1)));
+			}
+			else{
+				if(x.row-1>0 && x.column-1>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Free)
+					ret.add(new Piece(PType.Blank ,x.row-1,(char)(x.column-1)));
+				if(x.row-1>0 && x.column+1<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Free)
+					ret.add(new Piece(PType.Blank,x.row-1,(char)(x.column+1)));
+			}
+			if(x.row+2<9 && x.column-2>='A' && fieldState(x.row+1,(char)(x.column-1))==FType.Green)
+				ret.add(new Piece(x.type,x.row+2,(char)(x.column-2)));
+			if(x.row+2<9 && x.column+2<='H' && fieldState(x.row+1,(char)(x.column+1))==FType.Green)
+				ret.add(new Piece(x.type,x.row+2,(char)(x.column+2)));
+			if(x.row-2>0 && x.column-2>='A' && fieldState(x.row-1,(char)(x.column-1))==FType.Green)
+				ret.add(new Piece(x.type,x.row-2,(char)(x.column-2)));
+			if(x.row-2>0 && x.column+2<='H' && fieldState(x.row-1,(char)(x.column+1))==FType.Green)
+				ret.add(new Piece(x.type,x.row-2,(char)(x.column+2)));
+		} 
+		else {
+			boolean valid=true;
+			for(int dist=1;dist<8;++dist){
+				if (x.row+dist<9 && x.column-dist>='A' && fieldState(x.row+dist,(char)(x.column-dist))==FType.Free)
+					if (valid)
+						ret.add(new Piece(PType.Blank,x.row+dist,(char)(x.column-dist)));
+					else
+						ret.add(new Piece(x.type,x.row+dist,(char)(x.column-dist)));
+				else{
+					if (valid){
+						valid=false;
+						continue;	
+					}
+					else
+						break;
+				}
+			}
+			valid=true;
+			for(int dist=1;dist<8;++dist){
+				if (x.row+dist<9 && x.column+dist<='H' && fieldState(x.row+dist,(char)(x.column+dist))==FType.Free)
+					if (valid)
+						ret.add(new Piece(PType.Blank,x.row+dist,(char)(x.column+dist)));
+					else
+						ret.add(new Piece(x.type,x.row+dist,(char)(x.column+dist)));
+					
+				else{
+					if (valid){
+						valid=false;
+						continue;	
+					}
+					else
+						break;
+				}
+			}
+			valid=true;
+			for(int dist=1;dist<8;++dist){
+				if (x.row-dist>0 && x.column+dist<='H' && fieldState(x.row-dist,(char)(x.column+dist))==FType.Free)
+					if (valid)
+						ret.add(new Piece(PType.Blank,x.row-dist,(char)(x.column+dist)));
+					else
+						ret.add(new Piece(x.type,x.row-dist,(char)(x.column+dist)));
+				else{
+					if (valid){
+						valid=false;
+						continue;	
+					}
+					else
+						break;
+				}
+			}
+			valid=true;
+			for(int dist=1;dist<8;++dist){
+				if (x.row-dist>0 && x.column-dist>='A' && fieldState(x.row-dist,(char)(x.column-dist))==FType.Free)
+					if (valid)
+						ret.add(new Piece(PType.Blank,x.row-dist,(char)(x.column-dist)));
+					else
+						ret.add(new Piece(x.type,x.row-dist,(char)(x.column-dist)));
+				else{
+					if (valid){
+						valid=false;
+						continue;	
+					}
+					else
+						break;
+				}
+			}	
+		}
+		return ret;
+	}
+	
+
 	
 	void set3RowGame(){
 		for (int i=1;i<9;++i){
@@ -155,20 +227,19 @@ class Board{
 		System.out.println("--");
 	}
 	
-	boolean movePiece(Piece x,int row, char column){
+	 MType movePiece(Piece x,int row, char column){
 		if (fieldState(row,column)!=FType.Free)
-			return false;
-		switch(x.type){
-		case Regular:
-			if (Red.contains(x)){
-				
-			}
-			break;
-		case Queen:
-		
+			return MType.Bad;
+		LinkedList<Piece> vMove=validMove(x);
+		if (containsPiece(vMove,new Piece(PType.Blank,row,column))){
+			x.row=row;
+			x.column=column;
+			return MType.Move;					
 		}
+		else if (containsPiece(vMove,new Piece(x.type,row,column))){
 			
-				
+		}
+		return false;
 	}
 	
 	public static void main(String[] args){
