@@ -18,17 +18,8 @@ enum MType{
 	Move,
 	Kill
 }
-class ColPiece{
-	Piece piece;
-	FType field;
-	ColPiece(Piece piece,FType field){
-		this.piece=piece;
-		this.field=field;
-	}
-}
 
 class Piece{
-
 	PType type;
 	int row;
 	char column;
@@ -43,6 +34,15 @@ class Piece{
 		if (type==p.type && row==p.row && column==p.column)
 			return true;
 		return false;
+	}
+}
+
+class ColPiece{
+	Piece piece;
+	FType field;
+	ColPiece(Piece piece,FType field){
+		this.piece=piece;
+		this.field=field;
 	}
 }
 
@@ -250,32 +250,8 @@ class Board{
 		}
 	}
 		
-	void print(){
-		for(int i=0;i<8;++i)
-			System.out.print("---");
-		System.out.println("--");
-		for(int i=8;i>0;--i){
-			System.out.print("|");
-			for(char j='A';j<'I';++j){
-				if(containsPiece(Red, new Piece(PType.Regular,i,j))!=null)
-					System.out.print(" r ");
-				else if (containsPiece(Red, new Piece(PType.Queen,i,j))!=null)
-					System.out.print(" R ");
-				else if (containsPiece(Green, new Piece(PType.Regular,i,j))!=null)
-					System.out.print(" g ");
-				else if (containsPiece(Green, new Piece(PType.Queen,i,j))!=null)
-					System.out.print(" G ");
-				else
-					System.out.print(" _ ");
-			}
-			System.out.println("|");
-		}
-		for(int i=0;i<8;++i)
-			System.out.print("---");
-		System.out.println("--");
-	}
 	
-	 MType movePiece(Piece x,int row, char column){
+	MType movePiece(Piece x,int row, char column){
 		if (fieldState(row,column).field!=FType.Free)
 			return MType.Bad;
 		ArrayList<ColPiece> vMove=validMove(x);
@@ -301,6 +277,31 @@ class Board{
 			}
 		}
 		return MType.Bad;
+	}
+
+	void print(){
+		for(int i=0;i<8;++i)
+			System.out.print("---");
+		System.out.println("--");
+		for(int i=8;i>0;--i){
+			System.out.print("|");
+			for(char j='A';j<'I';++j){
+				if(containsPiece(Red, new Piece(PType.Regular,i,j))!=null)
+					System.out.print(" r ");
+				else if (containsPiece(Red, new Piece(PType.Queen,i,j))!=null)
+					System.out.print(" R ");
+				else if (containsPiece(Green, new Piece(PType.Regular,i,j))!=null)
+					System.out.print(" g ");
+				else if (containsPiece(Green, new Piece(PType.Queen,i,j))!=null)
+					System.out.print(" G ");
+				else
+					System.out.print(" _ ");
+			}
+			System.out.println("|");
+		}
+		for(int i=0;i<8;++i)
+			System.out.print("---");
+		System.out.println("--");
 	}
 	
 	public static void main(String[] args){
