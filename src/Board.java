@@ -123,29 +123,32 @@ class Board{
 					ColPiece toSmash=fieldState(x.row+dist,(char)(x.column-dist));
 					if (toSmash.field==ftype)
 						break;
-					else{
-						if (valid)
-							valid=false;
-						else
-							break;
-						if (x.row+dist+1<9 && x.column-dist-1>='A' && fieldState(x.row+dist+1,(char)(x.column-dist-1)).field==FType.Free)
-							ret.add(toSmash);
-					}
+					if (!valid)
+						break;
+					valid=false;
+					if (x.row+dist+1<9 && x.column-dist-1>='A' && fieldState(x.row+dist+1,(char)(x.column-dist-1)).field==FType.Free)
+						ret.add(toSmash);
+					else
+						break;
 				}
 			}
 			valid=true;
 			for(int dist=1;dist<8;++dist){
 				if (x.row+dist<9 && x.column+dist<='H' && fieldState(x.row+dist,(char)(x.column+dist)).field==FType.Free)
 					if (valid)
-						ret.add(new Piece(PType.Blank,x.row+dist,(char)(x.column+dist)));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(char)(x.column+dist)),FType.Free));
 					else
-						ret.add(new Piece(x.type,x.row+dist,(char)(x.column+dist)));
+						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(char)(x.column+dist)),FType.Free));
 					
 				else{
-					if (valid){
-						valid=false;
-						continue;	
-					}
+					ColPiece toSmash=fieldState(x.row+dist,(char)(x.column+dist));
+					if (toSmash.field==ftype)
+						break;
+					if (!valid)
+						break;
+					valid=false;
+					if (x.row+dist+1<9 && x.column+dist+1<='H' && fieldState(x.row+dist+1,(char)(x.column+dist+1)).field==FType.Free)
+						ret.add(toSmash);
 					else
 						break;
 				}
@@ -154,14 +157,18 @@ class Board{
 			for(int dist=1;dist<8;++dist){
 				if (x.row-dist>0 && x.column+dist<='H' && fieldState(x.row-dist,(char)(x.column+dist)).field==FType.Free)
 					if (valid)
-						ret.add(new Piece(PType.Blank,x.row-dist,(char)(x.column+dist)));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(char)(x.column+dist)),FType.Free));
 					else
-						ret.add(new Piece(x.type,x.row-dist,(char)(x.column+dist)));
+						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(char)(x.column+dist)),FType.Free));
 				else{
-					if (valid){
-						valid=false;
-						continue;	
-					}
+					ColPiece toSmash=fieldState(x.row-dist,(char)(x.column+dist));
+					if (toSmash.field==ftype)
+						break;
+					if (!valid)
+						break;
+					valid=false;
+					if (x.row-dist-1>0 && x.column+dist+1<='H' && fieldState(x.row-dist-1,(char)(x.column+dist+1)).field==FType.Free)
+						ret.add(toSmash);
 					else
 						break;
 				}
@@ -170,14 +177,18 @@ class Board{
 			for(int dist=1;dist<8;++dist){
 				if (x.row-dist>0 && x.column-dist>='A' && fieldState(x.row-dist,(char)(x.column-dist)).field==FType.Free)
 					if (valid)
-						ret.add(new Piece(PType.Blank,x.row-dist,(char)(x.column-dist)));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(char)(x.column-dist)),FType.Free));
 					else
-						ret.add(new Piece(x.type,x.row-dist,(char)(x.column-dist)));
+						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(char)(x.column-dist)),FType.Free));
 				else{
-					if (valid){
-						valid=false;
-						continue;	
-					}
+					ColPiece toSmash=fieldState(x.row-dist,(char)(x.column-dist));
+					if (toSmash.field==ftype)
+						break;
+					if (!valid)
+						break;
+					valid=false;
+					if (x.row-dist-1>0 && x.column-dist-1>='A' && fieldState(x.row-dist-1,(char)(x.column-dist-1)).field==FType.Free)
+						ret.add(toSmash);
 					else
 						break;
 				}
