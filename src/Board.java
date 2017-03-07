@@ -45,10 +45,32 @@ class Piece{
 		this.column=column;
 	}
 	
-	boolean equals(Piece p){
-		if (type==p.type && row==p.row && column==p.column)
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + column;
+		result = prime * result + row;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		return false;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Piece))
+			return false;
+		Piece other = (Piece) obj;
+		if (column != other.column)
+			return false;
+		if (row != other.row)
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
 	}
 }
 
@@ -301,7 +323,7 @@ class Board{
 		for(int i=8;i>0;--i){
 			System.out.print("|");
 			for(char j='A';j<'I';++j){
-				if(containsPiece(Red, new Piece(PType.Regular,i,j))!=null)
+				if(Red.contains(new Piece(PType.Regular,i,j)))
 					System.out.print(" r ");
 				else if (containsPiece(Red, new Piece(PType.Queen,i,j))!=null)
 					System.out.print(" R ");
