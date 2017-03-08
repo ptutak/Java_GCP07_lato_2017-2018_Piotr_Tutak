@@ -138,6 +138,7 @@ class Board{
 	ArrayList<ColPiece> validMove(Piece x){
 		ColPiece toMove=fieldState(x.row,x.column);
 		ArrayList<ColPiece> ret=new ArrayList<ColPiece>();
+		int maxRowCol=Math.max(colStop-colStart, rowStop-rowStart);
 		if (x.type==PType.Regular){
 			if(x.row+1<=rowStop && x.column-1>=colStart && fieldState(x.row+1,(char)(x.column-1)).field==FType.Free)
 				ret.add(new ColPiece(new Piece(PType.Blank ,x.row+1,(char)(x.column-1)),FType.Free));
@@ -177,7 +178,7 @@ class Board{
 		}
 		else {
 			boolean valid=true;
-			for(int dist=1;dist<8;++dist){
+			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row+dist<=rowStop && x.column-dist>=colStart && fieldState(x.row+dist,(char)(x.column-dist)).field==FType.Free)
 					if (valid)
 						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(char)(x.column-dist)),FType.Free));
@@ -197,7 +198,7 @@ class Board{
 				}
 			}
 			valid=true;
-			for(int dist=1;dist<8;++dist){
+			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row+dist<=rowStop && x.column+dist<=colStop && fieldState(x.row+dist,(char)(x.column+dist)).field==FType.Free)
 					if (valid)
 						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(char)(x.column+dist)),FType.Free));
@@ -218,7 +219,7 @@ class Board{
 				}
 			}
 			valid=true;
-			for(int dist=1;dist<8;++dist){
+			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row-dist>=rowStart && x.column+dist<=colStop && fieldState(x.row-dist,(char)(x.column+dist)).field==FType.Free)
 					if (valid)
 						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(char)(x.column+dist)),FType.Free));
@@ -238,7 +239,7 @@ class Board{
 				}
 			}
 			valid=true;
-			for(int dist=1;dist<8;++dist){
+			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row-dist>=rowStart && x.column-dist>=colStart && fieldState(x.row-dist,(char)(x.column-dist)).field==FType.Free)
 					if (valid)
 						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(char)(x.column-dist)),FType.Free));
