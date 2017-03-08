@@ -84,7 +84,7 @@ class ColPiece{
 }
 
 
-class Board{
+public class Board{
 	
 	private LinkedList<Piece> Red=new LinkedList<Piece>();
 	private LinkedList<Piece> Green=new LinkedList<Piece>();
@@ -105,14 +105,6 @@ class Board{
 		this.rowStop=rowStop;
 		this.colStart=colStart;
 		this.colStop=colStop;
-	}
-	
-	Piece containsPiece(LinkedList<Piece> list,Piece p){
-		for(Piece x : list){
-			if (x.equals(p))
-				return x;
-		}
-		return null;
 	}
 	
 	ColPiece checkMove(ArrayList<ColPiece> list,int row, char column){
@@ -314,10 +306,14 @@ class Board{
 		ColPiece move=checkMove(vMove,row,column);
 		if (move!=null){
 			if (move.piece.type!=PType.Blank){
-				int i=vMove.indexOf(move)-1;
-				while (vMove.get(i).field==FType.Free)
-					--i;
-				ColPiece toRemove=vMove.get(i);
+				Iterator<ColPiece> i=vMove.listIterator(vMove.indexOf(move));
+				Iterator<ColPiece> j=vMove.iterator();
+				ColPiece toRemove=null;
+				while (i!=j){
+					ColPiece tmp=j.next();
+					if (tmp.field!=FType.Free)
+						toRemove=tmp;
+				}
 				x.row=row;
 				x.column=column;
 				if (toRemove.field==FType.Green)
@@ -344,11 +340,11 @@ class Board{
 			for(char j=colStart;j<=colStop;++j){
 				if(Red.contains(new Piece(PType.Regular,i,j)))
 					System.out.print(" r ");
-				else if (containsPiece(Red, new Piece(PType.Queen,i,j))!=null)
+				else if (Red.contains(new Piece(PType.Queen,i,j)))
 					System.out.print(" R ");
-				else if (containsPiece(Green, new Piece(PType.Regular,i,j))!=null)
+				else if (Green.contains(new Piece(PType.Regular,i,j)))
 					System.out.print(" g ");
-				else if (containsPiece(Green, new Piece(PType.Queen,i,j))!=null)
+				else if (Green.contains(new Piece(PType.Queen,i,j)))
 					System.out.print(" G ");
 				else
 					System.out.print(" _ ");
