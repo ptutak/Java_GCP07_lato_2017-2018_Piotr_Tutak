@@ -110,8 +110,9 @@ public class Board{
 	
 	ColPiece checkMove(ArrayList<ColPiece> list,int row, char column){
 		for (ColPiece x:list){
-			if (x.piece.row==row && x.piece.column==column && x.field==FType.Free)
-				return x;
+			if(x.piece!=null)
+				if (x.piece.row==row && x.piece.column==column && x.field==FType.Free)
+					return x;
 		}
 		return null;
 	}
@@ -255,7 +256,26 @@ public class Board{
 		return ret;
 	}
 	
-
+	void set4RowGame(){
+		for (int i=rowStart;i<=rowStop;++i){
+			if (i>4 && i<rowStop-3)
+				continue;
+			
+			char j;
+			
+			if (i%2==1)
+				j='A';
+			else
+				j='B';
+			
+			if (i<(rowStart+rowStop)/2)
+				for(;j<=colStop;j+=2)
+					Red.add(new Piece(PType.Regular,i,j));
+			else
+				for(;j<=colStop;j+=2)
+					Green.add(new Piece(PType.Regular,i,j));
+		}
+	}
 	
 	void set3RowGame(){
 		for (int i=rowStart;i<=rowStop;++i){
@@ -300,23 +320,22 @@ public class Board{
 	}
 		
 	
-	MType movePiece(Piece x,int row, char column){
+	MType movePiece(Piece piece,int row, char column){
 		if (fieldState(row,column).field!=FType.Free)
 			return MType.Bad;
-		ArrayList<ColPiece> vMove=validMove(x);
+		ArrayList<ColPiece> vMove=validMove(piece);
 		ColPiece move=checkMove(vMove,row,column);
 		if (move!=null){
 			if (move.piece.type!=PType.Blank){
-				Iterator<ColPiece> i=vMove.listIterator(vMove.indexOf(move));
-				Iterator<ColPiece> j=vMove.iterator();
 				ColPiece toRemove=null;
-				while (i!=j){
-					ColPiece tmp=j.next();
-					if (tmp.field!=FType.Free)
-						toRemove=tmp;
+				for (ColPiece x:vMove){
+					if (x==move)
+						break;
+					if (x.field!=FType.Free)
+						toRemove=x;
 				}
-				x.row=row;
-				x.column=column;
+				piece.row=row;
+				piece.column=column;
 				if (toRemove.field==FType.Green)
 					Green.remove(toRemove.piece);
 				else
@@ -324,8 +343,8 @@ public class Board{
 				return MType.Kill;
 			}
 			else{
-				x.row=row;
-				x.column=column;
+				piece.row=row;
+				piece.column=column;
 				return MType.Move;					
 			}
 		}
@@ -333,13 +352,14 @@ public class Board{
 	}
 
 	void print(){
-		System.out.print(" ");
+		System.out.print("  ");
 		for (char i=colStart;i<=colStop;++i)
 			System.out.print(" "+i+" ");
 		System.out.println(" ");
+		System.out.print(" -");
 		for(int i=colStart;i<=colStop;++i)
 			System.out.print("---");
-		System.out.println("--");
+		System.out.println("-");
 		for(int i=rowStop;i>=rowStart;--i){
 			System.out.print(i+"|");
 			for(char j=colStart;j<=colStop;++j){
@@ -356,19 +376,20 @@ public class Board{
 			}
 			System.out.println("|");
 		}
+		System.out.print(" -");
 		for(int i=colStart;i<=colStop;++i)
 			System.out.print("---");
-		System.out.println("--");
+		System.out.println("-");
 	}
 	
 	public static void main(String[] args){
 		Board x=new Board();
-		x.set2RowGame();
+		x.set3RowGame();
 		x.print();
 		while(true){
 			Console tmp2=System.console();
 			String tmp=tmp2.readLine();
-			if (tmp=="koniec")
+			if (tmp.equals(new String("koniec")))
 				break;
 			
 			int aRow=(int)tmp.charAt(0)-(int)('0');
@@ -390,9 +411,7 @@ public class Board{
 					System.out.println("Ruch z poz.: "+aRow+aColumn+"\nNa poz.: "+bRow+bColumn+"\nZbicie!");
 				}
 			}
-			
-			
+			x.print();
 		}
 	}
-	
 }
