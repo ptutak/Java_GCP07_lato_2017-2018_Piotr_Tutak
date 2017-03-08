@@ -13,6 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+import java.io.Console;
 import java.util.*;
 
 
@@ -332,11 +333,15 @@ public class Board{
 	}
 
 	void print(){
+		System.out.print(" ");
+		for (char i=colStart;i<=colStop;++i)
+			System.out.print(" "+i+" ");
+		System.out.println(" ");
 		for(int i=colStart;i<=colStop;++i)
 			System.out.print("---");
 		System.out.println("--");
 		for(int i=rowStop;i>=rowStart;--i){
-			System.out.print("|");
+			System.out.print(i+"|");
 			for(char j=colStart;j<=colStop;++j){
 				if(Red.contains(new Piece(PType.Regular,i,j)))
 					System.out.print(" r ");
@@ -360,6 +365,34 @@ public class Board{
 		Board x=new Board();
 		x.set2RowGame();
 		x.print();
+		while(true){
+			Console tmp2=System.console();
+			String tmp=tmp2.readLine();
+			if (tmp=="koniec")
+				break;
+			
+			int aRow=(int)tmp.charAt(0)-(int)('0');
+			char aColumn=tmp.charAt(1);
+			int bRow=(int)tmp.charAt(3)-(int)('0');
+			char bColumn=tmp.charAt(4);
+			
+			ColPiece toMove=x.fieldState(aRow,aColumn);
+			if (toMove.piece!=null){
+				MType done=x.movePiece(toMove.piece, bRow, bColumn);
+				switch(done){
+				case Bad:
+					System.out.println("Zly ruch");
+					break;
+				case Move:
+					System.out.println("Ruch z poz.: "+aRow+aColumn+"\nNa poz.: "+bRow+bColumn);
+					break;
+				case Kill:
+					System.out.println("Ruch z poz.: "+aRow+aColumn+"\nNa poz.: "+bRow+bColumn+"\nZbicie!");
+				}
+			}
+			
+			
+		}
 	}
 	
 }

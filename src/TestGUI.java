@@ -10,13 +10,13 @@ import javax.swing.JFrame;
 
 import com.sun.xml.internal.ws.assembler.jaxws.TerminalTubeFactory;
 
-class GUI extends JFrame {
+class TestGUI extends JFrame {
 	
 	BufferedImage image;
 	
 	int x=10;
 	int y=10;
-	GUI() throws IOException{
+	TestGUI() throws IOException{
 		
 		image=ImageIO.read(new URL("http://spplthumb.blob.core.windows.net/540x405/6e/6b/45/portret-dowolny-obraz-ze-zdjecia-ma-zamowienie-gliwice-126454167.jpg"));
 		
@@ -41,7 +41,7 @@ class GUI extends JFrame {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
-		GUI x=new GUI();
+		TestGUI x=new TestGUI();
 		
 		x.setSize(600, 600);
 		x.setVisible(true);
