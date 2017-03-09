@@ -1,9 +1,9 @@
 class Piece{
 	PType type;
 	int row;
-	char column;
+	int column;
 	
-	Piece(PType type, int row, char column){
+	Piece(PType type, int row, int column){
 		this.type=type;
 		this.row=row;
 		this.column=column;

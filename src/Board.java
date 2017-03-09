@@ -20,26 +20,26 @@ public class Board{
 	
 	private LinkedList<Piece> Red=new LinkedList<Piece>();
 	private LinkedList<Piece> Green=new LinkedList<Piece>();
-	private char colStart;
-	private char colStop;
+	private int colStart;
+	private int colStop;
 	private int rowStart;
 	private int rowStop;
 	
 	Board(){
 		rowStart=1;
 		rowStop=8;
-		colStart='A';
-		colStop='H';
+		colStart=1;
+		colStop=8;
 	}
 	
-	Board(int rowStart,int rowStop,char colStart,char colStop){
+	Board(int rowStart,int rowStop,int colStart,int colStop){
 		this.rowStart=rowStart;
 		this.rowStop=rowStop;
 		this.colStart=colStart;
 		this.colStop=colStop;
 	}
 	
-	ColPiece checkMove(ArrayList<ColPiece> list,int row, char column){
+	ColPiece checkMove(ArrayList<ColPiece> list,int row, int column){
 		for (ColPiece x:list){
 			if(x.piece!=null)
 				if (x.piece.row==row && x.piece.column==column && x.field==FType.Free)
@@ -48,7 +48,7 @@ public class Board{
 		return null;
 	}
 	
-	ColPiece fieldState(int row, char column){
+	ColPiece fieldState(int row, int column){
 		for (Piece x:Red){
 			if (x.row==row && x.column==column)
 				return new ColPiece(x,FType.Red);
@@ -65,58 +65,58 @@ public class Board{
 		ArrayList<ColPiece> ret=new ArrayList<ColPiece>();
 		int maxRowCol=Math.max(colStop-colStart, rowStop-rowStart);
 		if (x.type==PType.Regular){
-			if(x.row+1<=rowStop && x.column-1>=colStart && fieldState(x.row+1,(char)(x.column-1)).field==FType.Free)
-				ret.add(new ColPiece(new Piece(PType.Blank ,x.row+1,(char)(x.column-1)),FType.Free));
-			if(x.row+1<=rowStop && x.column+1<=colStop && fieldState(x.row+1,(char)(x.column+1)).field==FType.Free)
-				ret.add(new ColPiece(new Piece(PType.Blank,x.row+1,(char)(x.column+1)),FType.Free));
+			if(x.row+1<=rowStop && x.column-1>=colStart && fieldState(x.row+1,x.column-1).field==FType.Free)
+				ret.add(new ColPiece(new Piece(PType.Blank ,x.row+1,x.column-1),FType.Free));
+			if(x.row+1<=rowStop && x.column+1<=colStop && fieldState(x.row+1,x.column+1).field==FType.Free)
+				ret.add(new ColPiece(new Piece(PType.Blank,x.row+1,x.column+1),FType.Free));
 			
-			if(x.row+2<=rowStop && x.column-2>=colStart && fieldState(x.row+2,(char)(x.column-2)).field==FType.Free) {
-				ColPiece toSmash=fieldState(x.row+1,(char)(x.column-1));
+			if(x.row+2<=rowStop && x.column-2>=colStart && fieldState(x.row+2,x.column-2).field==FType.Free) {
+				ColPiece toSmash=fieldState(x.row+1,x.column-1);
 				if (toSmash.field!=toMove.field){
 					ret.add(toSmash);
-					ret.add(new ColPiece(new Piece(x.type,x.row+2,(char)(x.column-2)),FType.Free));
+					ret.add(new ColPiece(new Piece(x.type,x.row+2,x.column-2),FType.Free));
 				}
 			}					
-			if(x.row+2<=rowStop && x.column+2<=colStop && fieldState(x.row+2,(char)(x.column+2)).field==FType.Free){
-				ColPiece toSmash=fieldState(x.row+1,(char)(x.column+1));
+			if(x.row+2<=rowStop && x.column+2<=colStop && fieldState(x.row+2,(x.column+2)).field==FType.Free){
+				ColPiece toSmash=fieldState(x.row+1,(x.column+1));
 				if (toSmash.field!=toMove.field){
 					ret.add(toSmash);
-					ret.add(new ColPiece(new Piece(x.type,x.row+2,(char)(x.column+2)),FType.Free));
+					ret.add(new ColPiece(new Piece(x.type,x.row+2,(x.column+2)),FType.Free));
 				}
 			}
 					
-			if(x.row-2>=rowStart && x.column-2>=colStart && fieldState(x.row-2,(char)(x.column-2)).field==FType.Free){
-				ColPiece toSmash=fieldState(x.row-1,(char)(x.column-1));
+			if(x.row-2>=rowStart && x.column-2>=colStart && fieldState(x.row-2,(x.column-2)).field==FType.Free){
+				ColPiece toSmash=fieldState(x.row-1,(x.column-1));
 				if (toSmash.field!=toMove.field){
 					ret.add(toSmash);
-					ret.add(new ColPiece(new Piece(x.type,x.row-2,(char)(x.column-2)),FType.Free));
+					ret.add(new ColPiece(new Piece(x.type,x.row-2,(x.column-2)),FType.Free));
 				}
 			}
 					
-			if(x.row-2>=rowStart && x.column+2<=colStop && fieldState(x.row-2,(char)(x.column+2)).field==FType.Free){
-				ColPiece toSmash=fieldState(x.row-1,(char)(x.column+1));
+			if(x.row-2>=rowStart && x.column+2<=colStop && fieldState(x.row-2,(x.column+2)).field==FType.Free){
+				ColPiece toSmash=fieldState(x.row-1,(x.column+1));
 				if (toSmash.field!=toMove.field){
 					ret.add(toSmash);
-					ret.add(new ColPiece(new Piece(x.type,x.row-2,(char)(x.column+2)),FType.Free));
+					ret.add(new ColPiece(new Piece(x.type,x.row-2,(x.column+2)),FType.Free));
 				}
 			}
 		}
 		else {
 			boolean valid=true;
 			for(int dist=1;dist<maxRowCol;++dist){
-				if (x.row+dist<=rowStop && x.column-dist>=colStart && fieldState(x.row+dist,(char)(x.column-dist)).field==FType.Free)
+				if (x.row+dist<=rowStop && x.column-dist>=colStart && fieldState(x.row+dist,(x.column-dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(char)(x.column-dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(x.column-dist)),FType.Free));
 					else
-						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(char)(x.column-dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(x.column-dist)),FType.Free));
 				else{
-					ColPiece toSmash=fieldState(x.row+dist,(char)(x.column-dist));
+					ColPiece toSmash=fieldState(x.row+dist,(x.column-dist));
 					if (toSmash.field==toMove.field)
 						break;
 					if (!valid)
 						break;
 					valid=false;
-					if (x.row+dist+1<=rowStop && x.column-dist-1>=colStart && fieldState(x.row+dist+1,(char)(x.column-dist-1)).field==FType.Free)
+					if (x.row+dist+1<=rowStop && x.column-dist-1>=colStart && fieldState(x.row+dist+1,(x.column-dist-1)).field==FType.Free)
 						ret.add(toSmash);
 					else
 						break;
@@ -124,20 +124,20 @@ public class Board{
 			}
 			valid=true;
 			for(int dist=1;dist<maxRowCol;++dist){
-				if (x.row+dist<=rowStop && x.column+dist<=colStop && fieldState(x.row+dist,(char)(x.column+dist)).field==FType.Free)
+				if (x.row+dist<=rowStop && x.column+dist<=colStop && fieldState(x.row+dist,(x.column+dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(char)(x.column+dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(x.column+dist)),FType.Free));
 					else
-						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(char)(x.column+dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(x.column+dist)),FType.Free));
 					
 				else{
-					ColPiece toSmash=fieldState(x.row+dist,(char)(x.column+dist));
+					ColPiece toSmash=fieldState(x.row+dist,(x.column+dist));
 					if (toSmash.field==toMove.field)
 						break;
 					if (!valid)
 						break;
 					valid=false;
-					if (x.row+dist+1<=rowStop && x.column+dist+1<=colStop && fieldState(x.row+dist+1,(char)(x.column+dist+1)).field==FType.Free)
+					if (x.row+dist+1<=rowStop && x.column+dist+1<=colStop && fieldState(x.row+dist+1,(x.column+dist+1)).field==FType.Free)
 						ret.add(toSmash);
 					else
 						break;
@@ -145,19 +145,19 @@ public class Board{
 			}
 			valid=true;
 			for(int dist=1;dist<maxRowCol;++dist){
-				if (x.row-dist>=rowStart && x.column+dist<=colStop && fieldState(x.row-dist,(char)(x.column+dist)).field==FType.Free)
+				if (x.row-dist>=rowStart && x.column+dist<=colStop && fieldState(x.row-dist,(x.column+dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(char)(x.column+dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(x.column+dist)),FType.Free));
 					else
-						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(char)(x.column+dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(x.column+dist)),FType.Free));
 				else{
-					ColPiece toSmash=fieldState(x.row-dist,(char)(x.column+dist));
+					ColPiece toSmash=fieldState(x.row-dist,(x.column+dist));
 					if (toSmash.field==toMove.field)
 						break;
 					if (!valid)
 						break;
 					valid=false;
-					if (x.row-dist-1>=rowStart && x.column+dist+1<=colStop && fieldState(x.row-dist-1,(char)(x.column+dist+1)).field==FType.Free)
+					if (x.row-dist-1>=rowStart && x.column+dist+1<=colStop && fieldState(x.row-dist-1,(x.column+dist+1)).field==FType.Free)
 						ret.add(toSmash);
 					else
 						break;
@@ -165,19 +165,19 @@ public class Board{
 			}
 			valid=true;
 			for(int dist=1;dist<maxRowCol;++dist){
-				if (x.row-dist>=rowStart && x.column-dist>=colStart && fieldState(x.row-dist,(char)(x.column-dist)).field==FType.Free)
+				if (x.row-dist>=rowStart && x.column-dist>=colStart && fieldState(x.row-dist,(x.column-dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(char)(x.column-dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(x.column-dist)),FType.Free));
 					else
-						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(char)(x.column-dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(x.column-dist)),FType.Free));
 				else{
-					ColPiece toSmash=fieldState(x.row-dist,(char)(x.column-dist));
+					ColPiece toSmash=fieldState(x.row-dist,(x.column-dist));
 					if (toSmash.field==toMove.field)
 						break;
 					if (!valid)
 						break;
 					valid=false;
-					if (x.row-dist-1>=rowStart && x.column-dist-1>=colStart && fieldState(x.row-dist-1,(char)(x.column-dist-1)).field==FType.Free)
+					if (x.row-dist-1>=rowStart && x.column-dist-1>=colStart && fieldState(x.row-dist-1,(x.column-dist-1)).field==FType.Free)
 						ret.add(toSmash);
 					else
 						break;
@@ -187,18 +187,17 @@ public class Board{
 		return ret;
 	}
 	
-	void set4RowGame(){
+	boolean setNRowGame(int n){
+		if ((rowStop-rowStart+1)/2<=n)
+			return false;
 		for (int i=rowStart;i<=rowStop;++i){
-			if (i>4 && i<rowStop-3)
+			if (i>=rowStart+n && i<=rowStop-n)
 				continue;
-			
-			char j;
-			
+			int j;
 			if (i%2==1)
-				j='A';
+				j=colStart;
 			else
-				j='B';
-			
+				j=colStart+1;
 			if (i<(rowStart+rowStop)/2)
 				for(;j<=colStop;j+=2)
 					Red.add(new Piece(PType.Regular,i,j));
@@ -206,52 +205,11 @@ public class Board{
 				for(;j<=colStop;j+=2)
 					Green.add(new Piece(PType.Regular,i,j));
 		}
-	}
-	
-	void set3RowGame(){
-		for (int i=rowStart;i<=rowStop;++i){
-			if (i>3 && i<rowStop-2)
-				continue;
-			
-			char j;
-			
-			if (i%2==1)
-				j='A';
-			else
-				j='B';
-			
-			if (i<(rowStart+rowStop)/2)
-				for(;j<=colStop;j+=2)
-					Red.add(new Piece(PType.Regular,i,j));
-			else
-				for(;j<=colStop;j+=2)
-					Green.add(new Piece(PType.Regular,i,j));
-		}
-	}
-	
-	void set2RowGame(){
-		for (int i=rowStart;i<=rowStop;++i){
-			if (i>2 && i<rowStop-1)
-				continue;
-			
-			char j;
-			
-			if (i%2==1)
-				j='A';
-			else
-				j='B';
-			
-			if (i<(rowStart+rowStop)/2)
-				for(;j<=colStop;j+=2)
-					Red.add(new Piece(PType.Regular,i,j));
-			else
-				for(;j<=colStop;j+=2)
-					Green.add(new Piece(PType.Regular,i,j));
-		}
+		return true;
 	}
 		
 	
-	MType movePiece(Piece piece,int row, char column){
+	MType movePiece(Piece piece,int row, int column){
 		if (fieldState(row,column).field!=FType.Free)
 			return MType.Bad;
 		ArrayList<ColPiece> vMove=validMove(piece);
@@ -281,19 +239,32 @@ public class Board{
 		}
 		return MType.Bad;
 	}
+	
+	ArrayList<ColPiece> boardState(){
+		ArrayList<ColPiece> ret=new ArrayList<ColPiece>();
+		for (Piece x:Red)
+			ret.add(new ColPiece(x,FType.Red));
+		for (Piece x:Green)
+			ret.add(new ColPiece(x,FType.Green));
+		return ret;
+	}
 
 	void print(){
-		System.out.print("  ");
-		for (char i=colStart;i<=colStop;++i)
+		System.out.print("   ");
+		for (int i=colStart;i<=colStop;++i)
 			System.out.print(" "+i+" ");
-		System.out.println(" ");
-		System.out.print(" -");
+		System.out.println("");
+		System.out.print("  -");
 		for(int i=colStart;i<=colStop;++i)
 			System.out.print("---");
 		System.out.println("-");
 		for(int i=rowStop;i>=rowStart;--i){
-			System.out.print(i+"|");
-			for(char j=colStart;j<=colStop;++j){
+			System.out.print(i);
+			if (i<10)
+				System.out.print(" |");
+			else
+				System.out.print("|");
+			for(int j=colStart;j<=colStop;++j){
 				if(Red.contains(new Piece(PType.Regular,i,j)))
 					System.out.print(" r ");
 				else if (Red.contains(new Piece(PType.Queen,i,j)))
@@ -307,26 +278,30 @@ public class Board{
 			}
 			System.out.println("|");
 		}
-		System.out.print(" -");
+		System.out.print("  -");
 		for(int i=colStart;i<=colStop;++i)
 			System.out.print("---");
 		System.out.println("-");
 	}
 	
 	public static void main(String[] args){
-		Board x=new Board();
-		x.set3RowGame();
+		Board x=new Board(1,10,1,8);
+		x.setNRowGame(4);
 		x.print();
 		while(true){
-			Console tmp2=System.console();
-			String tmp=tmp2.readLine();
+			Console cons=System.console();
+			String tmp=cons.readLine().trim();
 			if (tmp.equals(new String("koniec")))
 				break;
-			
-			int aRow=(int)tmp.charAt(0)-(int)('0');
-			char aColumn=tmp.charAt(1);
-			int bRow=(int)tmp.charAt(3)-(int)('0');
-			char bColumn=tmp.charAt(4);
+			String[] coord=tmp.split(" ");
+			if (coord.length<4){
+				System.out.println("Z³e koordynaty");
+				continue;				
+			}
+			int aRow=Integer.parseInt(coord[0]);
+			int aColumn=Integer.parseInt(coord[1]);
+			int bRow=Integer.parseInt(coord[2]);
+			int bColumn=Integer.parseInt(coord[3]);
 			
 			ColPiece toMove=x.fieldState(aRow,aColumn);
 			if (toMove.piece!=null){

@@ -1,7 +1,7 @@
 
 class Timer {
 	private long gameStartTime;
-	private long actualTurnTime;
+	private long turnStartTime;
 	long turnLimitTime;
 	
 	Timer(){
@@ -11,8 +11,11 @@ class Timer {
 		this.turnLimitTime=turnLimitTime;
 	}
 	
-	void startTimer(){
+	void nextTurn(){
+		turnStartTime=System.currentTimeMillis();
+	}
+	void gameStart(){
 		gameStartTime=System.currentTimeMillis();
-		
+		turnStartTime=gameStartTime;
 	}
 }
