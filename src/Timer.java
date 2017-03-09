@@ -1,32 +1,18 @@
 
 class Timer {
-	long time;
-	long turnTime;
+	private long gameStartTime;
+	private long actualTurnTime;
+	long turnLimitTime;
 	
 	Timer(){
-		time=System.currentTimeMillis();
-		turnTime=10000;
+		turnLimitTime=10000;
 	}
-	Timer(long turnTime){
-		this.turnTime=turnTime;
-	}
-	
-	public long getTurnTime() {
-		return turnTime;
-	}
-	public void setTurnTime(long turnTime) {
-		this.turnTime = turnTime;
+	Timer(long turnLimitTime){
+		this.turnLimitTime=turnLimitTime;
 	}
 	
-	void resetTimer(){
-		time=System.currentTimeMillis();
-	}
 	void startTimer(){
-		time=System.currentTimeMillis();
-		long tmpTime=time;
-		while((tmpTime-time)<turnTime){
-			tmpTime=System.currentTimeMillis();
-		}
+		gameStartTime=System.currentTimeMillis();
 		
 	}
 }
