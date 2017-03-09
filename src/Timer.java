@@ -2,13 +2,24 @@
 class Timer {
 	private long gameStartTime;
 	private long turnStartTime;
-	long turnLimitTime;
+	private long turnLimitTime;
 	
+	void setTurnLimitTime(long turnLimitTime) {
+		if (turnLimitTime<0)
+			this.turnLimitTime=0;
+		else
+			this.turnLimitTime = turnLimitTime;
+	}
+
 	Timer(){
 		turnLimitTime=10000;
 	}
+	
 	Timer(long turnLimitTime){
-		this.turnLimitTime=turnLimitTime;
+		if (turnLimitTime<0)
+			this.turnLimitTime=0;
+		else
+			this.turnLimitTime=turnLimitTime;
 	}
 	
 	void nextTurn(){
