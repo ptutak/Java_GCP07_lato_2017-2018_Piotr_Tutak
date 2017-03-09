@@ -1,9 +1,10 @@
 
 public class Game {
-	
+
+	public Info gameInfo;
+
 	private Board gameBoard;
 	private Timer gameTimer;
-	private Info gameInfo;
 	private Player playerRed;
 	private Player playerGreen;
 	

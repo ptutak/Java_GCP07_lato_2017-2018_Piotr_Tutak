@@ -1,5 +1,5 @@
 
-public class Server {
+public class DraughtsServer {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
