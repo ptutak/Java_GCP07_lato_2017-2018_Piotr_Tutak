@@ -1,7 +1,7 @@
 
 public class Game {
-
-	public Info gameInfo;
+	private TimeInfo gameTimeInfo;
+	private GameInfo gameInfo;
 
 	private Board gameBoard;
 	private Timer gameTimer;
@@ -9,9 +9,11 @@ public class Game {
 	private Player playerGreen;
 	
 	Game(){
-		gameBoard=new Board();
-		gameTimer=new Timer();
-		gameInfo=new Info();
+		gameInfo=new GameInfo();
+		gameBoard=new Board(gameInfo);
+		gameTimeInfo=new TimeInfo();
+		gameTimer=new Timer(gameTimeInfo);
+
 	}
 
 	public static void main(String[] args) {

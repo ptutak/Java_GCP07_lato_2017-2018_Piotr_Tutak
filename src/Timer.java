@@ -1,9 +1,10 @@
 
-class Timer {
+class Timer extends Thread {
 	private long gameStartTime;
 	private long turnStartTime;
 	private long turnLimitTime;
-	
+	private TimeInfo timeInfo;
+		
 	void setTurnLimitTime(long turnLimitTime) {
 		if (turnLimitTime<0)
 			this.turnLimitTime=0;
@@ -11,8 +12,8 @@ class Timer {
 			this.turnLimitTime = turnLimitTime;
 	}
 
-	Timer(){
-		turnLimitTime=10000;
+	Timer(TimeInfo timeInfo){
+		this.timeInfo=timeInfo;
 	}
 	
 	Timer(long turnLimitTime){
@@ -28,5 +29,18 @@ class Timer {
 	void gameStart(){
 		gameStartTime=System.currentTimeMillis();
 		turnStartTime=gameStartTime;
+	}
+	
+	@Override
+	public void run(){
+		Player prevPlayer=timeInfo.getTurnPlayer();
+		while (!timeInfo.isTimerOn()) {
+			
+		}
+		while (timeInfo.isTimerOn()){
+			if (prevPlayer!=timeInfo.getTurnPlayer())
+				nextTurn();
+			
+		}
 	}
 }

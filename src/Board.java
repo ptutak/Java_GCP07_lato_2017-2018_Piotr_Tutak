@@ -25,14 +25,18 @@ public class Board{
 	private int rowStart;
 	private int rowStop;
 	
-	Board(){
+	private GameInfo gameInfo;
+	
+	Board(GameInfo gameInfo){
+		this.gameInfo=gameInfo;
 		rowStart=1;
 		rowStop=8;
 		colStart=1;
 		colStop=8;
 	}
 	
-	Board(int rowStart,int rowStop,int colStart,int colStop){
+	Board(GameInfo gameInfo,int rowStart,int rowStop,int colStart,int colStop){
+		this.gameInfo=gameInfo;
 		this.rowStart=rowStart;
 		this.rowStop=rowStop;
 		this.colStart=colStart;
@@ -285,7 +289,8 @@ public class Board{
 	}
 	
 	public static void main(String[] args){
-		Board x=new Board(1,10,1,8);
+		GameInfo info=new GameInfo();
+		Board x=new Board(info,1,10,1,8);
 		x.setNRowGame(4);
 		x.print();
 		while(true){
