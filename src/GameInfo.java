@@ -13,11 +13,17 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DraughtsServer {
+import java.util.ArrayList;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+class GameInfo {
+	private ArrayList<ColPiece> boardState;
 
+	public synchronized ArrayList<ColPiece> getBoardState() {
+		return boardState;
 	}
 
+	public synchronized void setBoardState(ArrayList<ColPiece> boardState) {
+		this.boardState = boardState;
+	}
+	
 }

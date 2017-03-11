@@ -25,18 +25,21 @@ public class Board{
 	private int rowStart;
 	private int rowStop;
 	
-	private GameInfo gameInfo;
-	
-	Board(GameInfo gameInfo){
-		this.gameInfo=gameInfo;
+	Board(){
 		rowStart=1;
 		rowStop=8;
 		colStart=1;
 		colStop=8;
 	}
 	
-	Board(GameInfo gameInfo,int rowStart,int rowStop,int colStart,int colStop){
-		this.gameInfo=gameInfo;
+	Board(int rowStart,int rowStop,int colStart,int colStop){
+		this.rowStart=rowStart;
+		this.rowStop=rowStop;
+		this.colStart=colStart;
+		this.colStop=colStop;
+	}
+	
+	void setGameBounds(int rowStart,int rowStop,int colStart,int colStop){
 		this.rowStart=rowStart;
 		this.rowStop=rowStop;
 		this.colStart=colStart;
@@ -253,6 +256,13 @@ public class Board{
 		return ret;
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	void print(){
 		System.out.print("   ");
 		for (int i=colStart;i<=colStop;++i)
@@ -287,10 +297,9 @@ public class Board{
 			System.out.print("---");
 		System.out.println("-");
 	}
-	
+
 	public static void main(String[] args){
-		GameInfo info=new GameInfo();
-		Board x=new Board(info,1,10,1,8);
+		Board x=new Board(1,10,1,8);
 		x.setNRowGame(4);
 		x.print();
 		while(true){
@@ -325,4 +334,8 @@ public class Board{
 			x.print();
 		}
 	}
+	
+	
+	
+	
 }

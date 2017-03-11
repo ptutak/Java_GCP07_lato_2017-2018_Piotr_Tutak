@@ -1,9 +1,23 @@
+/* 
+  Copyright 2017 Piotr Tutak
+ 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 class Timer extends Thread {
 	private long gameStartTime;
 	private long turnStartTime;
 	private long turnLimitTime;
-	private TimeInfo timeInfo;
+	private TurnInfo turnInfo;
 		
 	void setTurnLimitTime(long turnLimitTime) {
 		if (turnLimitTime<0)
@@ -12,8 +26,8 @@ class Timer extends Thread {
 			this.turnLimitTime = turnLimitTime;
 	}
 
-	Timer(TimeInfo timeInfo){
-		this.timeInfo=timeInfo;
+	Timer(TurnInfo timeInfo){
+		this.turnInfo=timeInfo;
 	}
 	
 	Timer(long turnLimitTime){
@@ -33,14 +47,19 @@ class Timer extends Thread {
 	
 	@Override
 	public void run(){
-		Player prevPlayer=timeInfo.getTurnPlayer();
-		while (!timeInfo.isTimerOn()) {
-			
-		}
-		while (timeInfo.isTimerOn()){
-			if (prevPlayer!=timeInfo.getTurnPlayer())
+		Player prevPlayer=turnInfo.getTurnPlayer();
+		while (!turnInfo.isTimerOn()) {
+			try {
+				sleep(1);	
+				} 
+			catch (InterruptedException e){	}
+			}
+		gameStart();
+		while (turnInfo.isTimerOn()){
+			if (prevPlayer!=turnInfo.getTurnPlayer())
 				nextTurn();
-			
+			turnInfo.setGameTime(System.currentTimeMillis()-gameStartTime);
+			turnInfo.setRemainTurnTime(turnLimitTime-System.currentTimeMillis()+turnStartTime);
 		}
 	}
 }
