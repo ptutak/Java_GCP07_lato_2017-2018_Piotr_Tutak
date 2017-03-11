@@ -28,11 +28,11 @@ public class Game extends Thread{
 	}
 	
 	public void run(){
-		
 		gameBoard=new Board();
 		gameTurnInfo=new TurnInfo();
 		gameTimer=new Timer(gameTurnInfo);
 		play=new Play(gameBoard,gameInfo,gameTurnInfo);
+		play.run();
 	}
 
 	public static void main(String[] args) {
