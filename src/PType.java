@@ -1,5 +1,5 @@
-enum PType{
-	Blank,
-	Regular,
-	Queen
+public enum PType{
+	BLANK,
+	PAWN,
+	QUEEN
 }

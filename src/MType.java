@@ -1,5 +1,5 @@
-enum MType{
-	Bad,
-	Move,
-	Kill
+public enum MType{
+	BAD,
+	MOVE,
+	KILL
 }

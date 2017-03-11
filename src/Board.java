@@ -71,11 +71,11 @@ public class Board{
 		ColPiece toMove=fieldState(x.row,x.column);
 		ArrayList<ColPiece> ret=new ArrayList<ColPiece>();
 		int maxRowCol=Math.max(colStop-colStart, rowStop-rowStart);
-		if (x.type==PType.Regular){
+		if (x.type==PType.PAWN){
 			if(x.row+1<=rowStop && x.column-1>=colStart && fieldState(x.row+1,x.column-1).field==FType.Free)
-				ret.add(new ColPiece(new Piece(PType.Blank ,x.row+1,x.column-1),FType.Free));
+				ret.add(new ColPiece(new Piece(PType.BLANK ,x.row+1,x.column-1),FType.Free));
 			if(x.row+1<=rowStop && x.column+1<=colStop && fieldState(x.row+1,x.column+1).field==FType.Free)
-				ret.add(new ColPiece(new Piece(PType.Blank,x.row+1,x.column+1),FType.Free));
+				ret.add(new ColPiece(new Piece(PType.BLANK,x.row+1,x.column+1),FType.Free));
 			
 			if(x.row+2<=rowStop && x.column-2>=colStart && fieldState(x.row+2,x.column-2).field==FType.Free) {
 				ColPiece toSmash=fieldState(x.row+1,x.column-1);
@@ -113,7 +113,7 @@ public class Board{
 			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row+dist<=rowStop && x.column-dist>=colStart && fieldState(x.row+dist,(x.column-dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(x.column-dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.BLANK,x.row+dist,(x.column-dist)),FType.Free));
 					else
 						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(x.column-dist)),FType.Free));
 				else{
@@ -133,7 +133,7 @@ public class Board{
 			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row+dist<=rowStop && x.column+dist<=colStop && fieldState(x.row+dist,(x.column+dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row+dist,(x.column+dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.BLANK,x.row+dist,(x.column+dist)),FType.Free));
 					else
 						ret.add(new ColPiece(new Piece(x.type,x.row+dist,(x.column+dist)),FType.Free));
 					
@@ -154,7 +154,7 @@ public class Board{
 			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row-dist>=rowStart && x.column+dist<=colStop && fieldState(x.row-dist,(x.column+dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(x.column+dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.BLANK,x.row-dist,(x.column+dist)),FType.Free));
 					else
 						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(x.column+dist)),FType.Free));
 				else{
@@ -174,7 +174,7 @@ public class Board{
 			for(int dist=1;dist<maxRowCol;++dist){
 				if (x.row-dist>=rowStart && x.column-dist>=colStart && fieldState(x.row-dist,(x.column-dist)).field==FType.Free)
 					if (valid)
-						ret.add(new ColPiece(new Piece(PType.Blank,x.row-dist,(x.column-dist)),FType.Free));
+						ret.add(new ColPiece(new Piece(PType.BLANK,x.row-dist,(x.column-dist)),FType.Free));
 					else
 						ret.add(new ColPiece(new Piece(x.type,x.row-dist,(x.column-dist)),FType.Free));
 				else{
@@ -207,10 +207,10 @@ public class Board{
 				j=colStart+1;
 			if (i<(rowStart+rowStop)/2)
 				for(;j<=colStop;j+=2)
-					Red.add(new Piece(PType.Regular,i,j));
+					Red.add(new Piece(PType.PAWN,i,j));
 			else
 				for(;j<=colStop;j+=2)
-					Green.add(new Piece(PType.Regular,i,j));
+					Green.add(new Piece(PType.PAWN,i,j));
 		}
 		return true;
 	}
@@ -218,11 +218,11 @@ public class Board{
 	
 	MType movePiece(Piece piece,int row, int column){
 		if (fieldState(row,column).field!=FType.Free)
-			return MType.Bad;
+			return MType.BAD;
 		ArrayList<ColPiece> vMove=validMove(piece);
 		ColPiece move=checkMove(vMove,row,column);
 		if (move!=null){
-			if (move.piece.type!=PType.Blank){
+			if (move.piece.type!=PType.BLANK){
 				ColPiece toRemove=null;
 				for (ColPiece x:vMove){
 					if (x==move)
@@ -236,15 +236,15 @@ public class Board{
 					Green.remove(toRemove.piece);
 				else
 					Red.remove(toRemove.piece);
-				return MType.Kill;
+				return MType.KILL;
 			}
 			else{
 				piece.row=row;
 				piece.column=column;
-				return MType.Move;					
+				return MType.MOVE;					
 			}
 		}
-		return MType.Bad;
+		return MType.BAD;
 	}
 	
 	ArrayList<ColPiece> boardState(){
@@ -279,13 +279,13 @@ public class Board{
 			else
 				System.out.print("|");
 			for(int j=colStart;j<=colStop;++j){
-				if(Red.contains(new Piece(PType.Regular,i,j)))
+				if(Red.contains(new Piece(PType.PAWN,i,j)))
 					System.out.print(" r ");
-				else if (Red.contains(new Piece(PType.Queen,i,j)))
+				else if (Red.contains(new Piece(PType.QUEEN,i,j)))
 					System.out.print(" R ");
-				else if (Green.contains(new Piece(PType.Regular,i,j)))
+				else if (Green.contains(new Piece(PType.PAWN,i,j)))
 					System.out.print(" g ");
-				else if (Green.contains(new Piece(PType.Queen,i,j)))
+				else if (Green.contains(new Piece(PType.QUEEN,i,j)))
 					System.out.print(" G ");
 				else
 					System.out.print(" _ ");
@@ -321,13 +321,13 @@ public class Board{
 			if (toMove.piece!=null){
 				MType done=x.movePiece(toMove.piece, bRow, bColumn);
 				switch(done){
-				case Bad:
+				case BAD:
 					System.out.println("Zly ruch");
 					break;
-				case Move:
+				case MOVE:
 					System.out.println("Ruch z poz.: "+aRow+aColumn+"\nNa poz.: "+bRow+bColumn);
 					break;
-				case Kill:
+				case KILL:
 					System.out.println("Ruch z poz.: "+aRow+aColumn+"\nNa poz.: "+bRow+bColumn+"\nZbicie!");
 				}
 			}

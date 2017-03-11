@@ -31,7 +31,7 @@ class Play extends Thread {
 			int points=0;
 			for (ColPiece x:gameBoard.boardState()){
 				if (x.field==FType.Green){
-					if (x.piece.type==PType.Regular)
+					if (x.piece.type==PType.PAWN)
 						points+=1;
 					else
 						points+=2;
@@ -44,7 +44,7 @@ class Play extends Thread {
 			int points=0;
 			for (ColPiece x:gameBoard.boardState()){
 				if (x.field==FType.Red){
-					if (x.piece.type==PType.Regular)
+					if (x.piece.type==PType.PAWN)
 						points+=1;
 					else
 						points+=2;
