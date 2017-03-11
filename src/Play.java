@@ -14,35 +14,57 @@
    limitations under the License.
 */
 class Play extends Thread {
+	private GameInfo gameInfo;
 	private TurnInfo turnInfo;
-	
 	private Board gameBoard;
-	private Player playerRed;
-	private Player playerGreen;
 	
-	Play(Board gameBoard, TurnInfo turnInfo){
+	Play(Board gameBoard, GameInfo gameInfo, TurnInfo turnInfo){
 		this.gameBoard=gameBoard;
 		this.turnInfo=turnInfo;
+		this.gameInfo=gameInfo;
 	}
 	
-	public Player getPlayerRed() {
-		return playerRed;
+	void gameEnd(){
+		gameInfo.setGameState(GSType.GAME_WON);
+		if (turnInfo.getActivePlayer()==gameInfo.getPlayerRed()){
+			gameInfo.setWinner(gameInfo.getPlayerGreen());
+			int points=0;
+			for (ColPiece x:gameBoard.boardState()){
+				if (x.field==FType.Green){
+					if (x.piece.type==PType.Regular)
+						points+=1;
+					else
+						points+=2;
+				}
+			}
+			gameInfo.setPoints(points);
+		}
+		else {
+			gameInfo.setWinner(gameInfo.getPlayerRed());
+			int points=0;
+			for (ColPiece x:gameBoard.boardState()){
+				if (x.field==FType.Red){
+					if (x.piece.type==PType.Regular)
+						points+=1;
+					else
+						points+=2;
+				}
+			}
+			gameInfo.setPoints(points);
+		}
 	}
-
-	public Player getPlayerGreen() {
-		return playerGreen;
-	}
-
-	public void setPlayerRed(Player playerRed) {
-		this.playerRed = playerRed;
-	}
-
-	public void setPlayerGreen(Player playerGreen) {
-		this.playerGreen = playerGreen;
-	}
-
 	public void run(){
-
-		
+		while(!turnInfo.isTimerOn()){
+			try{
+				sleep(10);
+			} catch (InterruptedException e){}
+		}
+		while (gameInfo.getGameState()==GSType.GAME_RUNNING){
+			if (turnInfo.getRemainTurnTime()<=0)
+				gameEnd();
+			else{
+				
+			}
+		}
 	}
 }

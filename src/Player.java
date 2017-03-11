@@ -13,25 +13,31 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
 public class Player {
 	
-	private Piece moveFrom;
-	private Piece moveTo;
-	
+	private Move move;
 	boolean moveDone;
-	public synchronized Piece getMoveFrom() {
-		return moveFrom;
-	}
-	public synchronized Piece getMoveTo() {
-		return moveTo;
-	}
-	public synchronized void setMoveFrom(Piece moveFrom) {
-		this.moveFrom = moveFrom;
-	}
-	public synchronized void setMoveTo(Piece moveTo) {
-		this.moveTo = moveTo;
-	}
 	
+	public synchronized Move getMove() {
+		while(!moveDone)
+			try {
+				wait();
+			} catch (InterruptedException e){}
+		moveDone=false;
+		notifyAll();
+		return move;
+	}
+
+	public synchronized void setMove(Move move) {
+		while(moveDone)
+			try{
+				wait();
+			} catch (InterruptedException e){}
+		moveDone=true;
+		this.move = move;
+		notifyAll();
+	}
 	
 
 }

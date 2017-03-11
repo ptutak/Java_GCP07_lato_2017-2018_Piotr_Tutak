@@ -13,14 +13,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-class TurnInfo {
+public class TurnInfo {
 	private long gameTime;
 	private long remainTurnTime;
-	private Player turnPlayer;
+	private Player activePlayer;
 	private boolean timerOn;
 	
 	public TurnInfo(){
-		timerOn=true;
+		timerOn=false;
 	}
 	public synchronized long getGameTime() {
 		return gameTime;
@@ -28,8 +28,8 @@ class TurnInfo {
 	public synchronized long getRemainTurnTime() {
 		return remainTurnTime;
 	}
-	public synchronized Player getTurnPlayer() {
-		return turnPlayer;
+	public synchronized Player getActivePlayer() {
+		return activePlayer;
 	}
 	public synchronized void setGameTime(long gameTime) {
 		this.gameTime = gameTime;
@@ -37,8 +37,8 @@ class TurnInfo {
 	public synchronized void setRemainTurnTime(long remainTurnTime) {
 		this.remainTurnTime = remainTurnTime;
 	}
-	public synchronized void setTurnPlayer(Player turnPlayer) {
-		this.turnPlayer = turnPlayer;
+	public synchronized void setActivePlayer(Player activePlayer) {
+		this.activePlayer = activePlayer;
 	}
 	public synchronized boolean isTimerOn() {
 		return timerOn;

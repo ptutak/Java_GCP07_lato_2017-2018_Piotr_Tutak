@@ -20,21 +20,19 @@ public class Game extends Thread{
 	private Board gameBoard;
 	private Timer gameTimer;
 	private Play play;
-	private Player playerRed;
-	private Player playerGreen;
 	
 	Game(Player playerRed, Player playerGreen){
-		this.playerRed=playerRed;
-		this.playerGreen=playerGreen;
-		
+		gameInfo=new GameInfo();
+		gameInfo.setPlayerRed(playerRed);
+		gameInfo.setPlayerGreen(playerGreen);
 	}
 	
 	public void run(){
-		gameInfo=new GameInfo();
+		
 		gameBoard=new Board();
 		gameTurnInfo=new TurnInfo();
 		gameTimer=new Timer(gameTurnInfo);
-		play=new Play(gameBoard,gameTurnInfo);
+		play=new Play(gameBoard,gameInfo,gameTurnInfo);
 	}
 
 	public static void main(String[] args) {
