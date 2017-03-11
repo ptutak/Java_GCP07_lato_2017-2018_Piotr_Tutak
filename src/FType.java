@@ -1,5 +1,5 @@
 enum FType{
-	Free,
-	Red,
-	Green
+	FREE,
+	RED,
+	GREEN
 }

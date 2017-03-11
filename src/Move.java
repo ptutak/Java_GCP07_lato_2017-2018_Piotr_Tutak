@@ -1,5 +1,5 @@
 
 public class Move {
-	public Piece moveFrom;
-	public Piece moveTo;
+	public ColPiece moveFrom;
+	public ColPiece moveTo;
 }

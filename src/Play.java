@@ -24,13 +24,13 @@ class Play extends Thread {
 		this.gameInfo=gameInfo;
 	}
 	
-	void gameEnd(){
+	void gameWin(){
 		gameInfo.setGameState(GSType.GAME_WON);
 		if (turnInfo.getActivePlayer()==gameInfo.getPlayerRed()){
 			gameInfo.setWinner(gameInfo.getPlayerGreen());
 			int points=0;
 			for (ColPiece x:gameBoard.boardState()){
-				if (x.field==FType.Green){
+				if (x.field==FType.GREEN){
 					if (x.piece.type==PType.PAWN)
 						points+=1;
 					else
@@ -43,7 +43,7 @@ class Play extends Thread {
 			gameInfo.setWinner(gameInfo.getPlayerRed());
 			int points=0;
 			for (ColPiece x:gameBoard.boardState()){
-				if (x.field==FType.Red){
+				if (x.field==FType.RED){
 					if (x.piece.type==PType.PAWN)
 						points+=1;
 					else
@@ -53,6 +53,12 @@ class Play extends Thread {
 			gameInfo.setPoints(points);
 		}
 	}
+	void nextTurn(){
+		if (gameInfo.getPlayerGreen()==turnInfo.getActivePlayer())
+			turnInfo.setActivePlayer(gameInfo.getPlayerRed());
+		else
+			turnInfo.setActivePlayer(gameInfo.getPlayerGreen());
+	}
 	public void run(){
 		while(!turnInfo.isTimerOn()){
 			try{
@@ -61,10 +67,32 @@ class Play extends Thread {
 		}
 		while (gameInfo.getGameState()==GSType.GAME_RUNNING){
 			if (turnInfo.getRemainTurnTime()<=0)
-				gameEnd();
+				gameWin();
 			else{
-				
+				Move move=turnInfo.getActivePlayer().getMove();
+				if (move.moveFrom.field==FType.GREEN && turnInfo.getActivePlayer()==gameInfo.getPlayerRed())
+					continue;
+				if (move.moveFrom.field==FType.RED && turnInfo.getActivePlayer()==gameInfo.getPlayerGreen())
+					continue;
+				switch(gameBoard.movePiece(move.moveFrom.piece, move.moveTo.piece.row, move.moveTo.piece.column)){
+				case MOVE:
+					nextTurn();
+					break;
+				case KILL:
+					if (move.moveFrom.piece.type==PType.PAWN && move.moveTo.piece.row==gameBoard.getRowStop() && turnInfo.getActivePlayer()==gameInfo.getPlayerRed() && move.moveTo.piece.type==PType.QUEEN){
+						nextTurn();
+						break;
+					}
+					else if (move.moveFrom.piece.type==PType.PAWN && move.moveTo.piece.row==gameBoard.getRowStart() && turnInfo.getActivePlayer()==gameInfo.getPlayerGreen() && move.moveTo.piece.type==PType.QUEEN){
+						nextTurn();
+						break;
+					}
+					continue;
+				case BAD:
+					continue;
+				}
 			}
 		}
+		
 	}
 }
