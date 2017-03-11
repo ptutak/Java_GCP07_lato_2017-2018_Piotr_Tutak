@@ -93,6 +93,5 @@ class Play extends Thread {
 				}
 			}
 		}
-		
 	}
 }
