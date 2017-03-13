@@ -18,13 +18,18 @@ import java.util.ArrayList;
 public class GameInfo {
 	private GSType gameState;
 	private ArrayList<ColPiece> boardState;
-	
+	private BoardBounds boardBounds;
+
 	private Player playerRed;
 	private Player playerGreen;
 	private Player winner;
 	
 	GameInfo(){
 		gameState=GSType.GAME_PAUSE;
+		boardState=null;
+		boardBounds=null;
+		playerRed=null;
+		playerGreen=null;
 		winner=null;
 	}
 	
@@ -39,7 +44,11 @@ public class GameInfo {
 	public synchronized GSType getGameState() {
 		return gameState;
 	}
-
+	
+	public synchronized BoardBounds getBoardBounds() {
+		return boardBounds;
+	}
+	
 	public synchronized Player getWinner() {
 		return winner;
 	}
@@ -63,8 +72,13 @@ public class GameInfo {
 	public synchronized void setWinner(Player winner) {
 		this.winner = winner;
 	}
+	
 	public synchronized void setBoardState(ArrayList<ColPiece> boardState) {
 		this.boardState = boardState;
+	}
+	
+	public synchronized void setBoardBounds(BoardBounds boardBounds) {
+		this.boardBounds = boardBounds;
 	}
 	
 }

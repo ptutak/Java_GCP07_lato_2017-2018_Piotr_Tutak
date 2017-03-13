@@ -13,8 +13,22 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public enum GSType {
-	GAME_END,
-	GAME_PAUSE,
-	GAME_RUNNING
+public class BoardBounds {
+	public int rowStart;
+	public int rowStop;
+	public int colStart;
+	public int colStop;
+	
+	BoardBounds(){
+		rowStart=1;
+		rowStop=8;
+		colStart=1;
+		colStop=8;
+	}
+	BoardBounds(int rowStart, int rowStop, int colStart, int colStop){
+		this.rowStart=rowStart;
+		this.rowStop=rowStop;
+		this.colStart=colStart;
+		this.colStop=colStop;
+	}
 }

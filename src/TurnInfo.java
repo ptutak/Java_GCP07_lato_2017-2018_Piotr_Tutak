@@ -21,6 +21,7 @@ public class TurnInfo {
 	
 	public TurnInfo(){
 		timerOn=false;
+		activePlayer=null;
 	}
 	public synchronized long getGameTime() {
 		return gameTime;

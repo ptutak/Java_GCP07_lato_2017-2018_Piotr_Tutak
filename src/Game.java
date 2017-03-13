@@ -16,23 +16,26 @@
 public class Game extends Thread{
 	private TurnInfo gameTurnInfo;
 	private GameInfo gameInfo;
-
 	private Board gameBoard;
 	private Timer gameTimer;
 	private Play play;
 	
-	Game(Player playerRed, Player playerGreen){
-		gameInfo=new GameInfo();
-		gameInfo.setPlayerRed(playerRed);
-		gameInfo.setPlayerGreen(playerGreen);
+	Game(GameInfo gameInfo){
+		this.gameInfo=gameInfo;
+		gameTurnInfo=null;
+		gameBoard=null;
+		gameTimer=null;
+		play=null;
 	}
 	
 	public void run(){
-		gameBoard=new Board();
+		gameBoard=new Board(gameInfo.getBoardBounds());
 		gameTurnInfo=new TurnInfo();
+		gameTurnInfo.setActivePlayer(gameInfo.getPlayerRed());
 		gameTimer=new Timer(gameTurnInfo);
 		play=new Play(gameBoard,gameInfo,gameTimer,gameTurnInfo);
 		play.run();
+		gameTurnInfo.setTimerOn(true);
 	}
 
 	public static void main(String[] args) {

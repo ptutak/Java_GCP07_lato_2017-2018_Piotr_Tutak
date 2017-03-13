@@ -58,11 +58,30 @@ class Play extends Thread {
 		}
 	}
 	void gameDraw(){
-		
+		turnInfo.setTimerOn(false);
+		gameInfo.setWinner(null);
+		int greenPoints=0;
+		int redPoints=0;
+		for (ColPiece x:gameBoard.boardState()){
+			if (x.field==FType.GREEN){
+				if (x.piece.type==PType.PAWN)
+					greenPoints+=1;
+				else
+					greenPoints+=2;
+			} else {
+				if (x.piece.type==PType.PAWN)
+					redPoints+=1;
+				else
+					redPoints+=2;			}
+		}
+		gameInfo.getPlayerRed().minorPoints+=redPoints;
+		gameInfo.getPlayerGreen().minorPoints+=greenPoints;
+		gameInfo.getPlayerRed().mainPoints+=1;
+		gameInfo.getPlayerGreen().mainPoints+=1;
 	}
 	void gamePause(){
 		turnInfo.setTimerOn(false);
-
+		gameInfo.setBoardState(gameBoard.boardState());
 		
 	}
 	void nextPlayer(){
@@ -78,16 +97,17 @@ class Play extends Thread {
 				sleep(10);
 			} catch (InterruptedException e){}
 		}
+		gameInfo.setGameState(GSType.GAME_RUNNING);
 		while (gameInfo.getGameState()==GSType.GAME_RUNNING){
 			if (turnInfo.getRemainTurnTime()<=0){
-				gameInfo.setGameState(GSType.GAME_WON);
+				gameInfo.setGameState(GSType.GAME_END);
 				gameWin();
 			}
 			else{
 				Move move=turnInfo.getActivePlayer().getMove();
 				switch(move.playerMove){
 				case SURRENDER:
-					gameInfo.setGameState(GSType.GAME_WON);
+					gameInfo.setGameState(GSType.GAME_END);
 					gameWin();
 					break;
 				case PAUSE:
@@ -95,7 +115,7 @@ class Play extends Thread {
 					gamePause();
 					break;
 				case DRAW:
-					gameInfo.setGameState(GSType.GAME_WON);
+					gameInfo.setGameState(GSType.GAME_END);
 					gameDraw();
 					break;
 				case MOVE:

@@ -26,26 +26,28 @@ public class Board{
 	private int rowStart;
 	private int rowStop;
 	
-	Board(){
-		rowStart=1;
-		rowStop=8;
-		colStart=1;
-		colStop=8;
+	Board(BoardBounds boardBounds){
+		this.rowStart=boardBounds.rowStart;
+		this.rowStop=boardBounds.rowStop;
+		this.colStop=boardBounds.colStop;
+		this.colStart=boardBounds.colStart;
 	}
 	
-	Board(int rowStart,int rowStop,int colStart,int colStop){
-		this.rowStart=rowStart;
-		this.rowStop=rowStop;
-		this.colStart=colStart;
-		this.colStop=colStop;
+	int getColStart() {
+		return colStart;
 	}
-	
+	int getColStop() {
+		return colStop;
+	}	
 	int getRowStart() {
 		return rowStart;
 	}
-
 	int getRowStop() {
 		return rowStop;
+	}
+	
+	public BoardBounds getBoardBounds(){
+		return new BoardBounds(rowStart,rowStop,colStart,colStop);
 	}
 	
 	void setGameBounds(int rowStart,int rowStop,int colStart,int colStop){
@@ -308,7 +310,7 @@ public class Board{
 	}
 
 	public static void main(String[] args){
-		Board x=new Board(1,10,1,8);
+		Board x=new Board(new BoardBounds(1,10,1,8));
 		x.setNRowGame(4);
 		x.print();
 		while(true){
