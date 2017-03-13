@@ -31,7 +31,7 @@ public class Game extends Thread{
 		gameBoard=new Board();
 		gameTurnInfo=new TurnInfo();
 		gameTimer=new Timer(gameTurnInfo);
-		play=new Play(gameBoard,gameInfo,gameTurnInfo);
+		play=new Play(gameBoard,gameInfo,gameTimer,gameTurnInfo);
 		play.run();
 	}
 

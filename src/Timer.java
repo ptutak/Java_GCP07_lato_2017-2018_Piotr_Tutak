@@ -26,8 +26,8 @@ class Timer extends Thread {
 			this.turnLimitTime = turnLimitTime;
 	}
 
-	Timer(TurnInfo timeInfo){
-		this.turnInfo=timeInfo;
+	Timer(TurnInfo turnInfo){
+		this.turnInfo=turnInfo;
 	}
 	
 	Timer(long turnLimitTime){
@@ -40,6 +40,7 @@ class Timer extends Thread {
 	void nextTurn(){
 		turnStartTime=System.currentTimeMillis();
 	}
+	
 	void gameStart(){
 		gameStartTime=System.currentTimeMillis();
 		turnStartTime=gameStartTime;
@@ -61,7 +62,10 @@ class Timer extends Thread {
 				nextTurn();
 			}
 			turnInfo.setGameTime(System.currentTimeMillis()-gameStartTime);
-			turnInfo.setRemainTurnTime(turnLimitTime-System.currentTimeMillis()+turnStartTime);
+			if (turnLimitTime>0)
+				turnInfo.setRemainTurnTime(turnLimitTime-System.currentTimeMillis()+turnStartTime);
+			else
+				turnInfo.setRemainTurnTime(1);
 		}
 	}
 }

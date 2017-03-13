@@ -15,7 +15,9 @@
 */
 
 public class Player {
-	
+	public long mainPoints;
+	public long minorPoints;
+		
 	private Move move;
 	boolean moveDone;
 	
@@ -38,6 +40,4 @@ public class Player {
 		this.move = move;
 		notifyAll();
 	}
-	
-
 }

@@ -22,18 +22,12 @@ public class GameInfo {
 	private Player playerRed;
 	private Player playerGreen;
 	private Player winner;
-	private int points;
 	
 	GameInfo(){
 		gameState=GSType.GAME_PAUSE;
 		winner=null;
-		points=0;
 	}
 	
-	public synchronized int getPoints() {
-		return points;
-	}
-
 	public synchronized Player getPlayerRed() {
 		return playerRed;
 	}
@@ -52,10 +46,6 @@ public class GameInfo {
 
 	public synchronized ArrayList<ColPiece> getBoardState() {
 		return boardState;
-	}
-	
-	public synchronized void setPoints(int points) {
-		this.points = points;
 	}
 	
 	public synchronized void setPlayerRed(Player playerRed) {
