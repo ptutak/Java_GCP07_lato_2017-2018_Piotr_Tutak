@@ -74,7 +74,7 @@ public class Crawler {
 		this.path=path;
 		iteration=0;
 	}
-	List<Student> extractStudents(OrderMode mode){
+	private List<Student> extractStudents(OrderMode mode){
 		switch(mode){
 		case AGE:
 			Collections.sort(studentsList,(left,right)-> Integer.compare(left.getAge(), right.getAge()));
@@ -102,7 +102,7 @@ public class Crawler {
 
 		return studentsList;
 	}
-	double extractMark(ExtremumMode mode){
+	private double extractMark(ExtremumMode mode){
 		double ret=studentsList.get(0).getMark();
 		for (Student x:studentsList){
 			switch (mode){
@@ -117,7 +117,7 @@ public class Crawler {
 		}
 		return ret;
 	}
-	int extractAge(ExtremumMode mode){
+	private int extractAge(ExtremumMode mode){
 		int ret=studentsList.get(0).getAge();
 		for (Student x:studentsList){
 			switch (mode){
@@ -133,23 +133,24 @@ public class Crawler {
 		return ret;
 	}
 	
-	void notModified(Student x){
+	private void notModified(Student x){
 		for (NInterface i:notModifiedList){
 			i.handled(x);
 		}
 	}
 
-	void added(Student x){
+	private void added(Student x){
 		for (AInterface i:addedList){
 			i.handled(x);
 		}		
 	}
-	void removed(Student x){
+	private void removed(Student x){
 		for (RInterface i:removedList){
 			i.handled(x);
 		}		
 	}	
-	void run() throws CrawlerException{
+	
+	public void run() throws CrawlerException{
 		if (path==null)
 			throw new CrawlerException("Nie zdefiniowana sciezka path");
 		try{
@@ -170,7 +171,7 @@ public class Crawler {
 		for (IterInterface x:iterList)
 			x.handled(iteration);
 		for (ExtractInterface x:extractList)
-			x.handled(studentsList);
+			x.handled(extractStudents(OrderMode.MARK),OrderMode.MARK);
 		for (AgeInterface x:ageList)
 			x.handled(extractAge(ExtremumMode.MIN), extractAge(ExtremumMode.MAX));
 		for (MarkInterface x:markList)
@@ -194,13 +195,55 @@ public class Crawler {
 		System.out.println("Podaj sciezke do pliku");
 		String tmp=cons.readLine().trim();
 		Crawler crawl=new Crawler(tmp);
-		AgeInterface x=(s,t)->{};
-		crawl.add(x);
+		AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
+		crawl.add(aint);
+		MarkInterface mint=(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
+		crawl.add(mint);
+		ExtractInterface eint=(list,mode)->{
+			String m=new String();
+			switch(mode){
+			case FIRST_NAME:
+				m="First Name";
+				break;
+			case LAST_NAME:
+				m="Last Name";
+				break;
+			case AGE:
+				m="Age";
+				break;
+			case MARK:
+				m="Mark";
+				break;
+			}
+			System.out.println("Ordered by "+m+":");
+			for (Student x:list){
+				System.out.println(x);
+			}
+		};
+		crawl.add(eint);
+		IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
+		crawl.add(iint);
+		AInterface addint=(s)->{
+			for (Logger log:loggers){
+				log.log("ADDED",s);
+			}
+		};
+		crawl.add(addint);
+		RInterface remint=(s)->{
+			for (Logger log:loggers){
+				log.log("REMOVED",s);
+			}
+		};
+		crawl.add(remint);
+		NInterface nonint=(s)->{
+			for (Logger log:loggers){
+				log.log("NOT MODIFIED",s);
+			}
+		};
+		crawl.add(nonint);
 		try{
 			crawl.run();
 		} catch (CrawlerException e){e.printStackTrace();}
-		
-		
 	}
 
 }
