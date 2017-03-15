@@ -1,8 +1,10 @@
 package kolekcje_i_algorytmy;
 
 import java.util.*;
+import java.io.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.activation.*;
 
 
 public class MailLogger implements Logger {

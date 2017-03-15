@@ -190,10 +190,7 @@ public class Crawler {
 				new ConsoleLogger(),
 				new MailLogger("p.hicsic@gmail.com","p.hicsic@gmail.com","smtp.gmail.com")
 		};
-		
-		Console cons=System.console();
-		System.out.println("Podaj sciezke do pliku");
-		String tmp=cons.readLine().trim();
+		String tmp=new String("..\\students.txt");
 		Crawler crawl=new Crawler(tmp);
 		AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
 		crawl.add(aint);
