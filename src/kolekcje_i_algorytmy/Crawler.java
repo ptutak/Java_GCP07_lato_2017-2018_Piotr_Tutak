@@ -245,5 +245,6 @@ public class Crawler {
 			crawl.run();
 		} catch (CrawlerException e){e.printStackTrace();}
 	}
-
+	
+	
 }
