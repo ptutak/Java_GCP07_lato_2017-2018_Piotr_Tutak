@@ -6,6 +6,11 @@ import java.net.URL;
 import java.util.*;
 
 public class Crawler {
+	List<Logger> added;
+	List<Logger> removed;
+	List<Logger> notModified;
+	
+	HashSet<Student> studentsPrev;
 	List<Student> studentsList;
 	String path;
 	
@@ -77,21 +82,47 @@ public class Crawler {
 		}
 		return ret;
 	}
+	void notModified(Student x){
+		
+	}
+	void deleted(Student x){
+		
+	}
+	void added(Student x){
+		
+	}
 	void run() throws CrawlerException{
 		if (path==null)
 			throw new CrawlerException("Nie zdefiniowana sciezka path");
 		try{
 			studentsList = StudentsParser.parse( new URL(path));
 		} catch (IOException e) {e.printStackTrace();}
+		for (Student x:studentsList){
+			if (studentsPrev.contains(x)){
+				notModified(x);
+			} else {
+				added(x);
+			}
+		}
+		for (Student x:studentsPrev){
+			if (!studentsList.contains(x)){
+				deleted(x);
+			}
+		}
+		studentsPrev=null;
+		for (Student x:studentsList)
+			studentsPrev.add(x);
 		
 	}
 	
 	public static void main(String[] args){
 		Console cons=System.console();
 		System.out.println("Podaj sciezke do pliku");
-		
 		String tmp=cons.readLine().trim();
 		Crawler crawl=new Crawler(tmp);
+		try{
+			crawl.run();
+		} catch (CrawlerException e){e.printStackTrace();}
 		
 	}
 
