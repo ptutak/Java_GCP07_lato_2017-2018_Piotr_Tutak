@@ -1,5 +1,5 @@
 package kolekcje_i_algorytmy;
 
-public interface FInterface {
+public interface RInterface {
 	void handled (Student x);
 }

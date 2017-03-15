@@ -103,5 +103,10 @@ public class Student
 		
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Student [mark=" + mark + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + "]";
+	}
 	
 }
