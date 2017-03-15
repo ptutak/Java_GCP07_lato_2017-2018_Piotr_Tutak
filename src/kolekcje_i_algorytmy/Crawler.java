@@ -9,13 +9,13 @@ public class Crawler {
 
 	private int iteration;
 	private String path;
-	private List<AInterface> addedList;
-	private List<IterInterface> iterList;
-	private List<RInterface> removedList;
-	private List<NInterface> notModifiedList;
-	private List<ExtractInterface> extractList;
-	private List<AgeInterface> ageList;
-	private List<MarkInterface> markList;
+	private List<AInterface> addedList=new LinkedList<AInterface>();
+	private List<IterInterface> iterList=new LinkedList<IterInterface>();
+	private List<RInterface> removedList=new LinkedList<RInterface>();
+	private List<NInterface> notModifiedList=new LinkedList<NInterface>();
+	private List<ExtractInterface> extractList=new LinkedList<ExtractInterface>();
+	private List<AgeInterface> ageList=new LinkedList<AgeInterface>();
+	private List<MarkInterface> markList=new LinkedList<MarkInterface>();
 	
 	private Set<Student> studentsPrev;
 	private List<Student> studentsList;
