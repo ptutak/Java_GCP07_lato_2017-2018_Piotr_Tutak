@@ -189,7 +189,7 @@ public class Crawler {
 		for (Student x:studentsList)
 			studentsPrev.add(x);
 		try{
-			Thread.sleep(3000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e){e.printStackTrace();}
 		iteration+=1;
 		if (iteration==maxIter)
