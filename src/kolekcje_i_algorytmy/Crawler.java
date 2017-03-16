@@ -7,7 +7,8 @@ import java.util.*;
 
 public class Crawler {
 
-	private int iteration;
+	private int iteration=0;
+	private int maxIter;
 	private String path;
 	private List<AInterface> addedList=new LinkedList<AInterface>();
 	private List<IterInterface> iterList=new LinkedList<IterInterface>();
@@ -17,8 +18,8 @@ public class Crawler {
 	private List<AgeInterface> ageList=new LinkedList<AgeInterface>();
 	private List<MarkInterface> markList=new LinkedList<MarkInterface>();
 	
-	private Set<Student> studentsPrev;
-	private List<Student> studentsList;
+	private Set<Student> studentsPrev=new HashSet<Student>();
+	private List<Student> studentsList=null;
 
 	public boolean add(RInterface e) {
 		return removedList.add(e);
@@ -63,6 +64,12 @@ public class Crawler {
 	public boolean remove(MarkInterface arg0) {
 		return iterList.remove(arg0);
 	}
+	public int getMaxIter() {
+		return maxIter;
+	}
+	public void setMaxIter(int maxIter) {
+		this.maxIter = maxIter;
+	}
 	public String getPath() {
 		return path;
 	}
@@ -70,9 +77,9 @@ public class Crawler {
 		this.path = path;
 	}
 	
-	Crawler(String path){
+	Crawler(String path,int maxIter){
 		this.path=path;
-		iteration=0;
+		this.maxIter=maxIter;
 	}
 	private List<Student> extractStudents(OrderMode mode){
 		switch(mode){
@@ -151,6 +158,7 @@ public class Crawler {
 	}	
 	
 	public void run() throws CrawlerException{
+	while (true){
 		if (path==null)
 			throw new CrawlerException("Nie zdefiniowana sciezka path");
 		try{
@@ -176,22 +184,27 @@ public class Crawler {
 			x.handled(extractAge(ExtremumMode.MIN), extractAge(ExtremumMode.MAX));
 		for (MarkInterface x:markList)
 			x.handled(extractMark(ExtremumMode.MIN), extractMark(ExtremumMode.MAX));
-		studentsPrev=null;
+		
+		studentsPrev=new HashSet<Student>();
 		for (Student x:studentsList)
 			studentsPrev.add(x);
 		try{
-			Thread.sleep(10000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e){e.printStackTrace();}
+		iteration+=1;
+		if (iteration==maxIter)
+			break;
+	}
 	}
 	
 	public static void main(String[] args){
 		
 		final Logger[] loggers=new Logger[]{
 				new ConsoleLogger(),
-				new MailLogger("p.hicsic@gmail.com","p.hicsic@gmail.com","smtp.gmail.com")
+				new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test")
 		};
-		String tmp=new String("..\\students.txt");
-		Crawler crawl=new Crawler(tmp);
+		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
+		Crawler crawl=new Crawler(tmp,1);
 		AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
 		crawl.add(aint);
 		MarkInterface mint=(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
