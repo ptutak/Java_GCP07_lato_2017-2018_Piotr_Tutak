@@ -204,7 +204,7 @@ public class Crawler {
 				new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test")
 		};
 		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
-		Crawler crawl=new Crawler(tmp,1);
+		Crawler crawl=new Crawler(tmp,0);
 		AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
 		crawl.add(aint);
 		MarkInterface mint=(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
