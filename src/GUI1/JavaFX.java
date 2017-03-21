@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import kolekcje_i_algorytmy.Student;
 
 public class JavaFX extends Application{
 
@@ -76,6 +77,13 @@ public class JavaFX extends Application{
 	      stage.show(); 
 	      
 	      CustomTabPane cust=new CustomTabPane();
+	     
+	      cust.addStudent(new Student(){{
+	    	 setFirstName("Piotr");
+	    	 setLastName("Tutak");
+	    	 setAge(29);
+	    	 setMark(3.0);
+	      }});
 	      gridPane.add(cust, 2, 2);
 	      
 	   }  
