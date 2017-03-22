@@ -12,16 +12,19 @@ public class CustomListView extends AnchorPane{
 	
 	CustomListView(){
 		 ListView<String> listView = new ListView<String>(logList);
+		 listView.setMinWidth(500);
+		 listView.setMaxWidth(500);
 		 this.getChildren().add(listView);
+		 
 	}
 	public void addedStudent(Student student){
-		logList.add("ADDED: "+student.getFirstName()+" "+student.getLastName());
+		logList.add("ADDED: "+student);
 	}
 	public void removedStudent(Student student){
-		logList.add("REMOVED: "+student.getFirstName()+" "+student.getLastName());
+		logList.add("REMOVED: "+student);
 	}
 	public void notModifiedStudent(Student student){
-		logList.add("NOT MODIFIED: "+student.getFirstName()+" "+student.getLastName());
+		logList.add("NOT MODIFIED: "+student);
 	}
 	
 }

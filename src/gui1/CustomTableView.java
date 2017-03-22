@@ -39,6 +39,7 @@ public class CustomTableView extends AnchorPane {
 
 		tableView.getColumns().addAll(mark,firstName,lastName,age);
 		this.getChildren().add(tableView);
+		this.setMinWidth(500);
 	}
 	
 	public void addStudent(Student student){
