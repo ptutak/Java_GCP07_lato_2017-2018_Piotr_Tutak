@@ -8,29 +8,35 @@ import javafx.scene.shape.Rectangle;
 import kolekcje_i_algorytmy.Student;
 
 public class CustomTabPane extends AnchorPane{
-	CustomListView log=new CustomListView();
+	CustomListView logList=new CustomListView();
 	
 	CustomTabPane(){
-		 TabPane tabPane = new TabPane();
-		 Tab tab = new Tab();
-		 tab.setText("new tab");
-		 tab.setContent(log);
-		 tabPane.getTabs().add(tab);
-		 this.getChildren().add(tabPane);
+		 TabPane tabs = new TabPane();
 		 
+		 Tab students=new Tab();
+		 students.setText("Students");
+		 
+		 Tab log = new Tab();
+		 log.setText("Log");
+		 log.setContent(logList);
+		 tabs.getTabs().add(log);
+		 this.getChildren().add(tabs);
 	}
 	
-	public void addStudent(Student student){
-		log.addStudent(student);
+	public void logAddedStudent(Student student){
+		logList.addedStudent(student);
 		//TODO: Dodaæ logikê dodawania logu i z wykresu :P
 	}
 	
-	public void removeStudent(Student student){
-		log.removeStudent(student);
+	public void logRemovedStudent(Student student){
+		logList.removedStudent(student);
 		//TODO: Dodaæ logikê usuwania logu i z wykresu :P
 		
 	}
 	
+	public void logNotModifiedStudent(Student student){
+		logList.removedStudent(student);
+	}
 
 
 }
