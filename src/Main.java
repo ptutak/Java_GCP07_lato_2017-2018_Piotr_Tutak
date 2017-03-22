@@ -1,4 +1,4 @@
-import GUI1.JavaFX;
+import gui1.MainG;
 import kolekcje_i_algorytmy.Crawler;
 
 public class Main {
