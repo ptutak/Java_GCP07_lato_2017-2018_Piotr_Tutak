@@ -9,33 +9,41 @@ import kolekcje_i_algorytmy.Student;
 
 public class CustomTabPane extends AnchorPane{
 	CustomListView logList=new CustomListView();
+	CustomTableView studentsList=new CustomTableView();
+	TabPane tabs;
+	Tab students;
+	Tab log;
 	
 	CustomTabPane(){
-		 TabPane tabs = new TabPane();
+		 tabs = new TabPane();
 		 
-		 Tab students=new Tab();
+		 students=new Tab();
 		 students.setText("Students");
+		 students.setContent(studentsList);
 		 
-		 Tab log = new Tab();
+		 log = new Tab();
 		 log.setText("Log");
 		 log.setContent(logList);
+		 
+		 tabs.getTabs().add(students);
 		 tabs.getTabs().add(log);
 		 this.getChildren().add(tabs);
 	}
 	
-	public void logAddedStudent(Student student){
+	public void addStudent(Student student){
+		studentsList.addStudent(student);
 		logList.addedStudent(student);
-		//TODO: Dodaæ logikê dodawania logu i z wykresu :P
+		
 	}
 	
-	public void logRemovedStudent(Student student){
+	public void removeStudent(Student student){
+		studentsList.removeStudent(student);
 		logList.removedStudent(student);
-		//TODO: Dodaæ logikê usuwania logu i z wykresu :P
 		
 	}
 	
 	public void logNotModifiedStudent(Student student){
-		logList.removedStudent(student);
+		logList.notModifiedStudent(student);
 	}
 
 

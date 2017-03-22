@@ -1,4 +1,7 @@
 package kolekcje_i_algorytmy;
+
+import javafx.beans.property.StringProperty;
+
 public class Student
 {
 	private double mark;

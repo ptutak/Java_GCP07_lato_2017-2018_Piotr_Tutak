@@ -19,7 +19,7 @@ public class MainG extends Application {
 
 	    
 	    CustomTabPane tabs=new CustomTabPane();
-	    tabs.logAddedStudent(new Student(){{
+	    tabs.addStudent(new Student(){{
 	     setFirstName("Piotr");
 	     setLastName("Tutak");
 	     setAge(29);
