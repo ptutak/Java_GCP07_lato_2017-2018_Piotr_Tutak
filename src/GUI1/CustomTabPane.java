@@ -1,4 +1,4 @@
-package GUI1;
+package gui1;
 
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
