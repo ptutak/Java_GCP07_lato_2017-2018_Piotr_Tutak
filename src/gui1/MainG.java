@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import kolekcje_i_algorytmy.Student;
@@ -13,11 +14,11 @@ public class MainG extends Application {
 	@Override
 	public void start(Stage stage) {      
 		stage.setTitle("Crawler GUI"); 
-	    GridPane gridPane = new GridPane();    
-	    gridPane.setMinSize(400, 400); 
-	    gridPane.setAlignment(Pos.CENTER); 
-
 	    
+		BorderPane borderPane = new BorderPane();    
+	    borderPane.setMinSize(400, 400);
+	    
+	    	    
 	    CustomTabPane tabs=new CustomTabPane();
 	    tabs.addStudent(new Student(){{
 	     setFirstName("Piotr");
@@ -26,9 +27,12 @@ public class MainG extends Application {
 	     setMark(3.0);
 	    }});
 	    
-	    gridPane.add(tabs, 0, 0);
+	    CustomMenuBar menu=new CustomMenuBar();
+	    
+	    borderPane.setTop(menu);
+	    borderPane.setCenter(tabs);
 
-	    Scene scene = new Scene(gridPane);
+	    Scene scene = new Scene(borderPane);
 	    stage.setScene(scene);
 	    stage.show(); 
 	      
