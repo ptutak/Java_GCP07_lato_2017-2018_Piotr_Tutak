@@ -23,18 +23,20 @@ public class CustomMenuBar extends MenuBar {
 			System.exit(0);
 		});
 		menuProgram.getItems().add(close);
-		menuAbout=new Menu("About");
+		menuAbout=new Menu();
 		
 		info = new Alert(AlertType.INFORMATION);
 		info.setTitle("About");
 		info.setHeaderText(null);
 		info.setContentText("Java - programming excercises.\n"
 				+ "Piotr Tutak, gr. LAB07\n");
-		
-		menuAbout.setOnAction((t)->{
+
+		menuAboutLabel=new Label("About");
+		menuAboutLabel.setOnMouseClicked((t)->{
 			System.out.println("dziala");
 			info.showAndWait();
 		});
+		menuAbout.setGraphic(menuAboutLabel);
 		
 		this.getMenus().addAll(menuProgram,menuAbout);
 		

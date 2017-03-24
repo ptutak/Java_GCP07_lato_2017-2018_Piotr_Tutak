@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -28,11 +30,19 @@ public class MainG extends Application {
 	    }});
 	    
 	    CustomMenuBar menu=new CustomMenuBar();
-	    
+	    Label keyPressed = new Label();
 	    borderPane.setTop(menu);
 	    borderPane.setCenter(tabs);
+	    borderPane.setBottom(keyPressed);
 
 	    Scene scene = new Scene(borderPane);
+
+	    scene.setOnKeyPressed((ke) -> {
+                keyPressed.setText("Key Pressed: " + ke.getCode());
+                if (ke.isControlDown() && ke.getCode().equals(KeyCode.C))
+                	System.exit(0);
+        });
+	    
 	    stage.setScene(scene);
 	    stage.show(); 
 	      
