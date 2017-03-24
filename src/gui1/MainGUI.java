@@ -1,17 +1,16 @@
 package gui1;
 
+import java.util.concurrent.TimeUnit;
+
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import kolekcje_i_algorytmy.Student;
 
-public class MainGUI extends Application {
+public class MainGUI extends Application implements Runnable {
 	private BorderPane borderPane;
 	private CustomTabPane tabs;
 	private CustomMenuBar menu;
@@ -42,21 +41,10 @@ public class MainGUI extends Application {
                 if (ke.isControlDown() && ke.getCode().equals(KeyCode.C))
                 	System.exit(0);
         });
-	    
-		GuiLogger logger=new GuiLogger(this);
-		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
-		logger.log("REMOVED", new Student("Piotr","Tutak",29,3.0));
-		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
-		logger.log("ADDED", new Student("Piotr","Tutakk",29,3.0));
-		logger.log("ADDED", new Student("Piotr","Tutakkk",29,3.0));
 
-	    
 	    this.stage.setScene(scene);
-	    this.stage.show();      
-	}
-	
-	public void runNow(){
-		Application.launch();
+	    this.stage.show();
+	    notifyAll();
 	}
 	
 	public void addStudent(Student student){
@@ -71,12 +59,36 @@ public class MainGUI extends Application {
 		tabs.notModifiedStudent(student);
 	}
 	
-	public static void main(String[] args){
-		MainGUI gui=new MainGUI();
-		gui.runNow();
-
-		
+	@Override
+	public void run() {
+		String[] args=new String[1];
+		args[0]=null;
+		launch(args);
 	}
 	
+	public static void main(String[] args){
+	    MainGUI gui=new MainGUI();
+		Thread guiThread=new Thread(gui);
+		guiThread.start();
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		GuiLogger logger=new GuiLogger(gui);
+		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
+		logger.log("REMOVED", new Student("Piotr","Tutak",29,3.0));
+		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
+		logger.log("ADDED", new Student("Piotr","Tutakk",29,3.0));
+		logger.log("ADDED", new Student("Piotr","Tutakkk",29,3.0));
+	
+	try {
+		guiThread.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
 
 }
