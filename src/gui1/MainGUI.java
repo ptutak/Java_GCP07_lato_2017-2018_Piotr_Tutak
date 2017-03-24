@@ -18,6 +18,7 @@ public class MainGUI extends Application {
 	private Scene scene;
 	private Label keyLabel;
 	private Stage stage;
+	
 	@Override
 	public void start(Stage stage) {      
 		this.stage=stage;
@@ -42,11 +43,19 @@ public class MainGUI extends Application {
                 	System.exit(0);
         });
 	    
+		GuiLogger logger=new GuiLogger(this);
+		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
+		logger.log("REMOVED", new Student("Piotr","Tutak",29,3.0));
+		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
+		logger.log("ADDED", new Student("Piotr","Tutakk",29,3.0));
+		logger.log("ADDED", new Student("Piotr","Tutakkk",29,3.0));
+
+	    
 	    this.stage.setScene(scene);
 	    this.stage.show();      
 	}
 	
-	public void run(){
+	public void runNow(){
 		Application.launch();
 	}
 	
@@ -64,10 +73,8 @@ public class MainGUI extends Application {
 	
 	public static void main(String[] args){
 		MainGUI gui=new MainGUI();
-		GuiLogger logger=new GuiLogger(gui);
-		gui.run();
-		
-		logger.log("ADDED", new Student());
+		gui.runNow();
+
 		
 	}
 	

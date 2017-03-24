@@ -9,6 +9,20 @@ public class Student
 	private String lastName;
 	private int age;
 	
+	public Student(){
+		mark=0.0;
+		firstName=null;
+		lastName=null;
+		age=0;
+	}
+	
+	public Student(String firstName, String lastName, int age, double mark) {
+		this.mark = mark;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.age = age;
+	}
+
 	public double getMark()
 	{
 		return this.mark;
