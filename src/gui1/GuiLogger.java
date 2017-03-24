@@ -4,21 +4,21 @@ import kolekcje_i_algorytmy.Logger;
 import kolekcje_i_algorytmy.Student;
 
 public class GuiLogger implements Logger {
-	CustomTabPane pane;
-	GuiLogger(CustomTabPane pane){
-		this.pane=pane;
+	MainGUI gui;
+	GuiLogger(MainGUI gui){
+		this.gui=gui;
 	}
 	@Override
 	public void log(String status, Student student) {
 		switch (status){
 		case "ADDED":
-			pane.addStudent(student);
+			gui.addStudent(student);
 			break;
 		case "REMOVED":
-			pane.removeStudent(student);
+			gui.removeStudent(student);
 			break;
 		case "NOT MODIFIED":
-			pane.notModifiedStudent(student);
+			gui.notModifiedStudent(student);
 			break;
 		}
 	}
