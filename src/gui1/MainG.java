@@ -28,7 +28,7 @@ public class MainG extends Application {
 	     setAge(29);
 	     setMark(3.0);
 	    }});
-	    
+
 	    CustomMenuBar menu=new CustomMenuBar();
 	    Label keyPressed = new Label();
 	    borderPane.setTop(menu);

@@ -33,7 +33,6 @@ public class CustomMenuBar extends MenuBar {
 
 		menuAboutLabel=new Label("About");
 		menuAboutLabel.setOnMouseClicked((t)->{
-			System.out.println("dziala");
 			info.showAndWait();
 		});
 		menuAbout.setGraphic(menuAboutLabel);

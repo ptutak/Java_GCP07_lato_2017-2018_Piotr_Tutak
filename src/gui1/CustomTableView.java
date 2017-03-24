@@ -4,8 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.ResizeFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import kolekcje_i_algorytmy.Student;
 
 public class CustomTableView extends AnchorPane {
@@ -20,11 +22,12 @@ public class CustomTableView extends AnchorPane {
 	CustomTableView(){
 		studentsList=FXCollections.observableArrayList();
 		tableView=new TableView<Student>(studentsList);
+		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 		mark = new TableColumn<Student, String>("Mark");
 		mark.setMinWidth(50);
 		mark.setCellValueFactory(new PropertyValueFactory<Student,String>("mark"));
-				
+		
 		firstName=new TableColumn<Student, String>("First Name");
 		firstName.setMinWidth(200);
 		firstName.setCellValueFactory(new PropertyValueFactory<Student,String>("firstName"));
@@ -39,7 +42,6 @@ public class CustomTableView extends AnchorPane {
 
 		tableView.getColumns().addAll(mark,firstName,lastName,age);
 		this.getChildren().add(tableView);
-		this.setMinWidth(500);
 	}
 	
 	public void addStudent(Student student){

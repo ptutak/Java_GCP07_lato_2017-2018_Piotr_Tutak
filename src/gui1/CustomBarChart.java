@@ -29,9 +29,16 @@ public class CustomBarChart extends AnchorPane{
 				new Data<String,Integer>(Double.toString(5.0),0));
 		xAxis=new CategoryAxis();
 		xAxis.setLabel("Mark");
+		
 		yAxis=new NumberAxis();
 		yAxis.setLabel("Count");
+		yAxis.setAutoRanging(false);
+		yAxis.setLowerBound(0.0);
+		yAxis.setUpperBound(10.0);
+		yAxis.setTickUnit(1.0);
+		yAxis.setMinorTickVisible(false);
 		data=new XYChart.Series<String,Integer>(marks);
+		
 		barChart=new BarChart(xAxis, yAxis);
 		barChart.setTitle("Distribution of marks");
 		barChart.getData().add(data);
@@ -44,9 +51,13 @@ public class CustomBarChart extends AnchorPane{
 		for(Data<String,Integer> d:marks){
 			if (d.getXValue().equals(Double.toString(mark))){
 				d.setYValue(d.getYValue()+1);
+				if (yAxis.getUpperBound()==(double)d.getYValue()){
+					yAxis.setUpperBound(yAxis.getUpperBound()+1.0);
+				}
 				break;
 			}
 		}
+		
 	}
 	
 	public void removeMark(double mark){
@@ -54,6 +65,9 @@ public class CustomBarChart extends AnchorPane{
 			if (d.getXValue().equals(Double.toString(mark))){
 				if (d.getYValue()>0){
 					d.setYValue(d.getYValue()-1);
+				}
+				if (yAxis.getUpperBound()>10.0){
+					yAxis.setUpperBound(yAxis.getUpperBound()-1.0);
 				}
 				break;
 			}

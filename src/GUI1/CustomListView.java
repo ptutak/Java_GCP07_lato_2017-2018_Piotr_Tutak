@@ -9,13 +9,11 @@ import kolekcje_i_algorytmy.Student;
 public class CustomListView extends AnchorPane{
 	
 	private ObservableList<String> logList = FXCollections.observableArrayList();
-	
+	private ListView<String> listView;
 	CustomListView(){
-		 ListView<String> listView = new ListView<String>(logList);
-		 listView.setMinWidth(500);
-		 listView.setMaxWidth(500);
-		 this.getChildren().add(listView);
-		 
+		 listView = new ListView<String>(logList);
+		 listView.setMinWidth(562);
+		 this.getChildren().add(listView);		 
 	}
 	public void addedStudent(Student student){
 		logList.add("ADDED: "+student);

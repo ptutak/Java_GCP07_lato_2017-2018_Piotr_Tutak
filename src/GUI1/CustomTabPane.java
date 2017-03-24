@@ -26,6 +26,7 @@ public class CustomTabPane extends AnchorPane{
 		 
 		 log = new Tab();
 		 log.setText("Log");
+		 logList.setMinWidth(studentsList.getWidth());
 		 log.setContent(logList);
 		 
 		 hist=new Tab();
@@ -42,7 +43,7 @@ public class CustomTabPane extends AnchorPane{
 		studentsList.addStudent(student);
 		logList.addedStudent(student);
 		histList.addMark(student.getMark());
-			
+
 	}
 	
 	public void removeStudent(Student student){
@@ -51,7 +52,7 @@ public class CustomTabPane extends AnchorPane{
 		histList.removeMark(student.getMark());
 	}
 	
-	public void logNotModifiedStudent(Student student){
+	public void notModifiedStudent(Student student){
 		logList.notModifiedStudent(student);
 	}
 
