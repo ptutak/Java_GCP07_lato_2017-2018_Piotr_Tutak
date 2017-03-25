@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kolekcje_i_algorytmy.Student;
 
-public class MainGUI extends Application implements Runnable {
+public class MainGUI extends Application {
 	private BorderPane borderPane;
 	private CustomTabPane tabs;
 	private CustomMenuBar menu;
@@ -58,17 +58,16 @@ public class MainGUI extends Application implements Runnable {
 	public void notModifiedStudent(Student student){
 		tabs.notModifiedStudent(student);
 	}
-	
-	@Override
-	public void run() {
-		String[] args=new String[1];
-		args[0]=null;
-		launch(args);
-	}
-	
+
 	public static void main(String[] args){
 	    MainGUI gui=new MainGUI();
-		Thread guiThread=new Thread(gui);
+		Thread guiThread=new Thread(new Runnable(){
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Application.launch(gui.getClass());
+			}	
+		});
 		guiThread.start();
 		try {
 			TimeUnit.SECONDS.sleep(5);
