@@ -43,8 +43,9 @@ public class MainGUI extends Application {
         });
 
 	    this.stage.setScene(scene);
+	    
 	    this.stage.show();
-	    notifyAll();
+
 	}
 	
 	public void addStudent(Student student){
