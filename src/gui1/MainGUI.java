@@ -58,7 +58,7 @@ public class MainGUI extends Application {
 
 	public static void main(String[] args){
 	    MainGUI gui=new MainGUI();
-		Thread guiThread=new Thread(new Runnable(){
+		Thread loggerThread=new Thread(new Runnable(){
 			@Override
 			public void run() {
 				try {
@@ -78,10 +78,10 @@ public class MainGUI extends Application {
 	
 			}	
 		});
-		guiThread.start();
+		loggerThread.start();
 	Application.launch(gui.getClass());
 	try {
-		guiThread.join();
+		loggerThread.join();
 	} catch (InterruptedException e) {
 		e.printStackTrace();
 	}
