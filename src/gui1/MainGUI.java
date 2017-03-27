@@ -116,27 +116,21 @@ public class MainGUI extends Application {
 				crawl.add(iint);
 				AInterface addint=(s)->{
 					for (Logger log:loggers){
-						Platform.runLater(new Runnable(){public void run(){
 							log.log("ADDED",s);	
-						}});
 						
 					}
 				};
 				crawl.add(addint);
 				RInterface remint=(s)->{
 					for (Logger log:loggers){
-						Platform.runLater(new Runnable(){public void run(){
 							log.log("REMOVED",s);	
-						}});
 						
 					}
 				};
 				crawl.add(remint);
 				NInterface nonint=(s)->{
 					for (Logger log:loggers){
-						Platform.runLater(new Runnable(){public void run(){
 							log.log("NOT MODIFIED",s);	
-						}});
 						
 					}
 				};
