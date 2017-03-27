@@ -77,7 +77,7 @@ public class Crawler {
 		this.path = path;
 	}
 	
-	Crawler(String path,int maxIter){
+	public Crawler(String path,int maxIter){
 		this.path=path;
 		this.maxIter=maxIter;
 	}

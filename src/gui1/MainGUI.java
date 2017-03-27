@@ -3,11 +3,24 @@ package gui1;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import kolekcje_i_algorytmy.AInterface;
+import kolekcje_i_algorytmy.AgeInterface;
+import kolekcje_i_algorytmy.ConsoleLogger;
+import kolekcje_i_algorytmy.Crawler;
+import kolekcje_i_algorytmy.CrawlerException;
+import kolekcje_i_algorytmy.ExtractInterface;
+import kolekcje_i_algorytmy.IterInterface;
+import kolekcje_i_algorytmy.Logger;
+import kolekcje_i_algorytmy.MailLogger;
+import kolekcje_i_algorytmy.MarkInterface;
+import kolekcje_i_algorytmy.NInterface;
+import kolekcje_i_algorytmy.RInterface;
 import kolekcje_i_algorytmy.Student;
 
 public class MainGUI extends Application {
@@ -58,33 +71,87 @@ public class MainGUI extends Application {
 
 	public static void main(String[] args){
 	    MainGUI gui=new MainGUI();
-		Thread loggerThread=new Thread(new Runnable(){
-			@Override
-			public void run() {
+	    
+			Thread crawlLogger=new Thread(new Runnable(){public void run(){
 				try {
 					TimeUnit.SECONDS.sleep(5);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				GuiLogger logger=new GuiLogger(gui);
-				logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
-				logger.log("REMOVED", new Student("Piotr","Tutak",29,3.0));
-				logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
-				logger.log("ADDED", new Student("Piotr","Tutakk",29,3.0));
-				logger.log("ADDED", new Student("Piotr","Tutakkk",29,3.0));
-				logger.log("NOT MODIFIED", new Student("Piotr","Tutakkk",29,3.0));
-				
-			
-	
-			}	
-		});
-		loggerThread.start();
-	Application.launch(gui.getClass());
-	try {
-		loggerThread.join();
-	} catch (InterruptedException e) {
-		e.printStackTrace();
+				final Logger[] loggers=new Logger[]{
+						new ConsoleLogger(),
+//						new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
+						new GuiLogger(gui)
+				};
+				String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
+				Crawler crawl=new Crawler(tmp,0);
+				AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
+				crawl.add(aint);
+				MarkInterface mint=(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
+				crawl.add(mint);
+				ExtractInterface eint=(list,mode)->{
+					String m=new String();
+					switch(mode){
+					case FIRST_NAME:
+						m="First Name";
+						break;
+					case LAST_NAME:
+						m="Last Name";
+						break;
+					case AGE:
+						m="Age";
+						break;
+					case MARK:
+						m="Mark";
+						break;
+					}
+					System.out.println("Ordered by "+m+":");
+					for (Student x:list){
+						System.out.println(x);
+					}
+				};
+				crawl.add(eint);
+				IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
+				crawl.add(iint);
+				AInterface addint=(s)->{
+					for (Logger log:loggers){
+						Platform.runLater(new Runnable(){public void run(){
+							log.log("ADDED",s);	
+						}});
+						
+					}
+				};
+				crawl.add(addint);
+				RInterface remint=(s)->{
+					for (Logger log:loggers){
+						Platform.runLater(new Runnable(){public void run(){
+							log.log("REMOVED",s);	
+						}});
+						
+					}
+				};
+				crawl.add(remint);
+				NInterface nonint=(s)->{
+					for (Logger log:loggers){
+						Platform.runLater(new Runnable(){public void run(){
+							log.log("NOT MODIFIED",s);	
+						}});
+						
+					}
+				};
+				crawl.add(nonint);
+				try{
+					crawl.run();
+				} catch (CrawlerException e){e.printStackTrace();}
+			}});
+			crawlLogger.start();
+			Application.launch(gui.getClass());
+			try {
+				crawlLogger.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
-	}
-
 }
