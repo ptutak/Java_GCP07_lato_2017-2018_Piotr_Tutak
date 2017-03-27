@@ -123,7 +123,7 @@ public class Student
 
 	@Override
 	public String toString() {
-		return "Student [mark=" + mark + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + "]";
+		return "Student: "+ firstName + " "+ lastName + ", age=" + age + ", mark="+mark;
 	}
 	
 }
