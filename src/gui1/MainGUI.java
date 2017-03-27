@@ -12,29 +12,26 @@ import kolekcje_i_algorytmy.Student;
 
 public class MainGUI extends Application {
 	private BorderPane borderPane;
-	private CustomTabPane tabs;
+	private static CustomTabPane tabs;
 	private CustomMenuBar menu;
 	private Scene scene;
 	private Label keyLabel;
 	private Stage stage;
-	
+
 	@Override
 	public void start(Stage stage) {      
 		this.stage=stage;
-		this.stage.setTitle("Crawler GUI"); 
-	    
 		borderPane = new BorderPane();    
-	    borderPane.setMinSize(400, 400);
-		    	    
+		borderPane.setMinSize(400, 400);
+		scene = new Scene(borderPane);
+
+	    borderPane.setTop(menu);
 	    tabs=new CustomTabPane();
 
 	    menu=new CustomMenuBar();
 	    keyLabel = new Label();
-	    borderPane.setTop(menu);
 	    borderPane.setCenter(tabs);
 	    borderPane.setBottom(keyLabel);
-
-	    scene = new Scene(borderPane);
 
 	    scene.setOnKeyPressed((ke) -> {
                 keyLabel.setText("Key Pressed: " + ke.getCode());
@@ -42,21 +39,20 @@ public class MainGUI extends Application {
                 	System.exit(0);
         });
 
+		this.stage.setTitle("Crawler GUI"); 
 	    this.stage.setScene(scene);
-	    
 	    this.stage.show();
-
 	}
 	
-	public void addStudent(Student student){
+	public static synchronized void addStudent(Student student){
 		tabs.addStudent(student);
 	}
 	
-	public void removeStudent(Student student){
+	public static synchronized void removeStudent(Student student){
 		tabs.removeStudent(student);
 	}
 	
-	public void notModifiedStudent(Student student){
+	public static synchronized void notModifiedStudent(Student student){
 		tabs.notModifiedStudent(student);
 	}
 
@@ -65,28 +61,28 @@ public class MainGUI extends Application {
 		Thread guiThread=new Thread(new Runnable(){
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				Application.launch(gui.getClass());
+				try {
+					TimeUnit.SECONDS.sleep(5);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				GuiLogger logger=new GuiLogger(gui);
+				logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
+				logger.log("REMOVED", new Student("Piotr","Tutak",29,3.0));
+				logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
+				logger.log("ADDED", new Student("Piotr","Tutakk",29,3.0));
+				logger.log("ADDED", new Student("Piotr","Tutakkk",29,3.0));
+				logger.log("NOT MODIFIED", new Student("Piotr","Tutakkk",29,3.0));
+				
+			
+	
 			}	
 		});
 		guiThread.start();
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		GuiLogger logger=new GuiLogger(gui);
-		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
-		logger.log("REMOVED", new Student("Piotr","Tutak",29,3.0));
-		logger.log("ADDED", new Student("Piotr","Tutak",29,3.0));
-		logger.log("ADDED", new Student("Piotr","Tutakk",29,3.0));
-		logger.log("ADDED", new Student("Piotr","Tutakkk",29,3.0));
-	
+	Application.launch(gui.getClass());
 	try {
 		guiThread.join();
 	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	}
