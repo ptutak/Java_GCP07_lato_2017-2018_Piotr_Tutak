@@ -36,16 +36,16 @@ public class MainGUI extends Application {
 		this.stage=stage;
 		borderPane = new BorderPane();    
 		borderPane.setMinSize(400, 400);
-		scene = new Scene(borderPane);
 
-	    borderPane.setTop(menu);
 	    tabs=new CustomTabPane();
 
 	    menu=new CustomMenuBar();
 	    keyLabel = new Label();
+	    borderPane.setTop(menu);
 	    borderPane.setCenter(tabs);
 	    borderPane.setBottom(keyLabel);
 
+		scene = new Scene(borderPane);
 	    scene.setOnKeyPressed((ke) -> {
                 keyLabel.setText("Key Pressed: " + ke.getCode());
                 if (ke.isControlDown() && ke.getCode().equals(KeyCode.C))
