@@ -18,11 +18,18 @@
     <Tab fx:id="logTab" text="Log">
       <content>
         <AnchorPane fx:id="logPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <children>
+        
+        </children>
       </content>
     </Tab>
       <Tab fx:id="histogramTab" text="Histogram">
         <content>
-          <AnchorPane fx:id="histogramPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane fx:id="histogramPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+          <children>
+          <fx:include source="barChart.fxml"/>
+          </children>
+          </AnchorPane>
         </content>
       </Tab>
   </tabs>

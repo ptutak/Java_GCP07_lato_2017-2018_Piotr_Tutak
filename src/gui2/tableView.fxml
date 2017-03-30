@@ -8,7 +8,6 @@
     <TableColumn fx:id="markCol" prefWidth="88.0" text="Mark" >
     </TableColumn>
     <TableColumn fx:id="firstNameCol" prefWidth="211.0" text="First Name" >
-
     </TableColumn>
     <TableColumn fx:id="lastNameCol" prefWidth="194.0" text="Last Name" >
     </TableColumn>
