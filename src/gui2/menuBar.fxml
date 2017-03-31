@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<MenuBar fx:id="menuBar" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="gui2.MenuBarController">
+  <menus>
+    <Menu fx:id="menuProgram" mnemonicParsing="false" text="Program">
+      <items>
+        <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeClick" text="Close Ctrl+C" />
+      </items>
+    </Menu>
+    <Menu fx:id="menuAbout" mnemonicParsing="false" />
+  </menus>
+</MenuBar>

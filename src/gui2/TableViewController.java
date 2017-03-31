@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -31,7 +30,6 @@ public class TableViewController {
 		firstNameCol.setCellValueFactory(new PropertyValueFactory<Student,String>("firstName"));
 		lastNameCol.setCellValueFactory(new PropertyValueFactory<Student,String>("lastName"));
 		ageCol.setCellValueFactory(new PropertyValueFactory<Student,String>("age"));
-		addStudent(new Student("Piotr","Tutak",30,5.0));
 	}
 	public void addStudent(Student student){
 		studentsList.add(student);
