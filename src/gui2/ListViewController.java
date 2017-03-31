@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import kolekcje_i_algorytmy.Student;
 
-public class MListView {
+public class ListViewController {
 	
 	private ObservableList<String> logList = FXCollections.observableArrayList();
 	private DateFormat dateFormat;

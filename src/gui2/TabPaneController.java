@@ -7,15 +7,15 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import kolekcje_i_algorytmy.Student;
 
-public class MTabPane {
+public class TabPaneController {
 	
 	@FXML TabPane tabPane;
 	@FXML ListView listView;
 	@FXML TableView tableView;
 	@FXML BarChart barChart;
-	@FXML MListView listViewController;
-	@FXML MTableView tableViewController;
-	@FXML MBarChart barChartController;
+	@FXML ListViewController listViewController;
+	@FXML TableViewController tableViewController;
+	@FXML BarChartController barChartController;
 	
 	@FXML public void initialize(){
 		

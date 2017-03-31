@@ -7,7 +7,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 
-public class MMenuBar {
+public class MenuBarController {
 	
 	@FXML Menu menuAbout;
 	Label menuAboutLabel;

@@ -11,7 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import kolekcje_i_algorytmy.Student;
 
-public class MTableView {
+public class TableViewController {
 	
 	private final ObservableList<Student> studentsList=FXCollections.observableArrayList();
 	

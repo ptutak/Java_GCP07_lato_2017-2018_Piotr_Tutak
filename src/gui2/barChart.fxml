@@ -3,7 +3,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.chart.*?>
 
-<BarChart fx:id="barChart" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui2.MBarChart">
+<BarChart fx:id="barChart" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui2.BarChartController">
   <xAxis>
     <CategoryAxis fx:id="categoryAxis" label="Marks" side="BOTTOM" />
   </xAxis>

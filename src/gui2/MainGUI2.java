@@ -25,7 +25,7 @@ import kolekcje_i_algorytmy.Student;
 
 public class MainGUI2 extends Application {
 	
-	private static MBorderPane borderPaneController;
+	private static BorderPaneController borderPaneController;
 
 	@Override
 	public void start(Stage stage) throws Exception {

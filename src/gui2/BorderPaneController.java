@@ -7,12 +7,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import kolekcje_i_algorytmy.Student;
 
-public class MBorderPane {
+public class BorderPaneController {
 	
 	@FXML private BorderPane borderPane;
 	
 	@FXML private TabPane tabPane;
-	@FXML private MTabPane tabPaneController;
+	@FXML private TabPaneController tabPaneController;
 	
 	
 	@FXML public void keyPressed(KeyEvent ke){

@@ -9,7 +9,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 
-public class MBarChart {
+public class BarChartController {
 	
 	private final ObservableList<Data<String,Integer>> marks=FXCollections.observableArrayList();
 	private XYChart.Series<String,Integer> data;
