@@ -1,5 +1,6 @@
 package gui2;
 
+import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import gui1.GuiLogger;
@@ -26,14 +27,36 @@ import kolekcje_i_algorytmy.Student;
 public class MainGUI2 extends Application {
 	
 	private static BorderPaneController borderPaneController;
-
+	private LoginWindowController loginWindowController;
+	private NewUserWindowController newUserWindowController;
+	private LinkedList<LogPass> logPassList=new LinkedList<LogPass>();
+	
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader loader=new FXMLLoader(this.getClass().getResource("borderPane.fxml"));
-		Parent mainNode=loader.load();
-		borderPaneController=loader.getController();
-		Scene scene=new Scene(mainNode);
-		stage.setScene(scene);
+		FXMLLoader loaderMain=new FXMLLoader(this.getClass().getResource("borderPane.fxml"));
+		Parent mainNode=loaderMain.load();
+		borderPaneController=loaderMain.getController();
+		Scene mainScene=new Scene(mainNode);
+		
+		FXMLLoader loaderLogin=new FXMLLoader(this.getClass().getResource("loginWindow.fxml"));
+		Parent loginNode=loaderLogin.load();
+		loginWindowController=loaderLogin.getController();
+		loginWindowController.setStage(stage);
+		loginWindowController.setMainWindowScene(mainScene);
+		loginWindowController.setLogPassList(logPassList);
+		Scene loginScene=new Scene(loginNode);
+		
+		FXMLLoader loaderNew=new FXMLLoader(this.getClass().getResource("newUserWindow.fxml"));
+		Parent newUserNode=loaderNew.load();
+		newUserWindowController=loaderNew.getController();
+		newUserWindowController.setStage(stage);
+		newUserWindowController.setLoginScene(loginScene);
+		newUserWindowController.setLogPassList(logPassList);
+		Scene newUserScene=new Scene(newUserNode);
+		
+		loginWindowController.setNewUserScene(newUserScene);
+		
+		stage.setScene(loginScene);
 		stage.show();
 	}
 	
@@ -50,6 +73,7 @@ public class MainGUI2 extends Application {
 	}
 
 	public static void main(String[] args) {
+		
 		MainGUI2 gui=new MainGUI2();
 	    
 		Thread crawlLogger=new Thread(new Runnable(){public void run(){
