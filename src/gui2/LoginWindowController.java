@@ -45,7 +45,7 @@ public class LoginWindowController {
 		temp.setPassword(passwordTextField.getText());
 		if (logPassList.contains(temp)){
 			for (LogPass x:logPassList){
-				if (x.equals(temp) && x.getPassword()==temp.getPassword()){
+				if (x.equals(temp) && x.getPassword().equals(temp.getPassword())){
 					stage.setScene(mainWindowScene);
 				}
 			}

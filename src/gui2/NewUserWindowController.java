@@ -43,7 +43,12 @@ public class NewUserWindowController {
 		LogPass tmp=new LogPass();
 		tmp.setLogin(loginTextField.getText());
 		tmp.setPassword(passwordTextField.getText());
-		int age=Integer.parseInt(ageTextField.getText());	
+		int age=0;
+		try{
+			age=Integer.parseInt(ageTextField.getText());	
+		} catch(NumberFormatException e){
+			infoLabel.setText("Wrong Age");
+		}
 		tmp.setAge(age);
 		tmp.setSex((String)sexChoiceBox.getValue());
 		tmp.setLocation(locationTextField.getText());
@@ -68,6 +73,7 @@ public class NewUserWindowController {
 
 	@FXML public void initialize(){
 		sexChoiceBox.setItems(FXCollections.observableArrayList("Male","Female"));
+
 	}
 
 }
