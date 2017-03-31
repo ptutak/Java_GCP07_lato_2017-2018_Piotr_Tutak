@@ -11,7 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import kolekcje_i_algorytmy.Student;
 
-public class TableViewController {
+public class MTableView {
 	
 	private final ObservableList<Student> studentsList=FXCollections.observableArrayList();
 	
@@ -21,8 +21,6 @@ public class TableViewController {
 	@FXML private TableColumn ageCol;
 	
 	@FXML private TableView tableView;
-	
-	
 	
 	@FXML public void initialize(){
 		tableView.setItems(studentsList);
