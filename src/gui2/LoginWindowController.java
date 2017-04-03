@@ -56,6 +56,8 @@ public class LoginWindowController {
 	}
 	
 	public void newUserButtonClick(){
+		loginTextField.setText("");
+		passwordTextField.setText("");
 		stage.setScene(newUserScene);
 	}
 	

@@ -52,12 +52,12 @@ public class NewUserWindowController {
 		tmp.setAge(age);
 		tmp.setSex((String)sexChoiceBox.getValue());
 		tmp.setLocation(locationTextField.getText());
-		if (!logPassList.contains(tmp) && tmp.getLogin()!="" && tmp.getPassword()!=""){
+		if (!logPassList.contains(tmp) && !tmp.getLogin().equals("")){
 			logPassList.add(tmp);
 			clearButtonClick();
 			stage.setScene(loginScene);
 		} else{
-			infoLabel.setText("User exists or login or password is empty");
+			infoLabel.setText("User exists or login is empty");
 		}
 	}
 	
