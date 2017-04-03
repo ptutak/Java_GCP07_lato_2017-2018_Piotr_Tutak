@@ -54,6 +54,7 @@ public class NewUserWindowController {
 		tmp.setLocation(locationTextField.getText());
 		if (!logPassList.contains(tmp) && tmp.getLogin()!="" && tmp.getPassword()!=""){
 			logPassList.add(tmp);
+			clearButtonClick();
 			stage.setScene(loginScene);
 		} else{
 			infoLabel.setText("User exists or login or password is empty");
@@ -68,7 +69,9 @@ public class NewUserWindowController {
 	}
 	
 	public void cancelButtonClick(){
+		clearButtonClick();
 		stage.setScene(loginScene);
+		
 	}
 
 	@FXML public void initialize(){
