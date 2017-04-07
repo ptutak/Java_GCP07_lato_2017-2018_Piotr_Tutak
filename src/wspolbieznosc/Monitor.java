@@ -1,5 +1,6 @@
 package wspolbieznosc;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import gui1.GuiLogger;
@@ -17,15 +18,15 @@ import kolekcje_i_algorytmy.NotModifiedInterface;
 import kolekcje_i_algorytmy.RemovedInterface;
 import kolekcje_i_algorytmy.Student;
 
-public class Monitor {
+public class Monitor extends Thread{
 	private LinkedList<String> pathList=new LinkedList<String>();
 	private LinkedList<Crawler> crawlerList=new LinkedList<Crawler>();
-	private int maxThreads;
+	private int maxThreads=10;
 	
 	private List<AddedInterface> addedList=new LinkedList<AddedInterface>();
 	private List<RemovedInterface> removedList=new LinkedList<RemovedInterface>();
 	
-	private boolean isRunning;
+	private boolean isRunning=false;
 	
 	private MainGUI2 gui=new MainGUI2();
 	private Logger[] loggers=new Logger[]{
@@ -33,6 +34,8 @@ public class Monitor {
 //			new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
 			new GuiLogger(gui)
 	};
+	private ParallelLogger logger=new ParallelLogger(loggers);
+	
 	public boolean add(RemovedInterface e) {
 		return removedList.add(e);
 	}
@@ -51,10 +54,9 @@ public class Monitor {
 	}
 
 	public void setMaxThreads(int maxThreads) {
-		if (maxThreads>=0)
-			this.maxThreads = maxThreads;
-		else
-			this.maxThreads=0;
+		this.maxThreads=maxThreads;
+		if (maxThreads<0)
+			this.maxThreads = 0;
 	}
 
 	public void addPath(String path){
@@ -62,6 +64,7 @@ public class Monitor {
 	}
 	
 	public synchronized void cancel(){
+		isRunning=false;
 		for (Crawler c:crawlerList){
 			c.postCancel();
 		}
@@ -74,11 +77,32 @@ public class Monitor {
 			}
 		}
 	}
+	@Override
+	public void run(){
+		isRunning=true;
+		Iterator addedIter=addedList.iterator();
+		Iterator removedIter=removedList.iterator();
+		while (isRunning){
+			while(addedIter.hasNext()){
+				StatusStudent x=(StatusStudent)addedIter.next();
+				for (Logger y:loggers){
+					y.log(x.status, x.student);
+				}
+				addedIter.remove();
+			}
+			while (removedIter.hasNext()){
+				StatusStudent x=(StatusStudent)removedIter.next();
+				for (Logger y:loggers){
+					y.log(x.status, x.student);
+				}
+				removedIter.remove();
+			}
+		}
+	}
 
-	public void start() throws MonitorException{
+	public void start_threads() throws MonitorException{
 		if (maxThreads<pathList.size())
 			throw new MonitorException("Za malo watkow\n");
-		isRunning=true;
 		for (String path:pathList){
 			Crawler crawl=new Crawler(path,0);
 			AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
@@ -109,28 +133,29 @@ public class Monitor {
 			crawl.add(eint);
 			IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
 			crawl.add(iint);
+			AddedInterface addInner=(st)->{
+				logger.log("ADDED", st);
+			};
 			AddedInterface addint=(s)->{
-				for (Logger log:loggers){
-					log.log("ADDED",s);	
-				}
+				addedList.add(addInner);
 			};
 			crawl.add(addint);
-			RemovedInterface remint=(s)->{
-				for (Logger log:loggers){
-					log.log("REMOVED",s);	
-				}
+			RemovedInterface remInner=(st)->{
+				logger.log("REMOVED", st);
 			};
-			crawl.add(remint);
+			RemovedInterface remint=(s)->{
+				removedList.add(remInner);
+			};
 			NotModifiedInterface nonint=(s)->{
-				for (Logger log:loggers){
-					log.log("NOT MODIFIED",s);	
-				}
+				logger.log("NOT MODIFIED", s);
 			};
 			crawl.add(nonint);
+			crawl.add(remint);
+			
 			crawl.start();
 			crawlerList.add(crawl);
-
 		}
+		this.start();
 		Application.launch(gui.getClass());
 	}
 
