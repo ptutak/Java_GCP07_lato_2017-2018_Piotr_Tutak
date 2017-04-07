@@ -10,10 +10,10 @@ public class Crawler extends Thread {
 	private int iteration=0;
 	private int maxIter;
 	private String path;
-	private List<AInterface> addedList=new LinkedList<AInterface>();
+	private List<AddedInterface> addedList=new LinkedList<AddedInterface>();
 	private List<IterInterface> iterList=new LinkedList<IterInterface>();
-	private List<RInterface> removedList=new LinkedList<RInterface>();
-	private List<NInterface> notModifiedList=new LinkedList<NInterface>();
+	private List<RemovedInterface> removedList=new LinkedList<RemovedInterface>();
+	private List<NotModifiedInterface> notModifiedList=new LinkedList<NotModifiedInterface>();
 	private List<ExtractInterface> extractList=new LinkedList<ExtractInterface>();
 	private List<AgeInterface> ageList=new LinkedList<AgeInterface>();
 	private List<MarkInterface> markList=new LinkedList<MarkInterface>();
@@ -27,13 +27,13 @@ public class Crawler extends Thread {
 		isRunning=false;
 	}
 
-	public boolean add(RInterface e) {
+	public boolean add(RemovedInterface e) {
 		return removedList.add(e);
 	}
-	public boolean add(NInterface e) {
+	public boolean add(NotModifiedInterface e) {
 		return notModifiedList.add(e);
 	}
-	public boolean add(AInterface e) {
+	public boolean add(AddedInterface e) {
 		return addedList.add(e);
 	}
 	public boolean add(IterInterface arg0) {
@@ -49,13 +49,13 @@ public class Crawler extends Thread {
 		return markList.add(e);
 	}
 
-	public boolean remove(AInterface arg0) {
+	public boolean remove(AddedInterface arg0) {
 		return addedList.remove(arg0);
 	}
-	public boolean remove(RInterface arg0) {
+	public boolean remove(RemovedInterface arg0) {
 		return removedList.remove(arg0);
 	}
-	public boolean remove(NInterface arg0) {
+	public boolean remove(NotModifiedInterface arg0) {
 		return notModifiedList.remove(arg0);
 	}
 	public boolean remove(IterInterface arg0) {
@@ -147,18 +147,18 @@ public class Crawler extends Thread {
 	}
 
 	private void notModified(Student x){
-		for (NInterface i:notModifiedList){
+		for (NotModifiedInterface i:notModifiedList){
 			i.handled(x);
 		}
 	}
 
 	private void added(Student x){
-		for (AInterface i:addedList){
+		for (AddedInterface i:addedList){
 			i.handled(x);
 		}		
 	}
 	private void removed(Student x){
-		for (RInterface i:removedList){
+		for (RemovedInterface i:removedList){
 			i.handled(x);
 		}		
 	}	
@@ -245,19 +245,19 @@ public class Crawler extends Thread {
 		crawl.add(eint);
 		IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
 		crawl.add(iint);
-		AInterface addint=(s)->{
+		AddedInterface addint=(s)->{
 			for (Logger log:loggers){
 				log.log("ADDED",s);
 			}
 		};
 		crawl.add(addint);
-		RInterface remint=(s)->{
+		RemovedInterface remint=(s)->{
 			for (Logger log:loggers){
 				log.log("REMOVED",s);
 			}
 		};
 		crawl.add(remint);
-		NInterface nonint=(s)->{
+		NotModifiedInterface nonint=(s)->{
 			for (Logger log:loggers){
 				log.log("NOT MODIFIED",s);
 			}

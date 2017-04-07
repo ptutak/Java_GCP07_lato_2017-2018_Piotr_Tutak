@@ -1,5 +1,5 @@
 package kolekcje_i_algorytmy;
 
-public interface RInterface {
+public interface RemovedInterface {
 	void handled (Student x);
 }

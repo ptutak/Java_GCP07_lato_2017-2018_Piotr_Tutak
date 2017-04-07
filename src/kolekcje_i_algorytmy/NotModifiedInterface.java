@@ -1,5 +1,5 @@
 package kolekcje_i_algorytmy;
 
-public interface NInterface {
+public interface NotModifiedInterface {
 	void handled (Student x);
 }

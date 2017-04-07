@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import kolekcje_i_algorytmy.AInterface;
+import kolekcje_i_algorytmy.AddedInterface;
 import kolekcje_i_algorytmy.AgeInterface;
 import kolekcje_i_algorytmy.ConsoleLogger;
 import kolekcje_i_algorytmy.Crawler;
@@ -19,8 +19,8 @@ import kolekcje_i_algorytmy.IterInterface;
 import kolekcje_i_algorytmy.Logger;
 import kolekcje_i_algorytmy.MailLogger;
 import kolekcje_i_algorytmy.MarkInterface;
-import kolekcje_i_algorytmy.NInterface;
-import kolekcje_i_algorytmy.RInterface;
+import kolekcje_i_algorytmy.NotModifiedInterface;
+import kolekcje_i_algorytmy.RemovedInterface;
 import kolekcje_i_algorytmy.Student;
 
 public class MainGUI extends Application {
@@ -114,21 +114,21 @@ public class MainGUI extends Application {
 				crawl.add(eint);
 				IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
 				crawl.add(iint);
-				AInterface addint=(s)->{
+				AddedInterface addint=(s)->{
 					for (Logger log:loggers){
 							log.log("ADDED",s);	
 						
 					}
 				};
 				crawl.add(addint);
-				RInterface remint=(s)->{
+				RemovedInterface remint=(s)->{
 					for (Logger log:loggers){
 							log.log("REMOVED",s);	
 						
 					}
 				};
 				crawl.add(remint);
-				NInterface nonint=(s)->{
+				NotModifiedInterface nonint=(s)->{
 					for (Logger log:loggers){
 							log.log("NOT MODIFIED",s);	
 						
