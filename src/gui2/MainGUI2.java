@@ -139,9 +139,7 @@ public class MainGUI2 extends Application {
 				}
 			};
 			crawl.add(nonint);
-			try{
-				crawl.run();
-			} catch (CrawlerException e){e.printStackTrace();}
+			crawl.run();
 		}});
 		crawlLogger.start();
 		Application.launch(gui.getClass());

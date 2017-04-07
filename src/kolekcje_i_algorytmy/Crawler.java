@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class Crawler {
+public class Crawler extends Thread {
 
 	private int iteration=0;
 	private int maxIter;
@@ -17,9 +17,15 @@ public class Crawler {
 	private List<ExtractInterface> extractList=new LinkedList<ExtractInterface>();
 	private List<AgeInterface> ageList=new LinkedList<AgeInterface>();
 	private List<MarkInterface> markList=new LinkedList<MarkInterface>();
-	
+
 	private Set<Student> studentsPrev=new HashSet<Student>();
 	private List<Student> studentsList=null;
+	
+	private boolean isRunning;
+	
+	public synchronized void postCancel(){
+		isRunning=false;
+	}
 
 	public boolean add(RInterface e) {
 		return removedList.add(e);
@@ -76,7 +82,7 @@ public class Crawler {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
+
 	public Crawler(String path,int maxIter){
 		this.path=path;
 		this.maxIter=maxIter;
@@ -139,7 +145,7 @@ public class Crawler {
 		}
 		return ret;
 	}
-	
+
 	private void notModified(Student x){
 		for (NInterface i:notModifiedList){
 			i.handled(x);
@@ -156,49 +162,55 @@ public class Crawler {
 			i.handled(x);
 		}		
 	}	
-	
-	public void run() throws CrawlerException{
-	while (true){
-		if (path==null)
-			throw new CrawlerException("Nie zdefiniowana sciezka path");
-		try{
-			studentsList = StudentsParser.parse( new URL(path));
-		} catch (IOException e) {e.printStackTrace();}
-		for (Student x:studentsList){
-			if (studentsPrev.contains(x)){
-				notModified(x);
-			} else {
-				added(x);
+
+	public void run() {
+		isRunning=true;
+		while (isRunning){
+			try{
+				if (path==null)
+					throw new CrawlerException("Nie zdefiniowana sciezka path");
+				try{
+					studentsList = StudentsParser.parse( new URL(path));
+				} catch (IOException e) {e.printStackTrace();}
+				for (Student x:studentsList){
+					if (studentsPrev.contains(x)){
+						notModified(x);
+					} else {
+						added(x);
+					}
+				}
+				for (Student x:studentsPrev){
+					if (!studentsList.contains(x)){
+						removed(x);
+					}
+				}
+				for (IterInterface x:iterList)
+					x.handled(iteration);
+				for (ExtractInterface x:extractList)
+					x.handled(extractStudents(OrderMode.MARK),OrderMode.MARK);
+				for (AgeInterface x:ageList)
+					x.handled(extractAge(ExtremumMode.MIN), extractAge(ExtremumMode.MAX));
+				for (MarkInterface x:markList)
+					x.handled(extractMark(ExtremumMode.MIN), extractMark(ExtremumMode.MAX));
+
+				studentsPrev=new HashSet<Student>();
+				for (Student x:studentsList)
+					studentsPrev.add(x);
+				try{
+					Thread.sleep(10000);
+				} catch (InterruptedException e){e.printStackTrace();}
+				iteration+=1;
+				if (iteration==maxIter)
+					break;
+			} catch (CrawlerException e){
+				e.printStackTrace();
+				isRunning=false;
 			}
 		}
-		for (Student x:studentsPrev){
-			if (!studentsList.contains(x)){
-				removed(x);
-			}
-		}
-		for (IterInterface x:iterList)
-			x.handled(iteration);
-		for (ExtractInterface x:extractList)
-			x.handled(extractStudents(OrderMode.MARK),OrderMode.MARK);
-		for (AgeInterface x:ageList)
-			x.handled(extractAge(ExtremumMode.MIN), extractAge(ExtremumMode.MAX));
-		for (MarkInterface x:markList)
-			x.handled(extractMark(ExtremumMode.MIN), extractMark(ExtremumMode.MAX));
-		
-		studentsPrev=new HashSet<Student>();
-		for (Student x:studentsList)
-			studentsPrev.add(x);
-		try{
-			Thread.sleep(10000);
-		} catch (InterruptedException e){e.printStackTrace();}
-		iteration+=1;
-		if (iteration==maxIter)
-			break;
 	}
-	}
-	
+
 	public static void main(String[] args){
-		
+
 		final Logger[] loggers=new Logger[]{
 				new ConsoleLogger(),
 				new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test")
@@ -251,10 +263,8 @@ public class Crawler {
 			}
 		};
 		crawl.add(nonint);
-		try{
-			crawl.run();
-		} catch (CrawlerException e){e.printStackTrace();}
+		crawl.run();
 	}
-	
-	
+
+
 }
