@@ -3,6 +3,8 @@ package wspolbieznosc;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import gui1.GuiLogger;
 import gui2.MainGUI2;
 import javafx.application.Application;
@@ -36,17 +38,11 @@ public class Monitor extends Thread{
 	};
 	private ParallelLogger logger=new ParallelLogger(loggers);
 	
-	public boolean add(RemovedInterface e) {
+	private boolean add(RemovedInterface e) {
 		return removedList.add(e);
 	}
-	public boolean add(AddedInterface e) {
+	private boolean add(AddedInterface e) {
 		return addedList.add(e);
-	}
-	public boolean remove(AddedInterface arg0) {
-		return addedList.remove(arg0);
-	}
-	public boolean remove(RemovedInterface arg0) {
-		return removedList.remove(arg0);
 	}
 	
 	public int getMaxThreads() {
@@ -76,25 +72,28 @@ public class Monitor extends Thread{
 				e.printStackTrace();
 			}
 		}
+		logger.cancel();
+		try {
+			logger.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@Override
 	public void run(){
 		isRunning=true;
-		Iterator addedIter=addedList.iterator();
-		Iterator removedIter=removedList.iterator();
 		while (isRunning){
+			Iterator<AddedInterface> addedIter=addedList.iterator();
+			Iterator<RemovedInterface> removedIter=removedList.iterator();
 			while(addedIter.hasNext()){
-				StatusStudent x=(StatusStudent)addedIter.next();
-				for (Logger y:loggers){
-					y.log(x.status, x.student);
-				}
+				AddedInterface x=(AddedInterface)addedIter.next();
+				
 				addedIter.remove();
 			}
 			while (removedIter.hasNext()){
-				StatusStudent x=(StatusStudent)removedIter.next();
-				for (Logger y:loggers){
-					y.log(x.status, x.student);
-				}
+				RemovedInterface x=(RemovedInterface)removedIter.next();
+		
 				removedIter.remove();
 			}
 		}
@@ -136,32 +135,57 @@ public class Monitor extends Thread{
 			AddedInterface addInner=(st)->{
 				logger.log("ADDED", st);
 			};
-			AddedInterface addint=(s)->{
+/*			AddedInterface addint=(s)->{
+				addInner.handled(s);
 				addedList.add(addInner);
 			};
-			crawl.add(addint);
+			*/
+			crawl.add(addInner);
 			RemovedInterface remInner=(st)->{
 				logger.log("REMOVED", st);
 			};
-			RemovedInterface remint=(s)->{
+/*			RemovedInterface remint=(s)->{
+				remInner.handled(s);
 				removedList.add(remInner);
 			};
+			*/
 			NotModifiedInterface nonint=(s)->{
 				logger.log("NOT MODIFIED", s);
 			};
 			crawl.add(nonint);
-			crawl.add(remint);
+			crawl.add(remInner);
 			
 			crawl.start();
 			crawlerList.add(crawl);
 		}
+		logger.start();
 		this.start();
+		
 		Application.launch(gui.getClass());
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
+		Monitor monitor=new Monitor();
+		monitor.addPath(tmp);
+		
+		Thread monitThread=new Thread(new Runnable(){public void run(){
+			try {
+				monitor.start_threads();
+			} catch (MonitorException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}});
+		monitThread.start();
+		try {
+			TimeUnit.SECONDS.sleep(30);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		monitor.cancel();
 	}
 
 }

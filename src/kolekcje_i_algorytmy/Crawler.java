@@ -161,8 +161,8 @@ public class Crawler extends Thread {
 		for (RemovedInterface i:removedList){
 			i.handled(x);
 		}		
-	}	
-
+	}
+	@Override
 	public void run() {
 		isRunning=true;
 		while (isRunning){

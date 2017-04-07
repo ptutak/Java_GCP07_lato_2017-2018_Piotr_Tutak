@@ -11,21 +11,28 @@ public class ParallelLogger extends Thread implements Logger {
 	private LinkedList<StatusStudent> statList=new LinkedList<StatusStudent>();
 
 	private Logger[] loggers;
+	
+	private boolean isRunning=false;
 
+	public synchronized void cancel(){
+		isRunning=false;
+	}
 	public ParallelLogger(Logger[] loggers){
 		this.loggers=loggers;
 	}
 
 	public void run(){
-		Iterator p=statList.iterator();
-		while (true)
-			while(p.hasNext()){
-				StatusStudent x=(StatusStudent)p.next();
-				for (Logger y:loggers){
-					y.log(x.status, x.student);
+		isRunning=true;
+		while (isRunning){
+			
+			for (StatusStudent s: (LinkedList<StatusStudent>)statList.clone()){
+				statList.remove(s);
+				for (Logger x:loggers){
+					x.log(s.status, s.student);
 				}
-				p.remove();
 			}
+		}
+			
 	}
 
 	@Override
