@@ -158,17 +158,26 @@ public class Monitor extends Thread{
 			crawl.start();
 			crawlerList.add(crawl);
 		}
+		Thread guiThread=new Thread(new Runnable(){public void run(){
+			Application.launch(gui.getClass());
+		}});
+		guiThread.start();
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.start();
-		this.start();
-		
-		Application.launch(gui.getClass());
+		this.start();	
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
 		Monitor monitor=new Monitor();
-		monitor.addPath(tmp);
+		for (int i=0;i<10;++i)
+			monitor.addPath(tmp);
 		
 		Thread monitThread=new Thread(new Runnable(){public void run(){
 			try {

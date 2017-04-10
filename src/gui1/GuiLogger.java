@@ -33,7 +33,7 @@ public class GuiLogger implements Logger {
 		}});
 		
 	}
-	else{
+	if (gui2!=null){
 		Platform.runLater(new Runnable(){public void run(){
 		switch (status){
 
