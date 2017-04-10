@@ -162,12 +162,14 @@ public class Monitor extends Thread{
 			Application.launch(gui.getClass());
 		}});
 		guiThread.start();
+		
 		try {
 			TimeUnit.SECONDS.sleep(3);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		logger.start();
 		this.start();	
 	}
@@ -179,15 +181,14 @@ public class Monitor extends Thread{
 		for (int i=0;i<10;++i)
 			monitor.addPath(tmp);
 		
-		Thread monitThread=new Thread(new Runnable(){public void run(){
-			try {
-				monitor.start_threads();
-			} catch (MonitorException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}});
-		monitThread.start();
+//		Thread monitThread=new Thread(new Runnable(){public void run(){	}});
+//		monitThread.start();
+		try {
+			monitor.start_threads();
+		} catch (MonitorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			TimeUnit.SECONDS.sleep(30);
 		} catch (InterruptedException e) {
