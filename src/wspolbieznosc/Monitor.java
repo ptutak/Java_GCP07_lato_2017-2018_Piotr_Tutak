@@ -38,10 +38,10 @@ public class Monitor extends Thread{
 	};
 	private ParallelLogger logger=new ParallelLogger(loggers);
 	
-	private boolean add(RemovedInterface e) {
+	public boolean add(RemovedInterface e) {
 		return removedList.add(e);
 	}
-	private boolean add(AddedInterface e) {
+	public boolean add(AddedInterface e) {
 		return addedList.add(e);
 	}
 	
@@ -60,6 +60,7 @@ public class Monitor extends Thread{
 	}
 	
 	public synchronized void cancel(){
+
 		isRunning=false;
 		for (Crawler c:crawlerList){
 			c.postCancel();
@@ -68,17 +69,10 @@ public class Monitor extends Thread{
 			try {
 				c.join();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
+		crawlerList.clear();
 		logger.cancel();
-		try {
-			logger.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	@Override
 	public void run(){
@@ -171,7 +165,7 @@ public class Monitor extends Thread{
 		}
 		
 		logger.start();
-		this.start();	
+//		this.start();	
 	}
 
 	public static void main(String[] args) {
