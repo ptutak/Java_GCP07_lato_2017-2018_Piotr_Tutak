@@ -20,15 +20,13 @@ import kolekcje_i_algorytmy.NotModifiedInterface;
 import kolekcje_i_algorytmy.RemovedInterface;
 import kolekcje_i_algorytmy.Student;
 
-public class Monitor extends Thread{
+public class Monitor {
 	private LinkedList<String> pathList=new LinkedList<String>();
 	private LinkedList<Crawler> crawlerList=new LinkedList<Crawler>();
 	private int maxThreads=10;
 	
 	private List<AddedInterface> addedList=new LinkedList<AddedInterface>();
 	private List<RemovedInterface> removedList=new LinkedList<RemovedInterface>();
-	
-	private boolean isRunning=false;
 	
 	private MainGUI2 gui=new MainGUI2();
 	private Logger[] loggers=new Logger[]{
@@ -38,11 +36,23 @@ public class Monitor extends Thread{
 	};
 	private ParallelLogger logger=new ParallelLogger(loggers);
 	
-	public boolean add(RemovedInterface e) {
+	public synchronized boolean add(RemovedInterface e) {
 		return removedList.add(e);
 	}
-	public boolean add(AddedInterface e) {
+	public synchronized boolean add(AddedInterface e) {
 		return addedList.add(e);
+	}
+	
+	private synchronized void addedFire(Student student){
+		for (AddedInterface x:addedList){
+			x.handled(student);
+		}
+	}
+	
+	private synchronized void removedFire(Student student){
+		for (RemovedInterface x:removedList){
+			x.handled(student);
+		}
 	}
 	
 	public int getMaxThreads() {
@@ -61,7 +71,6 @@ public class Monitor extends Thread{
 	
 	public synchronized void cancel(){
 
-		isRunning=false;
 		for (Crawler c:crawlerList){
 			c.postCancel();
 		}
@@ -74,28 +83,20 @@ public class Monitor extends Thread{
 		crawlerList.clear();
 		logger.cancel();
 	}
-	@Override
-	public void run(){
-		isRunning=true;
-		while (isRunning){
-			Iterator<AddedInterface> addedIter=addedList.iterator();
-			Iterator<RemovedInterface> removedIter=removedList.iterator();
-			while(addedIter.hasNext()){
-				AddedInterface x=(AddedInterface)addedIter.next();
-				
-				addedIter.remove();
-			}
-			while (removedIter.hasNext()){
-				RemovedInterface x=(RemovedInterface)removedIter.next();
-		
-				removedIter.remove();
-			}
-		}
-	}
 
 	public void start_threads() throws MonitorException{
 		if (maxThreads<pathList.size())
-			throw new MonitorException("Za malo watkow\n");
+			throw new MonitorException("Za malo watkow dla liczby sciezek\n");
+		if (maxThreads<=crawlerList.size())
+			throw new MonitorException("Za duzo dzialajacych watkow\n");
+		AddedInterface addInner=(st)->{
+			logger.log("ADDED", st);
+		};
+		addedList.add(addInner);
+		RemovedInterface remInner=(st)->{
+			logger.log("REMOVED", st);
+		};
+		removedList.add(remInner);
 		for (String path:pathList){
 			Crawler crawl=new Crawler(path,0);
 			AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
@@ -126,28 +127,18 @@ public class Monitor extends Thread{
 			crawl.add(eint);
 			IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
 			crawl.add(iint);
-			AddedInterface addInner=(st)->{
-				logger.log("ADDED", st);
-			};
-/*			AddedInterface addint=(s)->{
-				addInner.handled(s);
-				addedList.add(addInner);
-			};
-			*/
-			crawl.add(addInner);
-			RemovedInterface remInner=(st)->{
-				logger.log("REMOVED", st);
-			};
-/*			RemovedInterface remint=(s)->{
-				remInner.handled(s);
-				removedList.add(remInner);
-			};
-			*/
+
+			crawl.add((AddedInterface)(s)->{
+				addedFire(s);
+			});
+
 			NotModifiedInterface nonint=(s)->{
 				logger.log("NOT MODIFIED", s);
 			};
 			crawl.add(nonint);
-			crawl.add(remInner);
+			crawl.add((RemovedInterface)(s)->{
+				removedFire(s);
+			});
 			
 			crawl.start();
 			crawlerList.add(crawl);
@@ -165,19 +156,17 @@ public class Monitor extends Thread{
 		}
 		
 		logger.start();
-//		this.start();	
+
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
 		Monitor monitor=new Monitor();
 		for (int i=0;i<10;++i)
 			monitor.addPath(tmp);
 		
-//		Thread monitThread=new Thread(new Runnable(){public void run(){	}});
-//		monitThread.start();
 		try {
+			monitor.start_threads();
 			monitor.start_threads();
 		} catch (MonitorException e) {
 			// TODO Auto-generated catch block

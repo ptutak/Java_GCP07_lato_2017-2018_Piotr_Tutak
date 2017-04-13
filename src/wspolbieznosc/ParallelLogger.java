@@ -51,7 +51,8 @@ public class ParallelLogger implements Logger {
 		public void run(){
 			isRunning=true;
 			while (isRunning){
-				for (StatusStudent s: (LinkedList<StatusStudent>)statList.clone()){
+				LinkedList<StatusStudent> clone = (LinkedList<StatusStudent>)statList.clone();
+				for (StatusStudent s: clone){
 					statList.remove(s);
 					for (Logger x:loggers){
 						x.log(s.status, s.student);
