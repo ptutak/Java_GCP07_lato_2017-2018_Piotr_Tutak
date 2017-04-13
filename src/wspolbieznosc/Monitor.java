@@ -1,6 +1,5 @@
 package wspolbieznosc;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -55,17 +54,17 @@ public class Monitor {
 		}
 	}
 	
-	public int getMaxThreads() {
+	public synchronized int getMaxThreads() {
 		return maxThreads;
 	}
 
-	public void setMaxThreads(int maxThreads) {
+	public synchronized void setMaxThreads(int maxThreads) {
 		this.maxThreads=maxThreads;
 		if (maxThreads<0)
 			this.maxThreads = 0;
 	}
 
-	public void addPath(String path){
+	public synchronized void addPath(String path){
 		pathList.add(path);
 	}
 	
@@ -84,7 +83,7 @@ public class Monitor {
 		logger.cancel();
 	}
 
-	public void start_threads() throws MonitorException{
+	public synchronized void start_threads() throws MonitorException{
 		if (maxThreads<pathList.size())
 			throw new MonitorException("Za malo watkow dla liczby sciezek\n");
 		if (maxThreads<=crawlerList.size())
@@ -101,8 +100,10 @@ public class Monitor {
 			Crawler crawl=new Crawler(path,0);
 			AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
 			crawl.add(aint);
+
 			MarkInterface mint=(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
 			crawl.add(mint);
+
 			ExtractInterface eint=(list,mode)->{
 				String m=new String();
 				switch(mode){
@@ -125,6 +126,7 @@ public class Monitor {
 				}
 			};
 			crawl.add(eint);
+
 			IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
 			crawl.add(iint);
 
@@ -136,6 +138,7 @@ public class Monitor {
 				logger.log("NOT MODIFIED", s);
 			};
 			crawl.add(nonint);
+
 			crawl.add((RemovedInterface)(s)->{
 				removedFire(s);
 			});
@@ -147,14 +150,11 @@ public class Monitor {
 			Application.launch(gui.getClass());
 		}});
 		guiThread.start();
-		
 		try {
 			TimeUnit.SECONDS.sleep(3);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		logger.start();
 
 	}

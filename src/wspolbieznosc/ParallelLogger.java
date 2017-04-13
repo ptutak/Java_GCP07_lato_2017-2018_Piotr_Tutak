@@ -1,6 +1,5 @@
 package wspolbieznosc;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import kolekcje_i_algorytmy.Logger;
