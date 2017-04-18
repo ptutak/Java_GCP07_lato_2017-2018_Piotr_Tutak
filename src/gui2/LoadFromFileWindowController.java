@@ -43,7 +43,7 @@ public class LoadFromFileWindowController {
 		this.loginScene = loginScene;
 	}
 	
-	void loadDataButtonClick(){
+	@FXML public void loadDataButtonClick(){
 		LogPass logPass=new LogPass();
 		Properties properties=new Properties();
 		InputStream input = null;
@@ -64,6 +64,7 @@ public class LoadFromFileWindowController {
 			if (logPassList.contains(logPass)){
 				for (LogPass x:logPassList){
 					if (x.equals(logPass) && x.getPassword().equals(logPass.getPassword())){
+						textField.setText("");
 						stage.setScene(mainWindowScene);
 					}
 				}
@@ -88,7 +89,7 @@ public class LoadFromFileWindowController {
 		
 	}
 	
-	void cancelButtonClick(){
+	@FXML public void cancelButtonClick(){
 		textField.setText("");
 		stage.setScene(loginScene);
 	}

@@ -63,6 +63,8 @@ public class MainGUI2 extends Application {
 		loadFromFileWindowController.setMainWindowScene(mainScene);
 		loadFromFileWindowController.setLoginScene(loginScene);
 		loadFromFileWindowController.setStage(stage);
+		Scene loadFromFileScene=new Scene(loadFromFileNode);
+		loginWindowController.setLoadFromFileScene(loadFromFileScene);
 		
 		stage.setScene(loginScene);
 		stage.show();

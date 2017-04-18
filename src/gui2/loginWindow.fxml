@@ -13,6 +13,6 @@
       <Button fx:id="loginButton" layoutX="203.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#loginButtonClick" text="Login" />
       <Button fx:id="newUserButton" layoutX="275.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#newUserButtonClick" text="New User" />
       <Label fx:id="infoLabel" layoutX="255.0" layoutY="84.0" text="Sign In:" />
-      <Button fx:id="loadFromFileButton" layoutX="375.0" layoutY="240.0" mnemonicParsing="false" text="Load From File" />
+      <Button fx:id="loadFromFileButton" layoutX="375.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#loadFromFileButtonClick" text="Load From File" />
    </children>
 </AnchorPane>

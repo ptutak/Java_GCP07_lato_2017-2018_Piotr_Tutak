@@ -1,6 +1,10 @@
 package gui2;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.LinkedList;
+import java.util.Properties;
 
 import io_serializacja.HashPass;
 import javafx.collections.FXCollections;
@@ -49,13 +53,36 @@ public class NewUserWindowController {
 		try{
 			age=Integer.parseInt(ageTextField.getText());	
 		} catch(NumberFormatException e){
-			infoLabel.setText("Wrong Age");
 		}
 		tmp.setAge(age);
 		tmp.setSex((String)sexChoiceBox.getValue());
 		tmp.setLocation(locationTextField.getText());
 		if (!logPassList.contains(tmp) && !tmp.getLogin().equals("")){
 			logPassList.add(tmp);
+
+			Properties prop=new Properties();
+			prop.setProperty("login", tmp.getLogin());
+			prop.setProperty("password", tmp.getPassword());
+			prop.setProperty("age", Integer.toString(tmp.getAge()));
+			prop.setProperty("sex", tmp.getSex());
+			prop.setProperty("location", tmp.getLocation());
+			
+			OutputStream output = null;
+
+			try {
+				output = new FileOutputStream("last-created-user.txt");
+				prop.store(output, null);
+			} catch (IOException io) {
+				io.printStackTrace();
+			} finally {
+				if (output != null) {
+					try {
+						output.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			clearButtonClick();
 			stage.setScene(loginScene);
 		} else{
@@ -78,6 +105,7 @@ public class NewUserWindowController {
 
 	@FXML public void initialize(){
 		sexChoiceBox.setItems(FXCollections.observableArrayList("Male","Female"));
+		sexChoiceBox.setValue("Male");
 
 	}
 
