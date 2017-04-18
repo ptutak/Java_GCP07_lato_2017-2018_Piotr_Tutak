@@ -3,6 +3,7 @@ package gui2;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import io_serializacja.HashPass;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -42,7 +43,8 @@ public class LoginWindowController {
 
 	public void loginButtonClick(){
 		temp.setLogin(loginTextField.getText());
-		temp.setPassword(passwordTextField.getText());
+		HashPass hash=new HashPass();
+		temp.setPassword(hash.toHash(passwordTextField.getText()));
 		if (logPassList.contains(temp)){
 			for (LogPass x:logPassList){
 				if (x.equals(temp) && x.getPassword().equals(temp.getPassword())){

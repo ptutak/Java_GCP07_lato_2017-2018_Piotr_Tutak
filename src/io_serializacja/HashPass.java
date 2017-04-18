@@ -3,7 +3,7 @@ package io_serializacja;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5HashPass {
+public class HashPass {
 	
 	public String toHash(String passwordToHash){
 		String generatedPassword=null;
@@ -23,6 +23,6 @@ public class MD5HashPass {
         return generatedPassword;
 	}
 	
-    public static void main(String[] args) {
+	public static void main(String[] args) {
    }
 }

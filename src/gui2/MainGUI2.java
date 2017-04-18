@@ -29,6 +29,7 @@ public class MainGUI2 extends Application {
 	private static BorderPaneController borderPaneController;
 	private LoginWindowController loginWindowController;
 	private NewUserWindowController newUserWindowController;
+	private LoadFromFileWindowController loadFromFileWindowController;
 	private LinkedList<LogPass> logPassList=new LinkedList<LogPass>();
 	
 	@Override
@@ -53,8 +54,15 @@ public class MainGUI2 extends Application {
 		newUserWindowController.setLoginScene(loginScene);
 		newUserWindowController.setLogPassList(logPassList);
 		Scene newUserScene=new Scene(newUserNode);
-		
 		loginWindowController.setNewUserScene(newUserScene);
+		
+		FXMLLoader loaderLoadFromFile=new FXMLLoader(this.getClass().getResource("loadFromFileWindow.fxml"));
+		Parent loadFromFileNode=loaderLoadFromFile.load();
+		loadFromFileWindowController=loaderLoadFromFile.getController();
+		loadFromFileWindowController.setLogPassList(logPassList);
+		loadFromFileWindowController.setMainWindowScene(mainScene);
+		loadFromFileWindowController.setLoginScene(loginScene);
+		loadFromFileWindowController.setStage(stage);
 		
 		stage.setScene(loginScene);
 		stage.show();

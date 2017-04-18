@@ -4,7 +4,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui2.LoginWindowController">
    <children>
       <Label layoutX="137.0" layoutY="138.0" prefHeight="17.0" prefWidth="43.0" text="Login:" />
@@ -14,5 +13,6 @@
       <Button fx:id="loginButton" layoutX="203.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#loginButtonClick" text="Login" />
       <Button fx:id="newUserButton" layoutX="275.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#newUserButtonClick" text="New User" />
       <Label fx:id="infoLabel" layoutX="255.0" layoutY="84.0" text="Sign In:" />
+      <Button fx:id="loadFromFileButton" layoutX="375.0" layoutY="240.0" mnemonicParsing="false" text="Load From File" />
    </children>
 </AnchorPane>

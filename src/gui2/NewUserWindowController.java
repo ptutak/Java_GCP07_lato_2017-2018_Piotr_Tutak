@@ -2,6 +2,7 @@ package gui2;
 
 import java.util.LinkedList;
 
+import io_serializacja.HashPass;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -40,9 +41,10 @@ public class NewUserWindowController {
 	}
 	
 	public void newUserButtonClick(){
+		HashPass hash=new HashPass();
 		LogPass tmp=new LogPass();
+		tmp.setPassword(hash.toHash(passwordTextField.getText()));
 		tmp.setLogin(loginTextField.getText());
-		tmp.setPassword(passwordTextField.getText());
 		int age=0;
 		try{
 			age=Integer.parseInt(ageTextField.getText());	
