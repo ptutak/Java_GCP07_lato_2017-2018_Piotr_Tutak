@@ -33,12 +33,16 @@ public class CompressedLogger implements Logger, Closeable {
 		// TODO Auto-generated method stub
 		if (zipOutputStream!=null)
 			zipOutputStream.close();
+		if (fileOutputStream!=null)
+			fileOutputStream.close();
+		zipOutputStream=null;
+		fileOutputStream=null;
 	}
 
 	@Override
 	public synchronized void log(String status, Student student) {
 		String tempFileName=fileNameFormat.format(new Date())+".txt";
-		FileInputStream fileInput;
+		FileInputStream fileInput=null;
 		File file=null;
 		try {
 			textLogger=new TextLogger(tempFileName,false);
@@ -66,6 +70,11 @@ public class CompressedLogger implements Logger, Closeable {
 			if (file!=null)
 				if (file.exists())
 					file.delete();
+			file=null;
+			try{
+				if (fileInput!=null)
+					fileInput.close();
+			} catch (IOException e){}
 		}
 
 

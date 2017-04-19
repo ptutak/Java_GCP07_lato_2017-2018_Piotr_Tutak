@@ -58,8 +58,13 @@ public class LoggedStudent extends Student implements Serializable {
 	}
 
 
-	public synchronized void setStatus(Status status) {
-		this.status = status;
+	public synchronized void setStatus(String status) {
+		if (status.equals("REMOVED"))
+			this.status=Status.REMOVED;
+		else if (status.equals("ADDED"))
+			this.status=Status.ADDED;
+		else if (status.equals("NOT MODIFIED"))
+			this.status=Status.NOT_MODIFIED;
 	}
 	
 	
