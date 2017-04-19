@@ -10,45 +10,47 @@ public class GuiLogger implements Logger {
 	MainGUI2 gui2;
 	public GuiLogger(MainGUI gui){
 		this.gui=gui;
+		this.gui2=null;
 	}
 	public GuiLogger(MainGUI2 gui2){
 		this.gui2=gui2;
+		this.gui=null;
 	}
 	@Override
 	public void log(String status, Student student) {
 		if (gui!=null){
-		Platform.runLater(new Runnable(){public void run(){
-		switch (status){
+			Platform.runLater(new Runnable(){public void run(){
+				switch (status){
 
-		case "ADDED":
-			gui.addStudent(student);
-			break;
-		case "REMOVED":
-			gui.removeStudent(student);
-			break;
-		case "NOT MODIFIED":
-			gui.notModifiedStudent(student);
-			break;
-		}	
-		}});
-		
+				case "ADDED":
+					gui.addStudent(student);
+					break;
+				case "REMOVED":
+					gui.removeStudent(student);
+					break;
+				case "NOT MODIFIED":
+					gui.notModifiedStudent(student);
+					break;
+				}	
+			}});
+
+		}
+		if (gui2!=null){
+			Platform.runLater(new Runnable(){public void run(){
+				switch (status){
+
+				case "ADDED":
+					gui2.addStudent(student);
+					break;
+				case "REMOVED":
+					gui2.removeStudent(student);
+					break;
+				case "NOT MODIFIED":
+					gui2.notModifiedStudent(student);
+					break;
+				}	
+			}});
+		}
+
 	}
-	if (gui2!=null){
-		Platform.runLater(new Runnable(){public void run(){
-		switch (status){
-
-		case "ADDED":
-			gui2.addStudent(student);
-			break;
-		case "REMOVED":
-			gui2.removeStudent(student);
-			break;
-		case "NOT MODIFIED":
-			gui2.notModifiedStudent(student);
-			break;
-		}	
-		}});
-	}
-
-}
 }
