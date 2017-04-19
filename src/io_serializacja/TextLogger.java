@@ -13,23 +13,23 @@ import kolekcje_i_algorytmy.Student;
 
 public class TextLogger implements Logger, Closeable {
 	
-	private String filePath;
+	private String fileName;
 	private FileWriter fileWriter;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	
-	public TextLogger(String filePath, boolean appendState) throws IOException{
-		this.filePath=filePath;
-		fileWriter=new FileWriter(filePath,appendState);
+	public TextLogger(String fileName, boolean appendState) throws IOException{
+		this.fileName=fileName;
+		fileWriter=new FileWriter(fileName,appendState);
 	}
 
 	@Override
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
 		// TODO Auto-generated method stub
-		
+		fileWriter.close();
 	}
 
 	@Override
-	public void log(String status, Student student) {
+	public synchronized void log(String status, Student student) {
 		try {
 			fileWriter.write(dateFormat.format(new Date())+status+student);
 		} catch (IOException e) {
