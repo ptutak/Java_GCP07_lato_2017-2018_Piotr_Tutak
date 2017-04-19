@@ -29,7 +29,7 @@ public class ParallelLogger implements Logger {
 		
 	}
 	public ParallelLogger(Logger[] loggers){
-		this.loggers=loggers;
+		this.loggers=loggers.clone();
 	}
 	
 	public synchronized void start(){

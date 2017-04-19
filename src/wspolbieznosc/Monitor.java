@@ -34,19 +34,20 @@ public class Monitor {
 	
 	private MainGUI2 gui=new MainGUI2();
 	private Logger[] loggers;
+	private ParallelLogger logger;
 	
 	public Monitor() throws IOException{
 		loggers = new Logger[]{
 				new ConsoleLogger(),
 //					new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
 				new GuiLogger(gui),
-				new TextLogger("textLogger.txt",true),
-				new SerializedLogger("serializedLogger.bin",true),
-				new BinaryLogger("binaryLogger.bin",true),
-				new CompressedLogger("compressedLogger.zip",true)
+				new TextLogger("textLogger.txt",false),
+				new SerializedLogger("serializedLogger.bin",false),
+				new BinaryLogger("binaryLogger.bin",false),
+				new CompressedLogger("compressedLogger.zip",false)
 		};
+		logger=new ParallelLogger(loggers);
 	}
-	private ParallelLogger logger=new ParallelLogger(loggers);
 	
 	public synchronized boolean add(RemovedInterface e) {
 		return removedList.add(e);

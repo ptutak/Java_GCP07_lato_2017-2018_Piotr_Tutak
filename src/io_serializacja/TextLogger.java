@@ -38,7 +38,7 @@ public class TextLogger implements Logger, Closeable {
 	@Override
 	public synchronized void log(String status, Student student) {
 		try {
-			outputStreamWriter.write(dateFormat.format(new Date())+" "+status+" "+student);
+			outputStreamWriter.write(dateFormat.format(new Date())+" "+status+" "+student+"\n");
 			outputStreamWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
