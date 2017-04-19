@@ -1,11 +1,16 @@
 package wspolbieznosc;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import gui1.GuiLogger;
 import gui2.MainGUI2;
+import io_serializacja.BinaryLogger;
+import io_serializacja.CompressedLogger;
+import io_serializacja.SerializedLogger;
+import io_serializacja.TextLogger;
 import javafx.application.Application;
 import kolekcje_i_algorytmy.AddedInterface;
 import kolekcje_i_algorytmy.AgeInterface;
@@ -28,11 +33,19 @@ public class Monitor {
 	private List<RemovedInterface> removedList=new LinkedList<RemovedInterface>();
 	
 	private MainGUI2 gui=new MainGUI2();
-	private Logger[] loggers=new Logger[]{
-			new ConsoleLogger(),
-//			new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
-			new GuiLogger(gui)
-	};
+	private Logger[] loggers;
+	
+	public Monitor() throws IOException{
+		loggers = new Logger[]{
+				new ConsoleLogger(),
+//					new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
+				new GuiLogger(gui),
+				new TextLogger("textLogger.txt",true),
+				new SerializedLogger("serializedLogger.bin",true),
+				new BinaryLogger("binaryLogger.bin",true),
+				new CompressedLogger("compressedLogger.zip",true)
+		};
+	}
 	private ParallelLogger logger=new ParallelLogger(loggers);
 	
 	public synchronized boolean add(RemovedInterface e) {
@@ -161,12 +174,17 @@ public class Monitor {
 
 	public static void main(String[] args) {
 		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
-		Monitor monitor=new Monitor();
-		for (int i=0;i<10;++i)
+		Monitor monitor=null;
+		try {
+			monitor = new Monitor();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (int i=0;i<1;++i)
 			monitor.addPath(tmp);
 		
 		try {
-			monitor.start_threads();
 			monitor.start_threads();
 		} catch (MonitorException e) {
 			// TODO Auto-generated catch block
@@ -179,7 +197,6 @@ public class Monitor {
 			e.printStackTrace();
 		}
 		monitor.cancel();
-		
 	}
 
 }

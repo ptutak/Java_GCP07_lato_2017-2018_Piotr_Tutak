@@ -4,9 +4,7 @@ import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import gui1.GuiLogger;
-import gui1.MainGUI;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,7 +13,6 @@ import kolekcje_i_algorytmy.AddedInterface;
 import kolekcje_i_algorytmy.AgeInterface;
 import kolekcje_i_algorytmy.ConsoleLogger;
 import kolekcje_i_algorytmy.Crawler;
-import kolekcje_i_algorytmy.CrawlerException;
 import kolekcje_i_algorytmy.ExtractInterface;
 import kolekcje_i_algorytmy.IterInterface;
 import kolekcje_i_algorytmy.Logger;
@@ -85,19 +82,22 @@ public class MainGUI2 extends Application {
 	public static void main(String[] args) {
 		
 		MainGUI2 gui=new MainGUI2();
+		Logger[] loggers = new Logger[]{
+				new ConsoleLogger(),
+//					new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
+				new GuiLogger(gui)
+				//new TextLogger("textLogger.txt",true),
+				//new SerializedLogger("serializedLogger.bin",true),
+				//new BinaryLogger("binaryLogger.bin",true),
+				//new CompressedLogger("compressedLogger.zip",true)
+		};
 	    
 		Thread crawlLogger=new Thread(new Runnable(){public void run(){
 			try {
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			final Logger[] loggers=new Logger[]{
-					new ConsoleLogger(),
-//					new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
-					new GuiLogger(gui)
-			};
 			String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
 			Crawler crawl=new Crawler(tmp,0);
 			AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};

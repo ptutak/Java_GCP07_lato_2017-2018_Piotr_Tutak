@@ -23,14 +23,13 @@ public class CompressedLogger implements Logger, Closeable {
 
 	public CompressedLogger(String fileName,boolean appendMode)throws IOException{
 		this.fileName=fileName;
-		fileOutputStream=new FileOutputStream(fileName+".zip",appendMode);
+		fileOutputStream=new FileOutputStream(fileName,appendMode);
 		zipOutputStream=new ZipOutputStream(fileOutputStream);
 
 	}
 
 	@Override
 	public synchronized void close() throws IOException {
-		// TODO Auto-generated method stub
 		if (zipOutputStream!=null)
 			zipOutputStream.close();
 		if (fileOutputStream!=null)
