@@ -31,7 +31,8 @@ public class TextLogger implements Logger, Closeable {
 	@Override
 	public synchronized void log(String status, Student student) {
 		try {
-			fileWriter.write(dateFormat.format(new Date())+status+student);
+			fileWriter.write(dateFormat.format(new Date())+" "+status+" "+student);
+			fileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

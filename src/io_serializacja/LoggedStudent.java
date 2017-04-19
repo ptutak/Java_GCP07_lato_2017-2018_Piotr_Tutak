@@ -1,33 +1,47 @@
 package io_serializacja;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
 import kolekcje_i_algorytmy.Student;
 
 public class LoggedStudent extends Student implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 7429442625296900459L;
 	private long time;
 	private Status status;
+
+	
 	
 	public LoggedStudent(){
 		super();
+		time=0;
+		status=null;
 	}
 	
 
-	public LoggedStudent(long time, Status status) {
-		super();
+	public LoggedStudent(Student student,String status,long time) {
+		super(student.getFirstName(),student.getLastName(),student.getAge(),student.getMark());
 		this.time = time;
-		this.status = status;
+		if (status.equals("REMOVED"))
+			this.status=Status.REMOVED;
+		else if (status.equals("ADDED"))
+			this.status=Status.ADDED;
+		else if (status.equals("NOT MODIFIED"))
+			this.status=Status.NOT_MODIFIED;
 	}
 
 
-	public LoggedStudent(String firstName, String lastName, int age, double mark, long time, Status status) {
+	public LoggedStudent(String firstName, String lastName, int age, double mark, String status, long time) {
 		super(firstName, lastName, age, mark);
 		this.time=time;
-		this.status=status;
+		if (status.equals("REMOVED"))
+			this.status=Status.REMOVED;
+		else if (status.equals("ADDED"))
+			this.status=Status.ADDED;
+		else if (status.equals("NOT MODIFIED"))
+			this.status=Status.NOT_MODIFIED;
+		
 	}
 
 

@@ -21,21 +21,24 @@ public class CompressedLogger implements Logger, Closeable {
 	private SimpleDateFormat fileNameFormat = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss.SSS");
 	private TextLogger textLogger;
 	private ZipOutputStream zipOutputStream;
+	private FileOutputStream fileOutputStream;
 
 	public CompressedLogger(String fileName,boolean appendMode)throws IOException{
 		this.fileName=fileName;
-		zipOutputStream=new ZipOutputStream(new FileOutputStream(fileName+".zip",appendMode));
+		fileOutputStream=new FileOutputStream(fileName+".zip",appendMode);
+		zipOutputStream=new ZipOutputStream(fileOutputStream);
 
 	}
 
 	@Override
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
 		// TODO Auto-generated method stub
-		zipOutputStream.close();
+		if (zipOutputStream!=null)
+			zipOutputStream.close();
 	}
 
 	@Override
-	public void log(String status, Student student) {
+	public synchronized void log(String status, Student student) {
 		String tempFileName=fileNameFormat.format(new Date())+".txt";
 		FileInputStream fileInput;
 		File file=null;
@@ -57,9 +60,8 @@ public class CompressedLogger implements Logger, Closeable {
 			}
 			zipOutputStream.closeEntry();
 			zipOutputStream.finish();
+			zipOutputStream.flush();
 			fileInput.close();
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally{

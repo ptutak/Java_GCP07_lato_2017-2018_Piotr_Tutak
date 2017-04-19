@@ -1,7 +1,13 @@
 package io_serializacja;
 
 import java.io.Closeable;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 import kolekcje_i_algorytmy.Logger;
 import kolekcje_i_algorytmy.Student;
@@ -9,15 +15,34 @@ import kolekcje_i_algorytmy.Student;
 public class SerializedLogger implements Logger, Closeable {
 	
 	
-	@Override
-	public void close() throws IOException {
-		// TODO Auto-generated method stub
-		
+	private String fileName;
+	private ObjectOutputStream objectOutputStream;
+	private FileOutputStream fileOutputStream;
+	
+	private LinkedList<LoggedStudent> studentsList=new LinkedList<LoggedStudent>();
+	
+	public SerializedLogger(String fileName, boolean append) throws IOException {
+		this.fileName = fileName;
+		fileOutputStream=new FileOutputStream(fileName,append);
+		objectOutputStream=new ObjectOutputStream(fileOutputStream);
 	}
 
 	@Override
-	public void log(String status, Student student) {
-		// TODO Auto-generated method stub
+	public synchronized void close() throws IOException {
+		if (objectOutputStream!=null)
+			objectOutputStream.close();
+	}
+
+	@Override
+	public synchronized void log(String status, Student student) {
+		LoggedStudent tmpStudent=new LoggedStudent(student,status,new Date().getTime());
+		try {
+			objectOutputStream.writeObject(tmpStudent);
+			objectOutputStream.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
