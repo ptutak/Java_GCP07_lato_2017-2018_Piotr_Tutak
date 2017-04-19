@@ -1,14 +1,11 @@
 package io_serializacja;
 
 import java.io.Closeable;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.concurrent.TimeUnit;
-
 import kolekcje_i_algorytmy.Logger;
 import kolekcje_i_algorytmy.Student;
 
@@ -40,7 +37,6 @@ public class SerializedLogger implements Logger, Closeable {
 			objectOutputStream.writeObject(tmpStudent);
 			objectOutputStream.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

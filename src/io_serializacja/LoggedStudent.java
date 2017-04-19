@@ -1,8 +1,6 @@
 package io_serializacja;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-
 import kolekcje_i_algorytmy.Student;
 
 public class LoggedStudent extends Student implements Serializable {
