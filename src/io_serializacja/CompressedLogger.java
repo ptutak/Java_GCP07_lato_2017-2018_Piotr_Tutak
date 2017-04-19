@@ -44,7 +44,7 @@ public class CompressedLogger implements Logger, Closeable {
 		FileInputStream fileInput=null;
 		File file=null;
 		try {
-			textLogger=new TextLogger(tempFileName,false);
+			textLogger=new TextLogger(tempFileName,true);
 			textLogger.log(status, student);
 			textLogger.close();
 			file=new File(tempFileName);
@@ -60,7 +60,6 @@ public class CompressedLogger implements Logger, Closeable {
 					break;
 			}
 			zipOutputStream.closeEntry();
-			zipOutputStream.finish();
 			zipOutputStream.flush();
 			fileInput.close();
 		} catch (IOException e) {
