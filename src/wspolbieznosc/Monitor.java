@@ -95,6 +95,15 @@ public class Monitor {
 		}
 		crawlerList.clear();
 		logger.cancel();
+		try {
+			((TextLogger)loggers[2]).close();
+			((SerializedLogger)loggers[3]).close();
+			((BinaryLogger)loggers[4]).close();
+			((CompressedLogger)loggers[5]).close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public synchronized void start_threads() throws MonitorException{
