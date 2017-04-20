@@ -8,7 +8,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.layout.AnchorPane;
-import kolekcje_i_algorytmy.Student;
 
 public class CustomBarChart extends AnchorPane{
 	

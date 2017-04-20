@@ -23,13 +23,13 @@ public class GuiLogger implements Logger {
 				switch (status){
 
 				case "ADDED":
-					gui.addStudent(student);
+					MainGUI.addStudent(student);
 					break;
 				case "REMOVED":
-					gui.removeStudent(student);
+					MainGUI.removeStudent(student);
 					break;
 				case "NOT MODIFIED":
-					gui.notModifiedStudent(student);
+					MainGUI.notModifiedStudent(student);
 					break;
 				}	
 			}});
@@ -40,13 +40,13 @@ public class GuiLogger implements Logger {
 				switch (status){
 
 				case "ADDED":
-					gui2.addStudent(student);
+					MainGUI2.addStudent(student);
 					break;
 				case "REMOVED":
-					gui2.removeStudent(student);
+					MainGUI2.removeStudent(student);
 					break;
 				case "NOT MODIFIED":
-					gui2.notModifiedStudent(student);
+					MainGUI2.notModifiedStudent(student);
 					break;
 				}	
 			}});
