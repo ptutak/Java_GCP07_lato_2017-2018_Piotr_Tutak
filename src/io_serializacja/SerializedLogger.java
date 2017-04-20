@@ -1,6 +1,7 @@
 package io_serializacja;
 
 import java.io.Closeable;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,6 +29,8 @@ public class SerializedLogger implements Logger, Closeable {
 			try {
 				tmpLogStud = (LoggedStudent) objectInputStream.readObject();
 			} catch (ClassNotFoundException e) {
+				break;
+			} catch (EOFException e){
 				break;
 			}
 			studentsList.add(tmpLogStud);

@@ -66,6 +66,10 @@ public class LoggedStudent extends Student implements Serializable {
 		else if (status.equals("NOT MODIFIED"))
 			this.status=Status.NOT_MODIFIED;
 	}
+	@Override
+	public synchronized String toString(){
+		return time+" "+status+" "+super.toString();
+	}
 	
 	
 

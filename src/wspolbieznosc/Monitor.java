@@ -9,6 +9,7 @@ import gui1.GuiLogger;
 import gui2.MainGUI2;
 import io_serializacja.BinaryLogger;
 import io_serializacja.CompressedLogger;
+import io_serializacja.LoggedStudent;
 import io_serializacja.SerializedLogger;
 import io_serializacja.TextLogger;
 import javafx.application.Application;
@@ -104,6 +105,25 @@ public class Monitor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void printLists(){
+		try {
+			for (LoggedStudent x:((SerializedLogger)loggers[3]).listStudents()){
+				System.out.println(x);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+		try {
+			for (LoggedStudent x:((BinaryLogger)loggers[4]).listStudents()){
+				System.out.println(x);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 	}
 
 	public synchronized void start_threads() throws MonitorException{
@@ -207,6 +227,7 @@ public class Monitor {
 			e.printStackTrace();
 		}
 		monitor.cancel();
+		monitor.printLists();
 	}
 
 }
