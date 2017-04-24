@@ -62,7 +62,6 @@ public class StudentsStorage {
 	public void putImage(byte[] image, int index) throws IOException{
 		if (index<0 || index>20)
 			throw new IOException("wrong index");
-		raf=new RandomAccessFile(file,"rw");
 
 		fileInputStream=new FileInputStream(file);
 		dis=new DataInputStream(fileInputStream);
@@ -70,27 +69,29 @@ public class StudentsStorage {
 		dis.skip(index*12);
 		int offset=dis.readInt();
 		int size=dis.readInt();
-		
-		raf.seek(index*12+4);
-		raf.writeInt(image.length);
-		for (int i=index; i<20;++i){
-			raf.seek(i*12);
-			int off=raf.readInt();
-			raf.seek(i*12);
-			raf.writeInt(off+image.length-size);
+		int new_offset=offset-20*4;
+		int tmp=dis.readInt();
+		tmp=0;
+		int imagesSize=0;
+		for (int i=index+1;i<20;++i){
+			tmp=dis.readInt();
+			tmp=dis.readInt();
+			imagesSize+=tmp;
+			tmp=dis.readInt();
 		}
+		
+		dis.skip(new_offset+size);
+		
+		byte[] images=new byte[imagesSize];
+		if (images.length!=imagesSize)
+			System.out.println("wrong size put");
 
-		raf.seek(offset);
-		offset-=12*index+8;
-		dis.skip(offset);
-		dis.skip(size);
-		byte[] b=new byte[dis.available()];
-		dis.read(b);
-		raf.write(image);
-		raf.write(b);
-		raf.close();
 		dis.close();
 		fileInputStream.close();
+		fileOutputStream=new FileOutputStream(file);
+		dos=new DataOutputStream(fileOutputStream);
+		
+		
 	}
 	
 	public void close() throws IOException{
