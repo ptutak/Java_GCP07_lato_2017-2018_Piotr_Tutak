@@ -12,12 +12,12 @@ public class TableViewController {
 	
 	private final ObservableList<Student> studentsList=FXCollections.observableArrayList();
 	
-	@FXML private TableColumn markCol;
-	@FXML private TableColumn firstNameCol;
-	@FXML private TableColumn lastNameCol;
-	@FXML private TableColumn ageCol;
+	@FXML private TableColumn<Student,String> markCol;
+	@FXML private TableColumn<Student, String> firstNameCol;
+	@FXML private TableColumn<Student,String> lastNameCol;
+	@FXML private TableColumn<Student,String> ageCol;
 	
-	@FXML private TableView tableView;
+	@FXML private TableView<Student> tableView;
 	
 	@FXML public void initialize(){
 		tableView.setItems(studentsList);

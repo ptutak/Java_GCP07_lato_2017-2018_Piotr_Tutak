@@ -1,13 +1,10 @@
 package gui2;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import io_serializacja.HashPass;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
