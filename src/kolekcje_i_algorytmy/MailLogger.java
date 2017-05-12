@@ -1,13 +1,17 @@
 package kolekcje_i_algorytmy;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.io.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 
 
-public class MailLogger implements Logger, java.io.Serializable {
+public class MailLogger extends UnicastRemoteObject implements Logger{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7368464782243013112L;
 	String to;
 	String from;
 	String pass;
@@ -15,7 +19,7 @@ public class MailLogger implements Logger, java.io.Serializable {
 	String host;
     String msgText;
 
-    public MailLogger(String to, String from, String host, String pass){
+    public MailLogger(String to, String from, String host, String pass) throws RemoteException{
     	this.to=to;
     	this.from=from;
     	this.host=host;

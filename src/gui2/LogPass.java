@@ -1,7 +1,5 @@
 package gui2;
 
-import java.util.UUID;
-
 class LogPass {
 	private String login;
 	private String password;

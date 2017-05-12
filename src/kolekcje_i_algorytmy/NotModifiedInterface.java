@@ -1,5 +1,8 @@
 package kolekcje_i_algorytmy;
 
-public interface NotModifiedInterface extends java.io.Serializable {
-	void handled (Student x);
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface NotModifiedInterface extends Remote{
+	void handled (Student x)throws RemoteException;
 }

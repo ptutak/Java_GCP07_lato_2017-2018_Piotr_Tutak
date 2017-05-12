@@ -1,6 +1,7 @@
 package wspolbieznosc;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,13 +60,23 @@ public class Monitor {
 	
 	private synchronized void addedFire(Student student){
 		for (AddedInterface x:addedList){
-			x.handled(student);
+			try {
+				x.handled(student);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	private synchronized void removedFire(Student student){
 		for (RemovedInterface x:removedList){
-			x.handled(student);
+			try {
+				x.handled(student);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

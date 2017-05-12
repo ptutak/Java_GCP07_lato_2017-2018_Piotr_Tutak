@@ -25,7 +25,7 @@ public class NewUserWindowController {
 	@FXML TextField loginTextField;
 	@FXML TextField passwordTextField;
 	@FXML TextField ageTextField;
-	@FXML ChoiceBox sexChoiceBox;
+	@FXML ChoiceBox<String> sexChoiceBox;
 	@FXML TextField locationTextField;
 	
 	private Stage stage;

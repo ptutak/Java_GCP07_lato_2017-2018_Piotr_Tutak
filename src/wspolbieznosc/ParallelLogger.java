@@ -1,5 +1,6 @@
 package wspolbieznosc;
 
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 
 import kolekcje_i_algorytmy.Logger;
@@ -54,7 +55,12 @@ public class ParallelLogger implements Logger {
 				for (StatusStudent s: clone){
 					statList.remove(s);
 					for (Logger x:loggers){
-						x.log(s.status, s.student);
+						try {
+							x.log(s.status, s.student);
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}

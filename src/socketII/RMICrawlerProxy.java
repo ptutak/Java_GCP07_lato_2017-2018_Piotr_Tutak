@@ -1,6 +1,5 @@
 package socketII;
 
-import java.io.Serializable;
 import java.rmi.server.UnicastRemoteObject;
 
 import kolekcje_i_algorytmy.AddedInterface;

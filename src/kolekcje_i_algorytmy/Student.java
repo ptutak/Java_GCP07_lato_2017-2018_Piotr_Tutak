@@ -2,13 +2,9 @@ package kolekcje_i_algorytmy;
 
 import java.io.Serializable;
 
-import javafx.beans.property.StringProperty;
-
 public class Student implements Serializable
 {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 4755707247822602467L;
 	private double mark;
 	private String firstName;

@@ -1,6 +1,6 @@
 package gui1;
 
-import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
@@ -21,7 +21,7 @@ import kolekcje_i_algorytmy.NotModifiedInterface;
 import kolekcje_i_algorytmy.RemovedInterface;
 import kolekcje_i_algorytmy.Student;
 
-public class MainGUI extends Application implements Serializable{
+public class MainGUI extends Application{
 	private BorderPane borderPane;
 	private CustomTabPane tabs;
 	private CustomMenuBar menu;
@@ -77,11 +77,13 @@ public class MainGUI extends Application implements Serializable{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				final Logger[] loggers=new Logger[]{
-						new ConsoleLogger(),
+				try{
+				Logger[] loggers= new Logger[]{
+							new ConsoleLogger(),
 //						new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
-						new GuiLogger(gui)
-				};
+							new GuiLogger(gui)
+					};
+				
 				String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
 				Crawler crawl=new Crawler(tmp,0);
 				AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
@@ -114,26 +116,46 @@ public class MainGUI extends Application implements Serializable{
 				crawl.add(iint);
 				AddedInterface addint=(s)->{
 					for (Logger log:loggers){
-							log.log("ADDED",s);	
+							try {
+								log.log("ADDED",s);
+							} catch (RemoteException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
 						
 					}
 				};
 				crawl.add(addint);
 				RemovedInterface remint=(s)->{
 					for (Logger log:loggers){
-							log.log("REMOVED",s);	
+							try {
+								log.log("REMOVED",s);
+							} catch (RemoteException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
 						
 					}
 				};
 				crawl.add(remint);
 				NotModifiedInterface nonint=(s)->{
 					for (Logger log:loggers){
-							log.log("NOT MODIFIED",s);	
+							try {
+								log.log("NOT MODIFIED",s);
+							} catch (RemoteException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
 						
 					}
 				};
 				crawl.add(nonint);
 				crawl.run();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}});
 			crawlLogger.start();
 			Application.launch(gui.getClass());

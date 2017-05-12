@@ -1,8 +1,8 @@
 
 package kolekcje_i_algorytmy;
-import java.io.Console;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class Crawler extends Thread {
@@ -148,18 +148,33 @@ public class Crawler extends Thread {
 
 	private void notModified(Student x){
 		for (NotModifiedInterface i:notModifiedList){
-			i.handled(x);
+			try {
+				i.handled(x);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	private void added(Student x){
 		for (AddedInterface i:addedList){
-			i.handled(x);
+			try {
+				i.handled(x);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}		
 	}
 	private void removed(Student x){
 		for (RemovedInterface i:removedList){
-			i.handled(x);
+			try {
+				i.handled(x);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}		
 	}
 	@Override
@@ -202,7 +217,7 @@ public class Crawler extends Thread {
 				iteration+=1;
 				if (iteration==maxIter)
 					break;
-			} catch (CrawlerException e){
+			} catch (CrawlerException | RemoteException e){
 				e.printStackTrace();
 				isRunning=false;
 			}
@@ -210,11 +225,12 @@ public class Crawler extends Thread {
 	}
 
 	public static void main(String[] args){
-
-		final Logger[] loggers=new Logger[]{
-				new ConsoleLogger(),
-				new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test")
-		};
+		try{
+		 Logger[] loggers = new Logger[]{
+					new ConsoleLogger(),
+					new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test")
+			};
+		
 		String tmp=new String("http://home.agh.edu.pl/~ggorecki/IS_Java/students.txt");
 		Crawler crawl=new Crawler(tmp,0);
 		AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
@@ -247,23 +263,42 @@ public class Crawler extends Thread {
 		crawl.add(iint);
 		AddedInterface addint=(s)->{
 			for (Logger log:loggers){
-				log.log("ADDED",s);
+				try {
+					log.log("ADDED",s);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 		crawl.add(addint);
 		RemovedInterface remint=(s)->{
 			for (Logger log:loggers){
-				log.log("REMOVED",s);
+				try {
+					log.log("REMOVED",s);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 		crawl.add(remint);
 		NotModifiedInterface nonint=(s)->{
 			for (Logger log:loggers){
-				log.log("NOT MODIFIED",s);
+				try {
+					log.log("NOT MODIFIED",s);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 		crawl.add(nonint);
 		crawl.run();
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 

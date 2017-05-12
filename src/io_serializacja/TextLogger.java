@@ -19,7 +19,7 @@ public class TextLogger implements Logger, Closeable {
 	
 	public TextLogger(String fileName, boolean appendState) throws IOException{
 		this.fileName=fileName;
-		fileOutputStream=new FileOutputStream(fileName,appendState);
+		fileOutputStream=new FileOutputStream(this.fileName,appendState);
 		outputStreamWriter=new OutputStreamWriter(fileOutputStream,"UTF-8");
 	}
 

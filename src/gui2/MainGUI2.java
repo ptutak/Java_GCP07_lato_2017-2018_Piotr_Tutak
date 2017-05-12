@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import kolekcje_i_algorytmy.AddedInterface;
 import kolekcje_i_algorytmy.AgeInterface;
 import kolekcje_i_algorytmy.ConsoleLogger;
-import kolekcje_i_algorytmy.Crawler;
 import kolekcje_i_algorytmy.ExtractInterface;
 import kolekcje_i_algorytmy.IterInterface;
 import kolekcje_i_algorytmy.Logger;
@@ -26,11 +25,10 @@ import kolekcje_i_algorytmy.NotModifiedInterface;
 import kolekcje_i_algorytmy.RemovedInterface;
 import kolekcje_i_algorytmy.Student;
 import socketII.CrawlerProxyable;
-import socketII.RMICrawlerProxy;
 
-public class MainGUI2 extends Application implements Serializable {
+public class MainGUI2 extends Application {
 
-	private BorderPaneController borderPaneController;
+	private static BorderPaneController borderPaneController;
 	private LoginWindowController loginWindowController;
 	private NewUserWindowController newUserWindowController;
 	private LoadFromFileWindowController loadFromFileWindowController;
@@ -74,30 +72,22 @@ public class MainGUI2 extends Application implements Serializable {
 		stage.show();
 	}
 
-	public synchronized void addStudent(Student student){
+	public static synchronized void addStudent(Student student){
 		borderPaneController.addStudent(student);
 	}
 
-	public synchronized void removeStudent(Student student){
+	public static synchronized void removeStudent(Student student){
 		borderPaneController.removeStudent(student);
 	}
 
-	public synchronized void notModifiedStudent(Student student){
+	public static synchronized void notModifiedStudent(Student student){
 		borderPaneController.notModifiedStudent(student);
 	}
 
 	public static void main(String[] args) {
 
 		MainGUI2 gui=new MainGUI2();
-		Logger[] loggers = new Logger[]{
-				new ConsoleLogger(),
-				//new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
-				new GuiLogger(gui)
-				//new TextLogger("textLogger.txt",true),
-				//new SerializedLogger("serializedLogger.bin",true),
-				//new BinaryLogger("binaryLogger.bin",true),
-				//new CompressedLogger("compressedLogger.zip",true)
-		};
+		
 
 		Thread crawlLogger=new Thread(new Runnable(){public void run(){
 			try {
@@ -112,15 +102,25 @@ public class MainGUI2 extends Application implements Serializable {
 
 			String name = "rmi://" + port + "/CrawlerProxy";
 			try{
+				Logger[] loggers = new Logger[]{
+						new ConsoleLogger(),
+						//new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
+						new GuiLogger(gui)
+						//new TextLogger("textLogger.txt",true),
+						//new SerializedLogger("serializedLogger.bin",true),
+						//new BinaryLogger("binaryLogger.bin",true),
+						//new CompressedLogger("compressedLogger.zip",true)
+				};
+
 				Registry registry = LocateRegistry.getRegistry( host, port );
 				CrawlerProxyable crawl = (CrawlerProxyable) registry.lookup( name );
 
 				//			Crawler crawl=new Crawler(tmp,0);
-				AgeInterface aint=(min,max)->{System.out.println("Age: <"+min+","+max+">");};
+				AgeInterface aint=(AgeInterface & Serializable)(min,max)->{System.out.println("Age: <"+min+","+max+">");};
 				crawl.add(aint);
-				MarkInterface mint=(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
+				MarkInterface mint=(MarkInterface & Serializable)(min,max)->{System.out.println("Mark: <"+min+","+max+">");};
 				crawl.add(mint);
-				ExtractInterface eint=(list,mode)->{
+				ExtractInterface eint=(ExtractInterface & Serializable)(list,mode)->{
 					String m=new String();
 					switch(mode){
 					case FIRST_NAME:
@@ -142,23 +142,38 @@ public class MainGUI2 extends Application implements Serializable {
 					}
 				};
 				crawl.add(eint);
-				IterInterface iint=(iter)->{System.out.println("Iteracja numer: "+iter);};
+				IterInterface iint=(IterInterface & Serializable)(iter)->{System.out.println("Iteracja numer: "+iter);};
 				crawl.add(iint);
-				AddedInterface addint=(s)->{
+				AddedInterface addint=(AddedInterface & Serializable) (s)->{
 					for (Logger log:loggers){
-						log.log("ADDED",s);	
+						try {
+							log.log("ADDED",s);
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	
 					}
 				};
 				crawl.add(addint);
-				RemovedInterface remint=(s)->{
+				RemovedInterface remint=(RemovedInterface & Serializable)(s)->{
 					for (Logger log:loggers){
-						log.log("REMOVED",s);
+						try {
+							log.log("REMOVED",s);
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				};
 				crawl.add(remint);
-				NotModifiedInterface nonint=(s)->{
+				NotModifiedInterface nonint=(NotModifiedInterface & Serializable)(s)->{
 					for (Logger log:loggers){
-						log.log("NOT MODIFIED",s);
+						try {
+							log.log("NOT MODIFIED",s);
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				};
 				crawl.add(nonint);

@@ -1,7 +1,8 @@
 package kolekcje_i_algorytmy;
 
-import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public interface AgeInterface extends Serializable {
-	public void handled(int min, int max);
+public interface AgeInterface extends Remote {
+	public void handled(int min, int max) throws RemoteException;
 }
