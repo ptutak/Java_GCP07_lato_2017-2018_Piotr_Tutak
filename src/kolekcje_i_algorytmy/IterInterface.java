@@ -1,5 +1,5 @@
 package kolekcje_i_algorytmy;
 
-public interface IterInterface {
+public interface IterInterface extends java.io.Serializable {
 	void handled(int iteration);
 }

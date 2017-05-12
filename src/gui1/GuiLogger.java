@@ -1,11 +1,13 @@
 package gui1;
 
+import java.io.Serializable;
+
 import gui2.MainGUI2;
 import javafx.application.Platform;
 import kolekcje_i_algorytmy.Logger;
 import kolekcje_i_algorytmy.Student;
 
-public class GuiLogger implements Logger {
+public class GuiLogger implements Logger, Serializable {
 	MainGUI gui;
 	MainGUI2 gui2;
 	public GuiLogger(MainGUI gui){
@@ -23,13 +25,13 @@ public class GuiLogger implements Logger {
 				switch (status){
 
 				case "ADDED":
-					MainGUI.addStudent(student);
+					gui.addStudent(student);
 					break;
 				case "REMOVED":
-					MainGUI.removeStudent(student);
+					gui.removeStudent(student);
 					break;
 				case "NOT MODIFIED":
-					MainGUI.notModifiedStudent(student);
+					gui.notModifiedStudent(student);
 					break;
 				}	
 			}});
@@ -38,15 +40,14 @@ public class GuiLogger implements Logger {
 		if (gui2!=null){
 			Platform.runLater(new Runnable(){public void run(){
 				switch (status){
-
 				case "ADDED":
-					MainGUI2.addStudent(student);
+					gui2.addStudent(student);
 					break;
 				case "REMOVED":
-					MainGUI2.removeStudent(student);
+					gui2.removeStudent(student);
 					break;
 				case "NOT MODIFIED":
-					MainGUI2.notModifiedStudent(student);
+					gui2.notModifiedStudent(student);
 					break;
 				}	
 			}});

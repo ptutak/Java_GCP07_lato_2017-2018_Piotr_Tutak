@@ -7,7 +7,7 @@ import javax.mail.internet.*;
 import javax.activation.*;
 
 
-public class MailLogger implements Logger {
+public class MailLogger implements Logger, java.io.Serializable {
 	String to;
 	String from;
 	String pass;

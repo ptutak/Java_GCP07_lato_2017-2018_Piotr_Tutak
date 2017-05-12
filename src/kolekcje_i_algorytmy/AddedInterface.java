@@ -1,5 +1,7 @@
 package kolekcje_i_algorytmy;
 
-public interface AddedInterface {
+import java.io.Serializable;
+
+public interface AddedInterface extends Serializable{
 	public void handled (Student x);
 }

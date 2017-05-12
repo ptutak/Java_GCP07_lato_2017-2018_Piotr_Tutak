@@ -42,10 +42,10 @@ public class Monitor {
 				new ConsoleLogger(),
 //					new MailLogger("pttMailTest@mail.com","pttMailTest@mail.com","smtp.mail.com","ptt_Mail_Test"),
 				new GuiLogger(gui),
-				new TextLogger("textLogger.txt",false),
-				new SerializedLogger("serializedLogger.bin",false),
-				new BinaryLogger("binaryLogger.bin",false),
-				new CompressedLogger("compressedLogger.zip",false)
+//				new TextLogger("textLogger.txt",false),
+//				new SerializedLogger("serializedLogger.bin",false),
+//				new BinaryLogger("binaryLogger.bin",false),
+//				new CompressedLogger("compressedLogger.zip",false)
 		};
 		logger=new ParallelLogger(loggers);
 	}

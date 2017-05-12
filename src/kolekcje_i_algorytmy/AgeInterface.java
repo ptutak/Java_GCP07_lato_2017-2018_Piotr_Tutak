@@ -1,5 +1,7 @@
 package kolekcje_i_algorytmy;
 
-public interface AgeInterface {
+import java.io.Serializable;
+
+public interface AgeInterface extends Serializable {
 	public void handled(int min, int max);
 }

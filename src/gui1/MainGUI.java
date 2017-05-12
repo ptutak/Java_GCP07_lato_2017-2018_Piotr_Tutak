@@ -1,5 +1,6 @@
 package gui1;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
@@ -20,9 +21,9 @@ import kolekcje_i_algorytmy.NotModifiedInterface;
 import kolekcje_i_algorytmy.RemovedInterface;
 import kolekcje_i_algorytmy.Student;
 
-public class MainGUI extends Application {
+public class MainGUI extends Application implements Serializable{
 	private BorderPane borderPane;
-	private static CustomTabPane tabs;
+	private CustomTabPane tabs;
 	private CustomMenuBar menu;
 	private Scene scene;
 	private Label keyLabel;
@@ -54,19 +55,19 @@ public class MainGUI extends Application {
 	    this.stage.show();
 	}
 	
-	public static synchronized void addStudent(Student student){
+	public synchronized void addStudent(Student student){
 		tabs.addStudent(student);
 	}
 	
-	public static synchronized void removeStudent(Student student){
+	public synchronized void removeStudent(Student student){
 		tabs.removeStudent(student);
 	}
 	
-	public static synchronized void notModifiedStudent(Student student){
+	public synchronized void notModifiedStudent(Student student){
 		tabs.notModifiedStudent(student);
 	}
 
-	public static void main(String[] args){
+	public void main(String[] args){
 	    MainGUI gui=new MainGUI();
 	    
 			Thread crawlLogger=new Thread(new Runnable(){public void run(){
